@@ -297,7 +297,7 @@ export function FormEditScreen({ route, navigation }) {
                                               <View style={{ flex: 1 }}>
                                                 <SelectField2
                                                   label={field.label + " " + [field.mandatory ? "*" : ""]}
-                                                  initialValue={auxShow.current?.[field.form_section_field_id]}
+                                                  initialValue={objToShow?.["note_" + field.form_section_field_id]}
                                                   placeholder={"Selecione..."}
                                                   list={field.options}
                                                   change={(e) => handleChange("field_" + field.form_section_field_id, e.form_section_field_option_id)}
