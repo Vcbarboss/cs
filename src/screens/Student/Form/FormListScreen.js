@@ -42,7 +42,7 @@ export function FormListScreen({ route, navigation }) {
     setLoading(true);
     try {
       const res = await api.get(`app/enrollment/${props.item.enrollment_id}/form/list/${filter.value}`);
-
+console.log(res)
       setData(res.object);
       setLoading(false);
     } catch (e) {
@@ -87,11 +87,11 @@ export function FormListScreen({ route, navigation }) {
               <View style={{ flex: 1, justifyContent: "center", paddingLeft: 10 }}>
 
                 <Text style={{ color: "white", fontSize: 23, }}> Construindo o Saber</Text>
-                <Text style={{ color: "white", fontSize: Texts.subtitle, }}> Formulários </Text>
+                <Text style={{ color: "white", fontSize: Texts.subtitle, }}>  Formulários </Text>
               </View>
-              <TouchableOpacity style={{ alignItems: "flex-end", justifyContent: "center", flexDirection: 'row' }}
+              <TouchableOpacity style={{  alignItems: "center", justifyContent: "center", flexDirection: 'row' }}
                                 onPress={() => setFilterModal(true)}>
-                <Icon name={"filter-outline"} style={{ marginRight: 10 }} size={25} color={"white"} />
+                <Icon name={"filter-outline"} style={{ }} size={25} color={"white"} />
                 <Text style={{color: 'white', fontWeight: 'bold'}}> {filter.label}</Text>
               </TouchableOpacity>
             </View>

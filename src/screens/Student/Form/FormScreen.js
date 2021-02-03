@@ -41,6 +41,7 @@ export function FormScreen({ route, navigation }) {
     }
     try {
       const res = await api.get(`app/enrollment/${props.enrollment}/form/${props.item.form_id}`);
+      console.log(res)
       setData(res.object);
       setLoading(false);
 
@@ -143,10 +144,10 @@ export function FormScreen({ route, navigation }) {
                                             }
                                           </View>,
                                         )}
-                                        {field?.note_enable.answered_note &&
+                                        {field?.note_enable &&
                                         <View style={styles.item}>
-                                          <Text style={styles.title}>{field.note_description}</Text>
-                                          <Text style={styles.subTitle}>{field.answered_note}</Text>
+                                          <Text style={styles.title}>{field?.note_description}</Text>
+                                          <Text style={styles.subTitle}>{field?.answered_note}</Text>
 
                                         </View>
                                         }
@@ -172,10 +173,10 @@ export function FormScreen({ route, navigation }) {
 
                                               </View>,
                                             )}
-                                            {field?.note_enable.answered_note &&
+                                            {field.note_enable &&
                                             <View style={styles.item}>
-                                              <Text style={styles.title}>{field.note_description}</Text>
-                                              <Text style={styles.subTitle}>{field.answered_note}</Text>
+                                              <Text style={styles.title}>{field?.note_description}</Text>
+                                              <Text style={styles.subTitle}>{field?.answered_note}</Text>
 
                                             </View>
                                             }

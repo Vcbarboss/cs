@@ -15,8 +15,8 @@ const screenHeight = Math.round(Dimensions.get("window").height);
 
 export function LoginScreen({ navigation }) {
 
-  const [username, setUsername] = useState("06845149151");
-  const [password, setPassword] = useState("123456");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const api = useApi({ navigation });
   const { login, getFcmToken } = useAuth();
@@ -42,9 +42,10 @@ export function LoginScreen({ navigation }) {
       identifier: Env.identifier, //Dev - AADBA381-EECB-434A-B9B8-656FE3227274 //Prod 2BFE1A53-E618-4ACC-9180-ED7F370B4E54
       firebase_token: fcm,
     };
+
     try {
       const res = await api.post("app/auth", objToSend);
-
+      console.log(res)
       if (res.HTTPStatus ===  401) {
         refNotification.current.showToast("warning", "CPF ou Senha incorretos!");
         setLoading(false);

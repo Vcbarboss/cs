@@ -125,6 +125,7 @@ export function FormEditScreen({ route, navigation }) {
 
   const handleSave = async () => {
     try {
+      console.log(objToSend.current)
       const res = await api.post(`app/enrollment/${props.item.enrollment_id}/form/${props.form_id}`, objToSend.current);
 
       navigation.pop(2);
@@ -280,7 +281,7 @@ export function FormEditScreen({ route, navigation }) {
                                             <Field2
                                               label={field.note_description}
                                               multiline={1}
-                                              value={objToShow?.["note_" + field.form_section_field_id]}
+                                              value={field?.answered_note}
                                               change={(e) => handleChange("note_" + field.form_section_field_id, e)}
 
                                             />
@@ -293,11 +294,12 @@ export function FormEditScreen({ route, navigation }) {
                                         {field.type === "SELECT" ?
                                           <>
 
+
                                             <View style={styles.item}>
                                               <View style={{ flex: 1 }}>
                                                 <SelectField2
                                                   label={field.label + " " + [field.mandatory ? "*" : ""]}
-                                                  initialValue={objToShow?.["note_" + field.form_section_field_id]}
+                                                  initialValue={field?.answered_form}
                                                   placeholder={"Selecione..."}
                                                   list={field.options}
                                                   change={(e) => handleChange("field_" + field.form_section_field_id, e.form_section_field_option_id)}
@@ -309,7 +311,7 @@ export function FormEditScreen({ route, navigation }) {
                                                 <Field2
                                                   label={field.note_description}
                                                   multiline={1}
-                                                  value={objToShow?.["note_" + field.form_section_field_id]}
+                                                  value={field?.answered_note}
                                                   change={(e) => handleChange("note_" + field.form_section_field_id, e)}
 
                                                 />

@@ -42,12 +42,22 @@ export function NotificationComponent(props, {navigation}) {
         setLoading(true);
 
         try {
-            const res = await api.get(`app/notification/${props.id}`);
-            console.log(res)
-            setData(res);
-            if (!props.read) {
-                dispatch({type: "delete_notification"});
+            if (props.aluno) {
+                const res = await api.get(`app/notification/${props.id}/${props.enrollment_id}`);
+                console.log(res)
+                setData(res);
+                if (!props.read) {
+                    dispatch({type: "delete_notification"});
+                }
+            } else {
+                const res = await api.get(`app/notification/${props.id}`);
+                console.log(res)
+                setData(res);
+                if (!props.read) {
+                    dispatch({type: "delete_notification"});
+                }
             }
+
             setLoading(false);
         } catch (e) {
             let aux;
@@ -61,7 +71,6 @@ export function NotificationComponent(props, {navigation}) {
     };
 
     const handleAnswer = async (type, answers) => {
-
 
 
         if (type === "unique") {
@@ -110,12 +119,12 @@ export function NotificationComponent(props, {navigation}) {
         try {
             console.log(answer)
             let objToSend = ""
-            if(data.object.push_notification.survey_answer_type === "OPEN" ){
+            if (data.object.push_notification.survey_answer_type === "OPEN") {
                 objToSend = {
                     "answer_open": open,
 
                 };
-            }else{
+            } else {
                 objToSend = {
                     "answer_options":
                     answer,
@@ -125,13 +134,20 @@ export function NotificationComponent(props, {navigation}) {
             }
 
             console.log(objToSend)
-            const res = await api.post(`app/notification/${data?.object.push_notification.push_notification_id}/answer`, objToSend);
+            let res;
+            if (props.aluno) {
+                res = await api.post(`app/notification/${data?.object.push_notification.push_notification_id}/answer/${props.enrollment_id}`, objToSend);
+                console.log('aluno')
+            } else {
+                res = await api.post(`app/notification/${data?.object.push_notification.push_notification_id}/answer`, objToSend);
+                console.log('geral')
+            }
             console.log(res)
             refNotification.current.showToast("success", "Resposta enviada!");
             time1 = setTimeout(async () => {
                 props.close(false)
                 clearTimeout(time1)
-            }, 5000)
+            }, 2000)
         } catch (e) {
             let aux;
             for (let i = 0; i < Object.keys(e.validator).length; i++) {
@@ -215,14 +231,54 @@ export function NotificationComponent(props, {navigation}) {
                                                 }}>Sua resposta foi: </Text>
                                             </View>
                                             {data.object.answer_open ?
-                                                <Text style={{ fontSize: 17 }}>
-                                                    {data.object.answer_open}
-                                                </Text>
+                                                <View>
+
+                                                    <View>
+                                                        {data.object.answer_open &&
+                                                        <>
+                                                            {data?.object.push_notification.push_notification_answers.map((item, index) =>
+
+                                                                <View key={index} style={{
+                                                                    marginVertical: 2,
+                                                                    flexDirection: "row",
+                                                                    alignItems: "center",
+                                                                    backgroundColor: data.object.answer_options.includes(item.answer) ? Colors.selected : "#f9f9f9",
+                                                                    borderWidth: 1,
+                                                                    borderColor: "gainsboro",
+                                                                    borderRadius: 10,
+                                                                    padding: 10,
+                                                                    marginBottom: 10
+                                                                }}>
+
+                                                                    <Checkbox color={Colors.primary}
+                                                                              status={data.object.answer_options.includes(item.answer) ? "checked" : "unchecked"}
+                                                                              onPress={() => handleAnswer("multiple", item.answer)}/>
+                                                                    <TouchableOpacity style={{flex: 1}}
+                                                                                      onPress={() => handleAnswer("multiple", item.answer)}>
+                                                                        <Text style={{
+                                                                            fontSize: 12,
+                                                                            maxWidth: "100%"
+                                                                        }}> {item.answer}</Text>
+                                                                    </TouchableOpacity>
+                                                                </View>
+                                                            )}
+                                                        </>
+
+                                                        }
+                                                    </View>
+                                                    <View style={{borderWidth: 1, padding: 10, borderColor: '#ba6430', borderRadius: 4}}>
+                                                        <Text style={{fontSize: 17, fontStyle: 'italic'}}>
+                                                            {data.object.answer_open}
+                                                        </Text>
+                                                    </View>
+
+                                                </View>
                                                 :
                                                 <View>
                                                     {data?.object.push_notification.push_notification_answers.map((item, index) =>
 
                                                         <View key={index} style={{
+                                                            marginVertical: 2,
                                                             flexDirection: "row",
                                                             alignItems: "center",
                                                             backgroundColor: data.object.answer_options.includes(item.answer) ? Colors.selected : "#f9f9f9",
@@ -232,6 +288,7 @@ export function NotificationComponent(props, {navigation}) {
                                                             padding: 10,
 
                                                         }}>
+
                                                             <Checkbox color={Colors.primary}
                                                                       status={data.object.answer_options.includes(item.answer) ? "checked" : "unchecked"}
                                                                       onPress={() => handleAnswer("multiple", item.answer)}/>

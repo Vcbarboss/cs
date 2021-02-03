@@ -16,6 +16,7 @@ import { NotificationList } from "../screens/Notification/NotificationList";
 import {FirstLoginScreen} from "../screens/InitialStackScreens/FirstLoginScreen";
 import { CardStyleInterpolators } from '@react-navigation/stack';
 import { MainStack } from "./DrawerStack";
+import {StudentNotificationList} from "../screens/Student/StudentNotificationList";
 
 
 const InitialStack = createStackNavigator();
@@ -112,6 +113,12 @@ export function InitialStackNavigator({navigation}) {
             animationEnabled: false,
           }}/>
           <InitialStack.Screen name={'NotificationList'} component={NotificationList} options={{
+            headerShown: false,
+            gesturesEnabled: false,
+            animationEnabled: false,
+          }}/>
+
+          <InitialStack.Screen name={'StudentNotificationList'} component={StudentNotificationList} options={{
             headerShown: false,
             gesturesEnabled: false,
             animationEnabled: false,

@@ -29,7 +29,7 @@ const Toast = React.forwardRef((props,ref) => {
     time1 = setTimeout(async () => {
       hideToast()
       clearTimeout(time1)
-    }, 5000)
+    }, 2000)
 
   }
 

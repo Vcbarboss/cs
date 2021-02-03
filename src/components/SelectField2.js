@@ -112,7 +112,7 @@ export default function SelectField2(props) {
         </View>
         :
         <View>
-          <Field2 icon={props.icon && props.icon} value={selected?.toString()} label={props.label && props.label}
+          <Field2 icon={props.icon && props.icon} value={props.initialValue && props.initialValue} label={props.label && props.label}
                   placeholder={props.placeholder && props.placeholder} rightIcon={'chevron-down-outline'} />
           <TouchableOpacity onPress={() => setIsVisible(true)}
                             style={{ position: 'absolute', zIndex: 10, width: '100%', height: '100%' }} />

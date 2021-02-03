@@ -135,7 +135,14 @@ export function StudentNotificationList({ route, navigation }) {
               barStyle="light-content"
             />
             <View style={{ flexDirection: "row", backgroundColor: Colors.theme, padding: 20 }}>
-              <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+              <TouchableOpacity style={{}} onPress={() => {
+                if(props?.notification){
+                  navigation.reset({index: 0, routes: [{name: "HomeStack"}]});
+                }else{
+                  navigation.pop()
+                }
+
+              }}>
                 <AntIcon name={"arrowleft"} style={{}} size={25} color={"white"} />
               </TouchableOpacity>
               <View style={{ flex: 1, justifyContent: "center", paddingLeft: 10 }}>
@@ -174,7 +181,7 @@ export function StudentNotificationList({ route, navigation }) {
                                   style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listDescription}]}>{moment(item?.created_at.substr(0, 10)).format("L")} {item?.created_at.substr(11, 5)}</Text>
                             </View>
                           </View>
-                          <View style={{flex: 0.3,}}>
+                          <View style={{flex: 0.4,}}>
                             <View style={{alignItems: "flex-end", flex: 1, justifyContent: "center"}}>
                               {item.read_at ?
                                   <Text
@@ -185,12 +192,12 @@ export function StudentNotificationList({ route, navigation }) {
                                     lido</Text>
                               }
                             </View>
-                            <View style={{flex: 1, alignItems: "flex-end", justifyContent: "flex-end"}}>
+                            <View style={{flex: 1, alignItems: "flex-end", justifyContent: "flex-end", }}>
                               <Text
                                   style={{
                                     color: !item.read_at ? Colors.primary : Colors.read,
                                     fontWeight: !item.read_at ? "bold" : "normal",
-                                  }}>{moment(item.created_at.substr(0, 10)).fromNow()}</Text>
+                                  }}>{moment(item.created_at).fromNow()}</Text>
                             </View>
                           </View>
                         </View>
@@ -215,7 +222,7 @@ export function StudentNotificationList({ route, navigation }) {
                 setIsVisible(false);
               }}
             >
-              <NotificationComponent id={id} read={read} toast={(e) => refNotification.current.showToast(e)} close={(e) => {
+              <NotificationComponent aluno={true} enrollment_id={props.item.enrollment_id} id={id} read={read} toast={(e) => refNotification.current.showToast(e)} close={(e) => {
                 getData();
                 setIsVisible(e);
               }} />
