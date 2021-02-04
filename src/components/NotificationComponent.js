@@ -22,6 +22,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Field from "./Field";
 import {Checkbox, Switch, RadioButton, Divider} from "react-native-paper";
 import ButtonStyle1 from "./Buttons/ButtonStyle1";
+import GeneralStatusBarColor from "./StatusBarColor";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -172,24 +173,27 @@ export function NotificationComponent(props, {navigation}) {
                 )
                 :
                 (
-                    <SafeAreaView style={styles.container}>
+                    <View style={styles.container}>
+                        <GeneralStatusBarColor backgroundColor={Colors.theme}
+                                               barStyle="light-content"/>
                         <Toast ref={refNotification}/>
+
+                        <View style={{flexDirection: 'row', backgroundColor: Colors.theme, padding: 20}}>
+                            <TouchableOpacity style={{}} onPress={() => props.close(false)}>
+                                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={'white'}/>
+                            </TouchableOpacity>
+                            <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
+                                <Text style={{color: "white", fontSize: 23,}}>Construindo o Saber</Text>
+                                <Text style={{color: "white", fontSize: Texts.subtitle,}}>Conteúdo da
+                                    Notificação </Text>
+                            </View>
+                        </View>
                         <ScrollView style={{
                             backgroundColor: "white",
                         }}>
-                            <View style={{flexDirection: 'row', backgroundColor: Colors.theme, padding: 20}}>
-                                <TouchableOpacity style={{marginTop: 10}} onPress={() => props.close(false)}>
-                                    <AntIcon name={"arrowleft"} style={{}} size={25} color={'white'}/>
-                                </TouchableOpacity>
-                                <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
-                                    <Text style={{color: "white", fontSize: 23,}}> Construindo o Saber</Text>
-                                    <Text style={{color: "white", fontSize: Texts.subtitle,}}> Conteúdo da
-                                        Notificação </Text>
-                                </View>
-                            </View>
 
-                            <View style={{flex: 1, backgroundColor: "white"}}
-                                  onPress={() => navigation.navigate("StudentScreen")}>
+
+                            <View style={{flex: 1, backgroundColor: "white"}}>
                                 <View style={{flex: 1, marginHorizontal: 20}}>
                                     <View style={{flex: 1, justifyContent: "center"}}>
                                         <Text style={{
@@ -266,7 +270,12 @@ export function NotificationComponent(props, {navigation}) {
 
                                                         }
                                                     </View>
-                                                    <View style={{borderWidth: 1, padding: 10, borderColor: '#ba6430', borderRadius: 4}}>
+                                                    <View style={{
+                                                        borderWidth: 1,
+                                                        padding: 10,
+                                                        borderColor: '#ba6430',
+                                                        borderRadius: 4
+                                                    }}>
                                                         <Text style={{fontSize: 17, fontStyle: 'italic'}}>
                                                             {data.object.answer_open}
                                                         </Text>
@@ -351,28 +360,35 @@ export function NotificationComponent(props, {navigation}) {
 
                                                                         :
                                                                         <>
-                                                                            <View style={{flexDirection: "row"}}>
-                                                                                <Switch
-                                                                                    style={{transform: [{scaleX: .7}, {scaleY: .7}]}}
-                                                                                    trackColor={{
-                                                                                        false: Colors.lightgray,
-                                                                                        true: "rgba(117,202,37,0.55)"
-                                                                                    }}
-                                                                                    thumbColor={answer ? Colors.secondary : "#bdbcbd"}
-                                                                                    onValueChange={() => handleAnswer("unique", item.answer)}
-                                                                                    value={answer.includes(item.answer)}/>
+                                                                            <View style={{
+                                                                                flexDirection: "row",
+                                                                                alignItems: "center",
+                                                                                backgroundColor: answer.includes(item.answer) ? Colors.selected : "#f9f9f9",
+                                                                                borderWidth: 1,
+                                                                                borderColor: "gainsboro",
+                                                                                borderRadius: 10,
+                                                                                padding: 10,
+                                                                            }}>
+                                                                                <View
+                                                                                    style={styles.roundCheck}>
+                                                                                    <RadioButton color={Colors.primary}
+                                                                                                 status={answer.includes(item.answer) ? "checked" : "unchecked"}
+                                                                                                 onPress={() => handleAnswer("unique", item.answer)}/>
+                                                                                </View>
+                                                                                <TouchableOpacity
+                                                                                    style={{flex:1}}
+                                                                                    onPress={() => handleAnswer("unique", item.answer)}>
+                                                                                    <Text
+                                                                                        style={{
+                                                                                            marginLeft: 10,
+                                                                                            fontSize: 12,
+                                                                                            maxWidth: "100%",
+                                                                                            color: Colors.primary
+                                                                                        }}>{item.answer}
+                                                                                    </Text>
+                                                                                </TouchableOpacity>
                                                                             </View>
 
-                                                                            <TouchableOpacity
-                                                                                onPress={() => handleAnswer("unique", item.answer)}>
-                                                                                <Text
-                                                                                    style={{
-                                                                                        fontSize: 12,
-                                                                                        maxWidth: "100%",
-                                                                                        color: Colors.primary
-                                                                                    }}>{item.answer}
-                                                                                </Text>
-                                                                            </TouchableOpacity>
                                                                         </>
                                                                     }
                                                                 </View>,
@@ -413,28 +429,35 @@ export function NotificationComponent(props, {navigation}) {
 
                                                                                 :
                                                                                 <>
-                                                                                    <View
-                                                                                        style={{flexDirection: "row"}}>
-                                                                                        <Switch
-                                                                                            style={{transform: [{scaleX: .7}, {scaleY: .7}]}}
-                                                                                            trackColor={{
-                                                                                                false: Colors.lightgray,
-                                                                                                true: "rgba(117,202,37,0.55)"
-                                                                                            }}
-                                                                                            thumbColor={checkedUnique ? Colors.secondary : "#bdbcbd"}
-                                                                                            onValueChange={() => handleAnswer("multiple", item.answer)}
-                                                                                            value={answer.includes(item.answer)}/>
-                                                                                    </View>
+                                                                                    <View style={{
+                                                                                        flexDirection: "row",
+                                                                                        alignItems: "center",
+                                                                                        backgroundColor: answer.includes(item.answer) ? Colors.selected : "#f9f9f9",
+                                                                                        borderWidth: 1,
+                                                                                        borderColor: "gainsboro",
+                                                                                        borderRadius: 10,
+                                                                                        padding: 10,
+                                                                                    }}>
+                                                                                        <View
+                                                                                            style={styles.roundCheck}>
+                                                                                            <Checkbox
+                                                                                                color={Colors.primary}
+                                                                                                status={answer.includes(item.answer) ? "checked" : "unchecked"}
+                                                                                                onPress={() => handleAnswer("multiple", item.answer)}/>
+                                                                                        </View>
 
-                                                                                    <TouchableOpacity
-                                                                                        onPress={() => handleAnswer("multiple", item.answer)}>
-                                                                                        <Text style={{
-                                                                                            fontSize: 12,
-                                                                                            maxWidth: "100%",
-                                                                                            color: Colors.primary,
-                                                                                        }}>{item.answer}
-                                                                                        </Text>
-                                                                                    </TouchableOpacity>
+                                                                                        <TouchableOpacity
+                                                                                            style={{flex: 1}}
+                                                                                            onPress={() => handleAnswer("multiple", item.answer)}>
+                                                                                            <Text style={{
+                                                                                                marginLeft: 10,
+                                                                                                fontSize: 12,
+                                                                                                maxWidth: "100%",
+                                                                                                color: Colors.primary,
+                                                                                            }}>{item.answer}
+                                                                                            </Text>
+                                                                                        </TouchableOpacity>
+                                                                                    </View>
                                                                                 </>
                                                                             }
                                                                         </View>,
@@ -445,7 +468,7 @@ export function NotificationComponent(props, {navigation}) {
                                                                     <Field
                                                                         placeholder="Sua resposta"
                                                                         label={"Resposta"}
-                                                                        multiline={1}
+                                                                        multiline={3}
                                                                         value={open}
                                                                         change={(e) => setOpen(e)}
                                                                     />
@@ -491,7 +514,7 @@ export function NotificationComponent(props, {navigation}) {
                             </View>
 
                         </ScrollView>
-                    </SafeAreaView>
+                    </View>
 
                 )}
         </>
@@ -532,4 +555,12 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
         maxHeight: 60,
     },
+    roundCheck: {
+        justifyContent: 'center',
+        width: 35,
+        height: 35,
+        borderWidth: 1,
+        borderRadius: 4,
+        borderColor: Colors.lightgray
+    }
 });

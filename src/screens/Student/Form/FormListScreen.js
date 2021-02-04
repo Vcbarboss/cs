@@ -18,6 +18,7 @@ import Loading from "../../../components/Loading";
 import { Texts } from "../../../helpers/Texts";
 import Icon from "react-native-vector-icons/Ionicons";
 import FilterNotification from "../../../components/FilterNotification";
+import GeneralStatusBarColor from "../../../components/StatusBarColor";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -71,28 +72,30 @@ console.log(res)
         )
         :
         (
-          <SafeAreaView style={styles.container}>
+          <View style={styles.container}>
             <Toast ref={refNotification} />
-            <StatusBar
-              backgroundColor={Colors.theme}
-              barStyle="light-content"
-            />
+            <GeneralStatusBarColor backgroundColor={Colors.theme}
+                                   barStyle="light-content"/>
+            {/*<StatusBar*/}
+            {/*  backgroundColor={Colors.theme}*/}
+            {/*  barStyle="light-content"*/}
+            {/*/>*/}
             <View style={{ backgroundColor: Colors.opt1 }}>
 
             </View>
             <View style={{ flexDirection: "row", backgroundColor: Colors.theme, padding: 20 }}>
               <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                <AntIcon name={"arrowleft"} style={{}} size={25} color={"white"} />
+                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"} />
               </TouchableOpacity>
               <View style={{ flex: 1, justifyContent: "center", paddingLeft: 10 }}>
 
-                <Text style={{ color: "white", fontSize: 23, }}> Construindo o Saber</Text>
-                <Text style={{ color: "white", fontSize: Texts.subtitle, }}>  Formulários </Text>
+                <Text style={{ color: "white", fontSize: 23, }}>Construindo o Saber</Text>
+                <Text style={{ color: "white", fontSize: Texts.subtitle, }}>Formulários </Text>
               </View>
-              <TouchableOpacity style={{  alignItems: "center", justifyContent: "center", flexDirection: 'row' }}
+              <TouchableOpacity style={{  alignItems: "center", justifyContent: "center", maxWidth: 100}}
                                 onPress={() => setFilterModal(true)}>
                 <Icon name={"filter-outline"} style={{ }} size={25} color={"white"} />
-                <Text style={{color: 'white', fontWeight: 'bold'}}> {filter.label}</Text>
+                <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>{filter.label}</Text>
               </TouchableOpacity>
             </View>
             {data?.length > 0 ?
@@ -141,7 +144,7 @@ console.log(res)
                 </View>
               </View>
             </Modal>
-          </SafeAreaView>
+          </View>
         )}
     </>
   );

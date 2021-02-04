@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Image, StatusBar, StyleSheet, View, ImageBackground, ScrollView, Dimensions, Text } from "react-native";
+import { Image, StatusBar, StyleSheet, View, SafeAreaView, ScrollView, Dimensions, Text } from "react-native";
 import ButtonStyle1 from "../../components/Buttons/ButtonStyle1";
 import { Colors } from "../../helpers/Colors";
 import Field from "../../components/Field";
@@ -10,6 +10,7 @@ import useApi from "../../hooks/Api";
 import useAuth from "../../hooks/Auth";
 import {maskCpf} from "../../helpers/Functions";
 import {Env} from "../../Env";
+import GeneralStatusBarColor from "../../components/StatusBarColor";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -83,11 +84,12 @@ export function LoginScreen({ navigation }) {
     <View style={styles.container}>
 
       <Toast ref={refNotification} />
-
-      <StatusBar
-        backgroundColor={Colors.primary}
-        barStyle="light-content"
-      />
+      <GeneralStatusBarColor backgroundColor={'white'}
+                             barStyle="dark-content"/>
+      {/*<StatusBar*/}
+      {/*  backgroundColor={Colors.primary}*/}
+      {/*  barStyle="light-content"*/}
+      {/*/>*/}
       <View style={{ alignItems: "center", flex: 1, maxHeight: 250 }}>
         <Image source={logo} style={styles.logo} />
       </View>

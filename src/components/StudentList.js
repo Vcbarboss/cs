@@ -22,6 +22,8 @@ import { Avatar, Badge } from "react-native-paper";
 import { Env } from "../Env";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
+const screenWidth = Math.round(Dimensions.get("window").width);
+console.log(screenWidth)
 
 const StudentList = React.forwardRef((props, ref) => {
 
@@ -37,6 +39,7 @@ const StudentList = React.forwardRef((props, ref) => {
       setLoading(true);
       try {
         const res = await api.get("app/enrollment/list");
+        console.log(res.object)
         setList(res.object);
       } catch (e) {
         let aux;
@@ -63,7 +66,7 @@ const StudentList = React.forwardRef((props, ref) => {
           // <Loading />
           <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row", height: 200 }}>
             <ActivityIndicator size="large" color={Colors.primary} />
-            <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: "bold", color: Colors.primary }}> Carregando
+            <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: "bold", color: Colors.primary }}>Carregando
               alunos </Text>
           </View>
         )
@@ -115,7 +118,7 @@ const StudentList = React.forwardRef((props, ref) => {
                             zIndex: 10,
                           }}>{item.push_notification_recipients_count}</Badge>}
                           {item.student.person.avatar ?
-                            <Avatar.Image size={125} source={{ uri: item.student.person.avatar }} />
+                            <Avatar.Image size={screenWidth*0.30} source={{ uri: item.student.person.avatar }} />
                             :
                             <Image source={image} style={styles.img} />
                           }
@@ -157,9 +160,7 @@ const styles = StyleSheet.create({
   itemList: {
     flex: 1,
     marginVertical: 8,
-    borderRadius: 10,
-
-    height: 150,
+    borderRadius: 10,// tirei a altura fixa
     elevation: 3,
   },
 });

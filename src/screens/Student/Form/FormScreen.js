@@ -20,6 +20,7 @@ import { StudentProfileComponent } from "../../../components/StudentProfileCompo
 import { FormEditComponent } from "../../../components/FormEditComponent";
 import { Texts } from "../../../helpers/Texts";
 import moment from "moment";
+import GeneralStatusBarColor from "../../../components/StatusBarColor";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -70,21 +71,23 @@ export function FormScreen({ route, navigation }) {
         )
         :
         (
-          <SafeAreaView style={styles.container}>
+          <View style={styles.container}>
             <Toast ref={refNotification} />
-            <StatusBar
-              backgroundColor={Colors.theme}
-              barStyle="light-content"
-            />
+            <GeneralStatusBarColor backgroundColor={Colors.theme}
+                                   barStyle="light-content"/>
+            {/*<StatusBar*/}
+            {/*  backgroundColor={Colors.theme}*/}
+            {/*  barStyle="light-content"*/}
+            {/*/>*/}
 
             <View style={{ flexDirection: "row", backgroundColor: Colors.theme, padding: 20 }}>
               <TouchableOpacity style={{  }} onPress={() => navigation.pop()}>
-                <AntIcon name={"arrowleft"} style={{}} size={25} color={"white"} />
+                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"} />
               </TouchableOpacity>
               <View style={{ flex: 1, justifyContent: "center", paddingLeft: 10 }}>
 
-                <Text style={{ color: "white", fontSize: 23, }}> Construindo o Saber</Text>
-                <Text style={{ color: "white", fontSize: Texts.subtitle, }}> {data?.form.title} </Text>
+                <Text style={{ color: "white", fontSize: 23, }}>Construindo o Saber</Text>
+                <Text style={{ color: "white", fontSize: Texts.subtitle, }}>{data?.form.title} </Text>
               </View>
               <TouchableOpacity style={{  alignItems: "flex-end", justifyContent: "center" }}
                                 onPress={() => navigation.navigate('FormEditScreen', {
@@ -333,7 +336,7 @@ export function FormScreen({ route, navigation }) {
                 setIsVisible(e);
               }} />
             </Modal>
-          </SafeAreaView>
+          </View>
         )}
     </>
   );

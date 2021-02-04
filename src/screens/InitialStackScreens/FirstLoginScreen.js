@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Image, StatusBar, StyleSheet, View, ScrollView, TouchableOpacity, Dimensions, Text } from "react-native";
+import { Image, StatusBar, StyleSheet, View, ScrollView, TouchableOpacity, Dimensions, Text, SafeAreaView } from "react-native";
 import { Colors } from "../../helpers/Colors";
 import Toast from "../../components/Toast";
 import { useFocusEffect } from "@react-navigation/native";
@@ -7,14 +7,13 @@ import useApi from "../../hooks/Api";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import { Texts } from "../../helpers/Texts";
 import { useSelector } from "react-redux";
-import { Env } from "../../Env";
 import ButtonStyle1 from "../../components/Buttons/ButtonStyle1";
 import moment from "moment";
 import Field from "../../components/Field";
-import { maskDate, maskPhone, maskViewPhone } from "../../helpers/Functions";
-import Icon from "react-native-vector-icons/Ionicons";
+import { maskDate, maskPhone, } from "../../helpers/Functions";
 import useAuth from "../../hooks/Auth";
 import SelectField from "../../components/SelectField";
+import GeneralStatusBarColor from "../../components/StatusBarColor";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -109,18 +108,20 @@ export function FirstLoginScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <Toast ref={refNotification} />
-            <StatusBar
-                backgroundColor={Colors.primary}
-                barStyle="light-content"
-            />
+            <GeneralStatusBarColor backgroundColor={Colors.primary}
+                                   barStyle="light-content"/>
+            {/*<StatusBar*/}
+            {/*    backgroundColor={Colors.primary}*/}
+            {/*    barStyle="light-content"*/}
+            {/*/>*/}
             <View style={{ flexDirection: "row", backgroundColor: Colors.primary, padding: 20 }}>
                 <TouchableOpacity style={{  }} onPress={() => doLogout()}>
                     <AntIcon name={"arrowleft"} style={{}} size={25} color={"white"} />
                 </TouchableOpacity>
                 <View style={{ flex: 1, justifyContent: 'center',paddingLeft: 10  }}>
 
-                    <Text style={{ color: "white", fontSize: 23, }}> Construindo o Saber</Text>
-                    <Text style={{ color: "white", fontSize: Texts.subtitle, }}> Contato </Text>
+                    <Text style={{ color: "white", fontSize: 23, }}>Construindo o Saber</Text>
+                    <Text style={{ color: "white", fontSize: Texts.subtitle, }}>Contato </Text>
                 </View>
                 <TouchableOpacity style={{  alignItems: "flex-end", justifyContent: "center" }}>
                     {/*<AntIcon style={{ marginRight: 10 }} name={"edit"} size={30} color={"white"} />*/}

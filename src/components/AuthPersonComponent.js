@@ -22,6 +22,7 @@ import { Avatar } from "react-native-paper";
 import Field from "./Field";
 import ButtonStyle1 from "./Buttons/ButtonStyle1";
 import SelectField from "./SelectField";
+import GeneralStatusBarColor from "./StatusBarColor";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -80,11 +81,13 @@ export function AuthPersonComponent(props, { navigation }) {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar
-        backgroundColor={Colors.theme}
-        barStyle="light-content"
-      />
+    <View style={styles.container}>
+      <GeneralStatusBarColor backgroundColor={Colors.theme}
+                             barStyle="light-content"/>
+      {/*<StatusBar*/}
+      {/*  backgroundColor={Colors.theme}*/}
+      {/*  barStyle="light-content"*/}
+      {/*/>*/}
       <Toast ref={refNotification} />
       <View style={{ flexDirection: "row", backgroundColor: Colors.theme, padding: 20 }}>
         <TouchableOpacity style={{   }} onPress={() => props.close(false)}>
@@ -92,8 +95,8 @@ export function AuthPersonComponent(props, { navigation }) {
         </TouchableOpacity>
         <View style={{flex: 1, justifyContent: 'center',paddingLeft: 10}}>
 
-          <Text style={{ color: "white", fontSize: 23, }}> Construindo o Saber</Text>
-          <Text style={{ color: "white", fontSize: Texts.subtitle, }}> Responsável retirada </Text>
+          <Text style={{ color: "white", fontSize: 23, }}>Construindo o Saber</Text>
+          <Text style={{ color: "white", fontSize: Texts.subtitle, }}>Responsável retirada </Text>
 
         </View>
         <TouchableOpacity style={{  marginTop: 10, alignItems: "flex-end" }}
@@ -190,7 +193,7 @@ export function AuthPersonComponent(props, { navigation }) {
 
       </Modal>
 
-    </SafeAreaView>
+    </View>
   );
 }
 

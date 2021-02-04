@@ -19,6 +19,7 @@ import AntIcon from "react-native-vector-icons/AntDesign";
 import { Texts } from "../helpers/Texts";
 import moment from "moment";
 import { Avatar } from "react-native-paper";
+import GeneralStatusBarColor from "./StatusBarColor";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -35,8 +36,11 @@ export function StudentProfileComponent(props, { navigation }) {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={{}}>
+    <View style={styles.container}>
+      <GeneralStatusBarColor backgroundColor={Colors.theme}
+                             barStyle="light-content"/>
+        <View style={{flex: 1, backgroundColor: 'white'}}>
+      <ScrollView >
         <TouchableOpacity style={{ backgroundColor: Colors.theme }} onPress={() => props.close(false)}>
           <AntIcon name={"arrowleft"} style={{ margin: 10 }} size={25} color={"white"} />
         </TouchableOpacity>
@@ -98,7 +102,8 @@ export function StudentProfileComponent(props, { navigation }) {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+        </View>
+    </View>
   );
 }
 
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     display: "flex",
-    backgroundColor: "transparent",
+    backgroundColor: Colors.theme,
   },
   logo: {
     width: "100%",

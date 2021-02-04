@@ -1,5 +1,15 @@
 import React, { useState, useRef } from "react";
-import { Image, StatusBar, StyleSheet, View, ScrollView, TouchableOpacity, Dimensions, Text } from "react-native";
+import {
+  Image,
+  StatusBar,
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+  Text,
+  SafeAreaView
+} from "react-native";
 import { Colors } from "../../helpers/Colors";
 import Toast from "../../components/Toast";
 import { useFocusEffect } from "@react-navigation/native";
@@ -15,6 +25,7 @@ import Field from "../../components/Field";
 import { maskDate, maskDate2, maskPhone, maskViewPhone } from "../../helpers/Functions";
 import SelectField from "../../components/SelectField";
 import Loading from "../../components/Loading";
+import GeneralStatusBarColor from "../../components/StatusBarColor";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -108,18 +119,20 @@ export function EditScreen({ navigation }) {
         (
           <View style={styles.container}>
             <Toast ref={refNotification} />
-            <StatusBar
-              backgroundColor={Colors.primary}
-              barStyle="light-content"
-            />
+            <GeneralStatusBarColor backgroundColor={Colors.primary}
+                                   barStyle="light-content"/>
+            {/*<StatusBar*/}
+            {/*  backgroundColor={Colors.primary}*/}
+            {/*  barStyle="light-content"*/}
+            {/*/>*/}
             <View style={{ flexDirection: "row", backgroundColor: Colors.primary, padding: 20 }}>
               <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                <AntIcon name={"arrowleft"} style={{}} size={25} color={"white"} />
+                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"} />
               </TouchableOpacity>
               <View style={{ flex: 1, justifyContent: "center", paddingLeft: 10 }}>
 
-                <Text style={{ color: "white", fontSize: 23, }}> Construindo o Saber</Text>
-                <Text style={{ color: "white", fontSize: Texts.subtitle, }}> Editar perfil  </Text>
+                <Text style={{ color: "white", fontSize: 23, }}>Construindo o Saber</Text>
+                <Text style={{ color: "white", fontSize: Texts.subtitle, }}>Editar perfil  </Text>
               </View>
               <TouchableOpacity style={{ alignItems: "flex-end", justifyContent: "center" }}>
 

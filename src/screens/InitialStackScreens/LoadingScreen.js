@@ -32,7 +32,7 @@ export function LoadingScreen({navigation}) {
         messaging()
             .getInitialNotification()
             .then(async (remoteMessage) => {
-                if (remoteMessage !== null) {
+                if (remoteMessage) {
                     console.log(remoteMessage)
                     if (remoteMessage?.data?.only_enrollment === 'true') { // firebase manda como string o parrametro
                         console.log('especifica')

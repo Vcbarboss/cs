@@ -1,6 +1,8 @@
 import React, {useRef, useState, useEffect} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {Colors} from "../helpers/Colors";
+import GeneralStatusBarColor from "./StatusBarColor";
 
 
 
@@ -41,6 +43,8 @@ const Toast = React.forwardRef((props,ref) => {
   return (<>
       {visible&&
       <View style={[styles.main]}>
+          <GeneralStatusBarColor backgroundColor={'transparent'}
+                                 barStyle="light-content"/>
         <View style={[styles.subMain, {backgroundColor:
             type.current === 'success'? '#caf3b7':
               type.current === 'error'? '#ffd1ce':
@@ -71,7 +75,7 @@ const styles = StyleSheet.create({
   main: {
     zIndex: 1000,
     width: '100%',
-    top: 5,
+    top: 10,
     position: 'absolute',
     elevation:6
   },

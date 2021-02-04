@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image, SafeAreaView } from "react-native";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import { Avatar, Title, Drawer, Text, TouchableRipple, Badge, Divider } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { Drawer, Badge, Divider } from "react-native-paper";
 import IonIcon from "react-native-vector-icons/Ionicons";
-import FAIcon from "react-native-vector-icons/FontAwesome5";
 import SIcon from "react-native-vector-icons/SimpleLineIcons";
 import useAuth from "../hooks/Auth";
 import { useDispatch, useSelector } from "react-redux";
 import useApi from "../hooks/Api";
 import logo from "../assets/imgs/construindo-o-saber-full.fw.png";
 import { Colors } from "../helpers/Colors";
+import GeneralStatusBarColor from "./StatusBarColor";
 
 export function DrawerComponent(props,) {
   const refNotification = useRef();
@@ -39,7 +38,9 @@ export function DrawerComponent(props,) {
 
   return (
 
-    <View style={{ flex: 1 }}>
+    <>
+      <GeneralStatusBarColor backgroundColor={'white'}
+                             barStyle="light-content"/>
       <DrawerContentScrollView {...props}>
           <View style={{ flex: 1, justifyContent: "flex-start", height: 100, padding: 10 }}>
             <Image source={logo} style={styles.logo} />
@@ -135,7 +136,7 @@ export function DrawerComponent(props,) {
         </Drawer.Section>
       </DrawerContentScrollView>
 
-    </View>
+    </>
   );
 }
 

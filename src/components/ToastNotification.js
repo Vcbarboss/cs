@@ -2,6 +2,7 @@ import React, {useRef, useState, useEffect} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View, SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Colors} from "../helpers/Colors";
+import GeneralStatusBarColor from "./StatusBarColor";
 
 const ToastNotification = React.forwardRef((props,ref) => {
   const [visible, setVisible] = useState(false);
@@ -49,6 +50,8 @@ const ToastNotification = React.forwardRef((props,ref) => {
   return (<View>
       {visible&&
       <View style={[styles.main]} >
+        <GeneralStatusBarColor backgroundColor={'transparent'}
+                               barStyle="light-content"/>
         <View style={styles.middle}>
           <View style={[styles.subMain]}>
             <View style={{marginRight: 10}}>

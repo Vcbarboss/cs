@@ -24,6 +24,7 @@ import "moment/locale/pt-br";
 import { maskViewPhone } from "../../helpers/Functions";
 import useAuth from "../../hooks/Auth";
 import Loading from "../../components/Loading";
+import GeneralStatusBarColor from "../../components/StatusBarColor";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -101,18 +102,20 @@ export function ProfileScreen({ navigation }) {
         (
           <View style={styles.container}>
             <Toast ref={refNotification} />
-            <StatusBar
-              backgroundColor={Colors.primary}
-              barStyle="light-content"
-            />
+            <GeneralStatusBarColor backgroundColor={Colors.primary}
+                                   barStyle="light-content"/>
+            {/*<StatusBar*/}
+            {/*  backgroundColor={Colors.primary}*/}
+            {/*  barStyle="light-content"*/}
+            {/*/>*/}
             <View style={{ flexDirection: "row", backgroundColor: Colors.primary, padding: 20 }}>
               <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                <AntIcon name={"arrowleft"} style={{}} size={25} color={"white"} />
+                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"} />
               </TouchableOpacity>
               <View style={{ flex: 1, justifyContent: "center", paddingLeft: 10 }}>
 
-                <Text style={{ color: "white", fontSize: 23, }}> Construindo o Saber</Text>
-                <Text style={{ color: "white", fontSize: Texts.subtitle, }}> Perfil </Text>
+                <Text style={{ color: "white", fontSize: 23, }}>Construindo o Saber</Text>
+                <Text style={{ color: "white", fontSize: Texts.subtitle, }}>Perfil </Text>
               </View>
               <TouchableOpacity style={{ alignItems: "flex-end", justifyContent: "center" }}
                                 onPress={() => navigation.navigate("EditScreen")}>
@@ -120,8 +123,7 @@ export function ProfileScreen({ navigation }) {
               </TouchableOpacity>
             </View>
 
-            <ScrollView style={{ }}>
-              <View>
+            <ScrollView >
                 <View style={styles.item}>
                   <Text style={styles.title}>Nome: </Text>
                   <Text style={styles.subtitle}>{data?.name}</Text>
@@ -160,7 +162,6 @@ export function ProfileScreen({ navigation }) {
                   <Text
                     style={styles.subtitle}>{data?.contact_business_phone ? maskViewPhone(data?.contact_business_phone) : "Nenhum"} </Text>
                 </View>
-              </View>
 
             </ScrollView>
           </View>
@@ -186,5 +187,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#d9dade",
     backgroundColor: "#fcfcfc",
+  },
+  container: {
+    flex: 1,
+    display: "flex",
+    backgroundColor: "white",
   },
 });

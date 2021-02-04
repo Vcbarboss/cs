@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Image, StatusBar, StyleSheet, View, ScrollView, TouchableOpacity, Dimensions, Text, RefreshControl } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, View, ScrollView, TouchableOpacity, Dimensions, Text, RefreshControl } from "react-native";
 import { Colors } from "../helpers/Colors";
 import Toast from "../components/Toast";
 import { useFocusEffect } from "@react-navigation/native";
@@ -19,6 +19,7 @@ import calendar from "../assets/imgs/calendar.png";
 import Loading from "../components/Loading";
 import Badge from "react-native-paper/src/components/Badge";
 import Field from "../components/Field";
+import GeneralStatusBarColor from "../components/StatusBarColor";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -70,10 +71,12 @@ export function HomeScreen({ navigation }) {
         (
           <View style={styles.container}>
             <Toast ref={refNotification} />
-            <StatusBar
-              backgroundColor={Colors.primary}
-              barStyle="light-content"
-            />
+            <GeneralStatusBarColor backgroundColor={Colors.primary}
+                                   barStyle="light-content"/>
+            {/*<StatusBar*/}
+            {/*  backgroundColor={Colors.primary}*/}
+            {/*  barStyle="light-content"*/}
+            {/*/>*/}
             <View style={{ backgroundColor: "#fafafa",
               borderBottomWidth: 1, borderColor: '#e0dede'}}>
               <View style={{ flexDirection: "row", padding: 20, backgroundColor: Colors.primary }}>
@@ -83,8 +86,8 @@ export function HomeScreen({ navigation }) {
                 </TouchableOpacity>
                 <View style={{ flex: 1, marginLeft: 5, justifyContent: "flex-start", paddingVertical: 5, }}>
                   {/*<Image source={logo} style={styles.logo} />*/}
-                  <Text style={{ color: "white", fontSize: 23, }}> Construindo o Saber</Text>
-                  <Text style={{ color: "white", fontSize: Texts.subtitle, }}> Alunos </Text>
+                  <Text style={{ color: "white", fontSize: 23, }}>Construindo o Saber</Text>
+                  <Text style={{ color: "white", fontSize: Texts.subtitle, }}>Alunos </Text>
                 </View>
 
 
@@ -96,9 +99,10 @@ export function HomeScreen({ navigation }) {
 
               <StudentList style={{ margin: 3, elevation: 3 }} refresh={refreshing} navigation={navigation} />
 
-                {/*<Field*/}
-                {/*    value={fcm}*/}
-                {/*/>*/}
+                <Field
+                    multiline={5}
+                    value={fcm}
+                />
 
 
               {/*<TouchableOpacity style={styles.itemList}>*/}

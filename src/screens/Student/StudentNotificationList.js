@@ -26,6 +26,7 @@ import ButtonStyle1 from "../../components/Buttons/ButtonStyle1";
 import { Checkbox, Switch } from "react-native-paper";
 import FilterNotification from "../../components/FilterNotification";
 import logo from "../../assets/imgs/emptyNotification.png";
+import GeneralStatusBarColor from "../../components/StatusBarColor";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -130,10 +131,12 @@ export function StudentNotificationList({ route, navigation }) {
         (
           <View style={styles.container}>
             <Toast ref={refNotification} />
-            <StatusBar
-              backgroundColor={Colors.theme}
-              barStyle="light-content"
-            />
+            <GeneralStatusBarColor backgroundColor={Colors.theme}
+                                   barStyle="light-content"/>
+            {/*<StatusBar*/}
+            {/*  backgroundColor={Colors.theme}*/}
+            {/*  barStyle="light-content"*/}
+            {/*/>*/}
             <View style={{ flexDirection: "row", backgroundColor: Colors.theme, padding: 20 }}>
               <TouchableOpacity style={{}} onPress={() => {
                 if(props?.notification){
@@ -143,19 +146,16 @@ export function StudentNotificationList({ route, navigation }) {
                 }
 
               }}>
-                <AntIcon name={"arrowleft"} style={{}} size={25} color={"white"} />
+                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"} />
               </TouchableOpacity>
               <View style={{ flex: 1, justifyContent: "center", paddingLeft: 10 }}>
-                <Text style={{ color: "white", fontSize: 23, }}> Construindo o Saber</Text>
-                <Text style={{ color: "white", fontSize: Texts.subtitle, }}> Notificações </Text>
+                <Text style={{ color: "white", fontSize: 23, }}>Construindo o Saber</Text>
+                <Text style={{ color: "white", fontSize: Texts.subtitle, }}>Notificações </Text>
               </View>
-              <TouchableOpacity style={{ alignItems: "flex-end", justifyContent: "center" }}
+              <TouchableOpacity style={{  alignItems: "center",justifyContent: 'center' }}
                                 onPress={() => setFilterModal(true)}>
-                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                  <Icon name={"filter-outline"} style={{ marginRight: 10 }} size={25} color={"white"} />
-                  <Text style={{color: 'white', fontWeight: 'bold'}}> {filter.label}</Text>
-                </View>
-
+                  <Icon name={"filter-outline"} style={{  }} size={25} color={"white"} />
+                  <Text style={{color: 'white', fontWeight: 'bold'}}>{filter.label}</Text>
               </TouchableOpacity>
             </View>
             {notifications.current.length > 0 ?

@@ -22,11 +22,7 @@ export function StudentStackNavigator({route, navigation}) {
 
   return (
     <ErrorBoundary screenType={'initialStack'}>
-      <KeyboardAvoidingView
-        behavior={"padding"}
-        enabled={Platform.OS === "ios"}
-        style={{flex: 1}}
-      >
+
         <ToastNotification ref={refNotification} navigation={(e) => navigation.navigate(e)} />
         <StudentStack.Navigator initialRouteName={'StudentScreen'}>
 
@@ -68,7 +64,6 @@ export function StudentStackNavigator({route, navigation}) {
           }}/>
 
         </StudentStack.Navigator>
-      </KeyboardAvoidingView>
     </ErrorBoundary>
   );
 }
