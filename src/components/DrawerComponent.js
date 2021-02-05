@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, StyleSheet, Image, SafeAreaView } from "react-native";
+import {View, StyleSheet, Image, SafeAreaView, Platform, StatusBar} from "react-native";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { Drawer, Badge, Divider } from "react-native-paper";
 import IonIcon from "react-native-vector-icons/Ionicons";
@@ -39,8 +39,14 @@ export function DrawerComponent(props,) {
   return (
 
     <>
-      <GeneralStatusBarColor backgroundColor={'white'}
-                             barStyle="light-content"/>
+      {Platform.OS === 'ios' ?
+          <GeneralStatusBarColor backgroundColor={'white'}
+                                 barStyle="light-content"/>
+          :
+          <GeneralStatusBarColor backgroundColor={Colors.primary}
+                                 barStyle="light-content"/>
+      }
+
       <DrawerContentScrollView {...props}>
           <View style={{ flex: 1, justifyContent: "flex-start", height: 100, padding: 10 }}>
             <Image source={logo} style={styles.logo} />

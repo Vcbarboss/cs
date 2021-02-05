@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>903185981813-ln2965f9m9f1mldjovk150h0f46h6rgs.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.903185981813-ln2965f9m9f1mldjovk150h0f46h6rgs</string>
+	<key>API_KEY</key>
+	<string>AIzaSyABxSDAahG89jNHd1iJg8KcD_I26THuEec</string>
+	<key>GCM_SENDER_ID</key>
+	<string>903185981813</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>br.com.diretorescola.construindoosaber</string>
+	<key>PROJECT_ID</key>
+	<string>diretor-escola</string>
+	<key>STORAGE_BUCKET</key>
+	<string>diretor-escola.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:903185981813:ios:124702d10a0acaba68f33c</string>
+</dict>
+</plist>

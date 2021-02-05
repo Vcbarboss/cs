@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { SafeAreaView, StatusBar, StyleSheet, View, ScrollView, TouchableOpacity, Dimensions, Text, RefreshControl } from "react-native";
+import { Platform, StatusBar, StyleSheet, View, ScrollView, TouchableOpacity, Dimensions, Text, RefreshControl } from "react-native";
 import { Colors } from "../helpers/Colors";
 import Toast from "../components/Toast";
 import { useFocusEffect } from "@react-navigation/native";
@@ -71,6 +71,7 @@ export function HomeScreen({ navigation }) {
         (
           <View style={styles.container}>
             <Toast ref={refNotification} />
+
             <GeneralStatusBarColor backgroundColor={Colors.primary}
                                    barStyle="light-content"/>
             {/*<StatusBar*/}
@@ -99,10 +100,10 @@ export function HomeScreen({ navigation }) {
 
               <StudentList style={{ margin: 3, elevation: 3 }} refresh={refreshing} navigation={navigation} />
 
-                <Field
-                    multiline={5}
-                    value={fcm}
-                />
+                {/*<Field*/}
+                {/*    multiline={5}*/}
+                {/*    value={fcm}*/}
+                {/*/>*/}
 
 
               {/*<TouchableOpacity style={styles.itemList}>*/}
