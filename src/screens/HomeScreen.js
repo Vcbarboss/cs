@@ -20,6 +20,7 @@ import Loading from "../components/Loading";
 import Badge from "react-native-paper/src/components/Badge";
 import Field from "../components/Field";
 import GeneralStatusBarColor from "../components/StatusBarColor";
+import * as Sentry from "@sentry/react-native";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -53,6 +54,9 @@ export function HomeScreen({ navigation }) {
     const res = await api.get("app/me");
     const aux =  await getFcmToken()
     setFcm( aux)
+
+
+
   }
   useFocusEffect(
     React.useCallback(() => {

@@ -43,7 +43,7 @@ export function FormListScreen({ route, navigation }) {
     setLoading(true);
     try {
       const res = await api.get(`app/enrollment/${props.item.enrollment_id}/form/list/${filter.value}`);
-console.log(res)
+
       setData(res.object);
       setLoading(false);
     } catch (e) {

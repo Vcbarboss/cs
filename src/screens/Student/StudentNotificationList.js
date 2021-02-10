@@ -58,7 +58,6 @@ export function StudentNotificationList({ route, navigation }) {
       notifications.current = [];
       isFilter.current = false;
     }
-    console.log(props.item)
     if(!more){
       paginate.current.page = 0;
       notifications.current = [];

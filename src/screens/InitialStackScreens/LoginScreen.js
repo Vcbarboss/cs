@@ -46,7 +46,7 @@ export function LoginScreen({ navigation }) {
 
     try {
       const res = await api.post("app/auth", objToSend);
-      console.log(res)
+
       if (res.HTTPStatus ===  401) {
         refNotification.current.showToast("warning", "CPF ou Senha incorretos!");
         setLoading(false);

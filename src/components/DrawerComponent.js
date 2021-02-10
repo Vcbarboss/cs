@@ -81,6 +81,7 @@ export function DrawerComponent(props,) {
             }}
             labelStyle={{ color: Colors.primary }}
           />
+
         </Drawer.Section>
         <Drawer.Section style={styles.drawerSection}>
           <DrawerItem
@@ -110,7 +111,20 @@ export function DrawerComponent(props,) {
           }}
                  size={25}>{notifications}</Badge>}
 
-
+          <DrawerItem
+              icon={({ color, size }) => (
+                  <IonIcon
+                      name="chatbubbles-outline"
+                      color={Colors.primary}
+                      size={size}
+                  />
+              )}
+              label="Chat"
+              onPress={() => {
+                props.navigation.navigate("ChatScreen");
+              }}
+              labelStyle={{ color: Colors.primary }}
+          />
         </Drawer.Section>
         <Drawer.Section style={styles.drawerSection}>
           <DrawerItem

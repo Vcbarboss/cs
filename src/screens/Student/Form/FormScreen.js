@@ -42,7 +42,7 @@ export function FormScreen({ route, navigation }) {
     }
     try {
       const res = await api.get(`app/enrollment/${props.enrollment}/form/${props.item.form_id}`);
-      console.log(res)
+
       setData(res.object);
       setLoading(false);
 

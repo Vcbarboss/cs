@@ -23,7 +23,7 @@ import { Env } from "../Env";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 const screenWidth = Math.round(Dimensions.get("window").width);
-console.log(screenWidth)
+
 
 const StudentList = React.forwardRef((props, ref) => {
 
@@ -39,7 +39,6 @@ const StudentList = React.forwardRef((props, ref) => {
       setLoading(true);
       try {
         const res = await api.get("app/enrollment/list");
-        console.log(res.object)
         setList(res.object);
       } catch (e) {
         let aux;

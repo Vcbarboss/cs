@@ -45,14 +45,14 @@ export function NotificationComponent(props, {navigation}) {
         try {
             if (props.aluno) {
                 const res = await api.get(`app/notification/${props.id}/${props.enrollment_id}`);
-                console.log(res)
+
                 setData(res);
                 if (!props.read) {
                     dispatch({type: "delete_notification"});
                 }
             } else {
                 const res = await api.get(`app/notification/${props.id}`);
-                console.log(res)
+
                 setData(res);
                 if (!props.read) {
                     dispatch({type: "delete_notification"});
@@ -118,7 +118,6 @@ export function NotificationComponent(props, {navigation}) {
     const handleSend = async () => {
 
         try {
-            console.log(answer)
             let objToSend = ""
             if (data.object.push_notification.survey_answer_type === "OPEN") {
                 objToSend = {
@@ -134,16 +133,14 @@ export function NotificationComponent(props, {navigation}) {
                 };
             }
 
-            console.log(objToSend)
             let res;
             if (props.aluno) {
                 res = await api.post(`app/notification/${data?.object.push_notification.push_notification_id}/answer/${props.enrollment_id}`, objToSend);
-                console.log('aluno')
+
             } else {
                 res = await api.post(`app/notification/${data?.object.push_notification.push_notification_id}/answer`, objToSend);
-                console.log('geral')
+
             }
-            console.log(res)
             refNotification.current.showToast("success", "Resposta enviada!");
             time1 = setTimeout(async () => {
                 props.close(false)

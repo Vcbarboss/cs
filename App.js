@@ -6,6 +6,7 @@ import {InitialStackNavigator} from './src/navigators/InitialStack';
 import store from './src/Store';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import useAuth from "./src/hooks/Auth";
+import * as Sentry from "@sentry/react-native";
 
 const RootStack = createStackNavigator();
 
@@ -14,7 +15,9 @@ export default function App() {
   const routeNameRef = React.useRef();
   const navigationRef = React.useRef();
 
-
+    // Sentry.init({
+    //     dsn: "https://9b576f563c304df7b1799ef0aefee7fa@o520906.ingest.sentry.io/5631872",
+    // });
 
 
   return (

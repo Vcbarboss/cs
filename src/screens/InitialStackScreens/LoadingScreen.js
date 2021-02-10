@@ -33,9 +33,8 @@ export function LoadingScreen({navigation}) {
             .getInitialNotification()
             .then(async (remoteMessage) => {
                 if (remoteMessage) {
-                    console.log(remoteMessage)
                     if (remoteMessage?.data?.only_enrollment === 'true') { // firebase manda como string o parrametro
-                        console.log('especifica')
+
                         navigation.navigate('StudentNotificationList', {
                             item: remoteMessage?.data,
                             notification: true

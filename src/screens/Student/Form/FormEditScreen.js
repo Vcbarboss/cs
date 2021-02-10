@@ -47,7 +47,6 @@ export function FormEditScreen({route, navigation}) {
         try {
             const res = await api.get(`app/enrollment/${props.item.enrollment_id}/form/${props.form_id}`);
             setData(res.object);
-            console.log(res.object.section)
 
             for (let i = 0; i < res.object.section.length; i++) {
                 for (let f = 0; f < res.object.section[i].fields.length; f++) {
@@ -115,7 +114,6 @@ export function FormEditScreen({route, navigation}) {
                 }
             }
             setObjToShow(auxShow.current);
-            console.log(auxShow.current)
             setLoading(false);
         } catch (e) {
             let aux;
@@ -131,7 +129,6 @@ export function FormEditScreen({route, navigation}) {
     const handleSave = async () => {
         setLoading(true)
         try {
-            console.log(objToSend.current)
             const res = await api.post(`app/enrollment/${props.item.enrollment_id}/form/${props.form_id}`, objToSend.current);
 
             navigation.pop(2);
