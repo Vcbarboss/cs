@@ -1,8 +1,5 @@
 import React, {useEffect, useRef} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {useDispatch} from 'react-redux';
-import ToastNotification from '../components/ToastNotification';
-import {KeyboardAvoidingView, Platform, Dimensions} from 'react-native';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { StudentScreen } from "../screens/Student/StudentScreen";
 import { AuthPersonListScreen } from "../screens/Student/AuthPersonListScreen";
@@ -23,7 +20,6 @@ export function StudentStackNavigator({route, navigation}) {
   return (
     <ErrorBoundary screenType={'initialStack'}>
 
-        <ToastNotification ref={refNotification} navigation={(e) => navigation.navigate(e)} />
         <StudentStack.Navigator initialRouteName={'StudentScreen'}>
 
           <StudentStack.Screen name={'StudentScreen'} initialParams={props} component={StudentScreen} options={{

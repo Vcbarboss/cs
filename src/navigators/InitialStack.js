@@ -13,6 +13,7 @@ import { NotificationList } from "../screens/Notification/NotificationList";
 import {FirstLoginScreen} from "../screens/InitialStackScreens/FirstLoginScreen";
 import { MainStack } from "./DrawerStack";
 import {StudentNotificationList} from "../screens/Student/StudentNotificationList";
+import {ChatScreen} from "../screens/chat/ChatScreen";
 
 
 const InitialStack = createStackNavigator();
@@ -67,7 +68,7 @@ export function InitialStackNavigator({navigation}) {
         enabled={Platform.OS === "ios"}
         style={{flex: 1}}
       >
-        <ToastNotification ref={refNotification} navigation={navigation} />
+        <ToastNotification ref={refNotification} navigation={(e) => navigation.navigate(e)} />
         <InitialStack.Navigator initialRouteName={'LoadingScreen'}>
           <InitialStack.Screen name={'LoadingScreen'} component={LoadingScreen} options={{
             headerShown: false,
@@ -104,6 +105,11 @@ export function InitialStackNavigator({navigation}) {
           }}/>
 
           <InitialStack.Screen name={'StudentNotificationList'} component={StudentNotificationList} options={{
+            headerShown: false,
+            gesturesEnabled: false,
+            animationEnabled: false,
+          }}/>
+          <InitialStack.Screen name={'Chat'} component={ChatScreen} options={{
             headerShown: false,
             gesturesEnabled: false,
             animationEnabled: false,

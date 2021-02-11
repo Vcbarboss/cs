@@ -121,7 +121,7 @@ export function DrawerComponent(props,) {
               )}
               label="Chat"
               onPress={() => {
-                props.navigation.navigate("ChatScreen");
+                props.navigation.navigate("SectorScreen");
               }}
               labelStyle={{ color: Colors.primary }}
           />

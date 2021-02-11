@@ -5,20 +5,11 @@ import Toast from "../components/Toast";
 import { useFocusEffect } from "@react-navigation/native";
 import useApi from "../hooks/Api";
 import Icon from "react-native-vector-icons/Ionicons";
-import AntIcon from "react-native-vector-icons/AntDesign";
 import { Texts } from "../helpers/Texts";
 import useAuth from "../hooks/Auth";
-import MenuCard from "../components/MenuCard";
-import { Env } from "../Env";
 import { useDispatch, useSelector } from "react-redux";
 import StudentList from "../components/StudentList";
-import logo from "../assets/imgs/construindo-o-saber-full.fw.png";
-import imgProfile from "../assets/imgs/userStudent.png";
-import profile from "../assets/imgs/profile.png";
-import calendar from "../assets/imgs/calendar.png";
 import Loading from "../components/Loading";
-import Badge from "react-native-paper/src/components/Badge";
-import Field from "../components/Field";
 import GeneralStatusBarColor from "../components/StatusBarColor";
 import * as Sentry from "@sentry/react-native";
 
@@ -54,8 +45,6 @@ export function HomeScreen({ navigation }) {
     const res = await api.get("app/me");
     const aux =  await getFcmToken()
     setFcm( aux)
-
-
 
   }
   useFocusEffect(

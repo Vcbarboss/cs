@@ -3,21 +3,31 @@ import {StyleSheet, Text, TouchableOpacity, View, SafeAreaView} from 'react-nati
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Colors} from "../helpers/Colors";
 import GeneralStatusBarColor from "./StatusBarColor";
+import {useDispatch} from "react-redux";
 
 const ToastNotification = React.forwardRef((props,ref) => {
   const [visible, setVisible] = useState(false);
   const type = useRef(undefined);
   const title = useRef(undefined);
   const message = useRef(undefined);
+    const dispatch = useDispatch();
 
   let time1;
 
   const showToast = (notification) => {
+    console.log(notification)
     type.current = '';
     title.current = notification.notification.title;
     message.current = notification.notification.body;
-    setVisible(true);
-    hide()
+    if(notification.data.page === 'notification-data'){
+
+      setVisible(true);
+      hide()
+    }else{
+        dispatch({type: 'new_chat'});
+        setVisible(false);
+    }
+
   };
 
 
@@ -45,7 +55,9 @@ const ToastNotification = React.forwardRef((props,ref) => {
 
   }
 
-  if(ref) ref.current = {showToast};
+  if(ref) {
+    ref.current = {showToast}
+  };
 
   return (<View>
       {visible&&

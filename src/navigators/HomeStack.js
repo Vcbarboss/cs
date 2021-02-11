@@ -10,6 +10,7 @@ import { ChangePasswordScreen } from "../screens/Profile/ChangePasswordScreen";
 import { EditScreen } from "../screens/Profile/EditScreen";
 import { StudentStackNavigator } from "./StudentStack";
 import {ChatScreen} from "../screens/chat/ChatScreen";
+import {SectorScreen} from "../screens/chat/SectorScreen";
 
 const HomeStack = createStackNavigator();
 
@@ -56,6 +57,11 @@ export function HomeStackNavigator({navigation}) {
             animationEnabled: false,
           }}/>
           <HomeStack.Screen name={'ChatScreen'} component={ChatScreen} options={{
+            headerShown: false,
+            gesturesEnabled: false,
+            animationEnabled: false,
+          }}/>
+          <HomeStack.Screen name={'SectorScreen'} component={SectorScreen} options={{
             headerShown: false,
             gesturesEnabled: false,
             animationEnabled: false,

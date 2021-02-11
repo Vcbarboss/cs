@@ -20,6 +20,7 @@ export function LoadingScreen({navigation}) {
             const res = await api.get('app/notification/count');
 
             dispatch({type: 'init_notifications', data: res.object.total_unread})
+            dispatch({type: 'init_chat', data: 0})
         } catch (e) {
         }
 
