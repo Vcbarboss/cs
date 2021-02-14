@@ -26,6 +26,10 @@ import { maskDate, maskDate2, maskPhone, maskViewPhone } from "../../helpers/Fun
 import SelectField from "../../components/SelectField";
 import Loading from "../../components/Loading";
 import GeneralStatusBarColor from "../../components/StatusBarColor";
+import { launchImageLibrary } from "react-native-image-picker";
+import IonIcon from "react-native-vector-icons/Ionicons";
+import ImgToBase64 from 'react-native-image-base64';
+import { Avatar } from "react-native-paper";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -38,6 +42,7 @@ const optGender = [
 export function EditScreen({ navigation }) {
 
   const [loading, setLoading] = useState(true);
+  const [response, setResponse] = useState()
   const api = useApi({ navigation });
   const refNotification = useRef();
   const user = useSelector((state) => state).userReducer;
@@ -63,6 +68,7 @@ export function EditScreen({ navigation }) {
         contact_home_phone: res.object?.contact_home_phone,
         contact_mobile_phone: res.object?.contact_mobile_phone,
         contact_mail: res.object?.contact_mail,
+        avatar: res.object?.avatar
       });
       setLoading(false);
     } catch (e) {
@@ -89,8 +95,12 @@ export function EditScreen({ navigation }) {
   };
 
   const handleEdit = async () => {
+
     try {
+      console.log(edit)
       const res = await api.put("app/me", edit);
+      console.log(res)
+      console.log(edit)
       navigation.pop();
     } catch (e) {
       let aux;
@@ -134,8 +144,9 @@ export function EditScreen({ navigation }) {
                 <Text style={{ color: "white", fontSize: 23, }}>Construindo o Saber</Text>
                 <Text style={{ color: "white", fontSize: Texts.subtitle, }}>Editar perfil  </Text>
               </View>
-              <TouchableOpacity style={{ alignItems: "flex-end", justifyContent: "center" }}>
-
+              <TouchableOpacity style={{ marginRight: 10, marginBottom: 10, alignItems: "center", justifyContent: "center" }}
+                                onPress={() =>{}}>
+                <IonIcon name={"camera-outline"} style={{ marginTop: 10 }} size={27} color={'white'} />
               </TouchableOpacity>
             </View>
 
@@ -145,7 +156,34 @@ export function EditScreen({ navigation }) {
                 display: "flex",
                 justifyContent: "space-between",
               }}>
-                <View style={{ marginTop: 20, alignItems: "flex-end" }}>
+                <View style={{
+                  alignItems: "center",
+                  margin: 10,
+                  marginBottom: 30
+                }}>
+                  <TouchableOpacity onPress={ () =>
+                    launchImageLibrary(
+                      {
+                        mediaType: 'photo',
+                        includeBase64: true,
+
+                      },
+                      (response) => {
+console.log(response)
+                        if(response.uri){
+                          setEdit({ ...edit, [`avatar`]: response.uri })
+                        }
+                        setResponse(response);
+                        ImgToBase64.getBase64String(response.uri)
+                          .then(base64String =>   setEdit({ ...edit, [`avatar_base64`]: base64String }))
+                          .catch(err =>console.log(err));
+
+
+                      },
+                    )
+                  }>
+                    <Avatar.Image size={120} source={{ uri: edit?.avatar }} />
+                  </TouchableOpacity>
 
                 </View>
                 <View>

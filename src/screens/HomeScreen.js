@@ -12,6 +12,7 @@ import StudentList from "../components/StudentList";
 import Loading from "../components/Loading";
 import GeneralStatusBarColor from "../components/StatusBarColor";
 import * as Sentry from "@sentry/react-native";
+import Field from "../components/Field";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 

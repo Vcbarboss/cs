@@ -25,6 +25,7 @@ import { maskViewPhone } from "../../helpers/Functions";
 import useAuth from "../../hooks/Auth";
 import Loading from "../../components/Loading";
 import GeneralStatusBarColor from "../../components/StatusBarColor";
+import { Avatar } from "react-native-paper";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -44,7 +45,7 @@ export function ProfileScreen({ navigation }) {
     setLoading(true);
     try {
       const res = await api.get("app/me");
-
+console.log(res)
       setData({
         name: res.object?.name,
         natural_birthday: res.object?.natural_birthday,
@@ -53,6 +54,7 @@ export function ProfileScreen({ navigation }) {
         contact_home_phone: res.object?.contact_home_phone,
         contact_mobile_phone: res.object?.contact_mobile_phone,
         contact_mail: res.object?.contact_mail,
+        avatar: res.object?.avatar
       });
       setLoading(false);
     } catch (e) {
@@ -123,13 +125,20 @@ export function ProfileScreen({ navigation }) {
               </TouchableOpacity>
             </View>
 
-            <ScrollView >
-                <View style={styles.item}>
-                  <Text style={styles.title}>Nome: </Text>
-                  <Text style={styles.subtitle}>{data?.name}</Text>
-                </View>
+            <ScrollView style={{ backgroundColor: "#fcfcfc",}} >
+              <View style={{
+                alignItems: "center",
+                margin: 10,
+                backgroundColor: "#fcfcfc",
 
+              }}>
+                <Avatar.Image size={120} source={{ uri: data.avatar }} />
 
+              </View>
+              <View style={styles.item}>
+                <Text style={styles.title}>Nome: </Text>
+                <Text style={styles.subtitle}>{data?.name}</Text>
+              </View>
                 <View style={styles.item}>
                   <Text style={styles.title}>Idade: </Text>
                   <Text style={styles.subtitle}>{moment().diff(data?.natural_birthday, "years")} </Text>
