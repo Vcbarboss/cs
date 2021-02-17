@@ -10,7 +10,7 @@ const ToastNotification = React.forwardRef((props,ref) => {
   const type = useRef(undefined);
   const title = useRef(undefined);
   const message = useRef(undefined);
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   let time1;
 
@@ -24,6 +24,8 @@ const ToastNotification = React.forwardRef((props,ref) => {
       setVisible(true);
       hide()
     }else{
+        console.log('chegou')
+        dispatch({type: 'rebase_sector', data: notification.data.chat_sector_id})
         dispatch({type: 'new_chat'});
         setVisible(false);
     }

@@ -23,7 +23,7 @@ export function HomeStackNavigator({navigation}) {
 
   return (
     <ErrorBoundary screenType={'initialStack'}>
-        <ToastNotification ref={refNotification} navigation={(e) => navigation.navigate(e)} />
+        {/*<ToastNotification ref={refNotification} navigation={(e) => navigation.navigate(e)} />*/}
         <HomeStack.Navigator initialRouteName={'HomeScreen'}>
 
           <HomeStack.Screen name={'HomeScreen'} component={HomeScreen} options={{

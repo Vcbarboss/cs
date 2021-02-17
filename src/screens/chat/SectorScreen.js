@@ -12,6 +12,7 @@ import useApi from "../../hooks/Api";
 import Toast from "../../components/Toast";
 import GeneralStatusBarColor from "../../components/StatusBarColor";
 import Badge from "react-native-paper/src/components/Badge";
+import {useDispatch} from "react-redux";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 const screenWidth = Math.round(Dimensions.get("window").width);
@@ -22,7 +23,7 @@ export function SectorScreen({ navigation }) {
   const [data, setData] = useState();
   const api = useApi();
   const refNotification = useRef();
-
+  const dispatch = useDispatch();
 
   const get = async () => {
     setLoading(true);
@@ -82,6 +83,7 @@ export function SectorScreen({ navigation }) {
                 {data?.map((item, index) =>
                   <View key={index}>
                     <TouchableOpacity style={styles.itemList} onPress={() => {
+                      dispatch({type: 'rebase_sector', data: item.chat_sector_id})
                       navigation.navigate("ChatScreen", {
                         item: item,
                       });

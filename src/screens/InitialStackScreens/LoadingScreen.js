@@ -21,6 +21,7 @@ export function LoadingScreen({ navigation }) {
 
       dispatch({ type: "init_notifications", data: res.object.total_unread });
       dispatch({ type: "init_chat", data: 0 });
+      dispatch({ type: "init_sector", data: 0 });
     } catch (e) {
     }
 
