@@ -5,6 +5,7 @@ import {StyleSheet, Linking, Text, TouchableOpacity, View, Image, Modal, Dimensi
 import {Colors} from "../../helpers/Colors";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
+import MAIcon from "react-native-vector-icons/MaterialIcons";
 import {Texts} from "../../helpers/Texts";
 import useApi from "../../hooks/Api";
 import {useFocusEffect} from "@react-navigation/native";
@@ -16,12 +17,14 @@ import {useSelector} from "react-redux";
 import Conecting from "../../components/Conecting";
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
-import {NotificationComponent} from "../../components/NotificationComponent";
-import {TextInput} from "react-native-paper";
+import {RNCamera, FaceDetector} from 'react-native-camera';
 import ImgToBase64 from "react-native-image-base64";
 import CustomView from "./CustomView";
+import RNFetchBlob from 'rn-fetch-blob';
+import ImagePicker from "react-native-image-crop-picker";
 
 const image = ['png', 'jpg', 'jpeg']
+const docs = ['pdf', 'txt', 'doc', 'docx', 'xls', 'xlsx']
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 const screenWidth = Math.round(Dimensions.get("window").width);
@@ -29,7 +32,8 @@ const screenWidth = Math.round(Dimensions.get("window").width);
 export function ChatScreen({route, navigation}) {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [isVisible, setIsVisible] = useState()
+    const [isCam, setIsCam] = useState(false)
+    const [isVisible, setIsVisible] = useState(false)
     let props = route.params;
     const api = useApi();
     const user = useRef();
@@ -40,7 +44,9 @@ export function ChatScreen({route, navigation}) {
     const sector = useSelector((state) => state).sectorReducer;
     const msg_id = useRef();
     const img = useRef()
+    const cameraRef = useRef();
     const [response, setResponse] = React.useState(null);
+    const imagePath = useRef(undefined);
 
     const get = async (e) => {
         if (e) {
@@ -53,15 +59,12 @@ export function ChatScreen({route, navigation}) {
                 let res;
                 if (msg_id.current) {
                     lastUrl.current = `app/chat/sector/${props.item.chat_sector_id}/list${"?last_id=" + msg_id.current}`;
-                    console.log(lastUrl);
                     res = await api.get(`app/chat/sector/${props.item.chat_sector_id}/list${"?last_id=" + msg_id.current}`);
                 } else {
                     setMessages([]);
                     lastUrl.current = `app/chat/sector/${props.item.chat_sector_id}/list`
-                    console.log(lastUrl);
                     res = await api.get(`app/chat/sector/${props.item.chat_sector_id}/list`);
                 }
-                console.log(res);
                 const items = res?.object?.list;
                 items?.reverse();
                 for (let i = 0; i < items?.length; i++) {
@@ -76,22 +79,22 @@ export function ChatScreen({route, navigation}) {
                         setMessages(previousMessages => GiftedChat.append(previousMessages,
                             {
                                 _id: short.chat_message_id,
-                                text: short.message,
+                                text: docs.includes(short.attachment_extension) ? short.attachment_name : short.message,
                                 createdAt: moment(short.created_at),
                                 user: {
                                     _id: 1,
                                     name: short.app_name.split(" ")[0],
                                     avatar: short.app_avatar,
                                 },
-                                image: short.attachment_extension === 'png' || 'jpg' && short.attachment_url,
-                                doc: short.attachment_extension === 'pdf' && short.attachment_url
+                                image: image.includes(short.attachment_extension) && short.attachment_url,
+                                doc: docs.includes(short.attachment_extension) && short.attachment_url
                             },
                         ));
                     } else {
                         setMessages(previousMessages => GiftedChat.append(previousMessages,
                             {
                                 _id: short.chat_message_id,
-                                text: short.attachment_extension === 'pdf' ? short.attachment_name : short.message,
+                                text: docs.includes(short.attachment_extension) ? short.attachment_name : short.message,
                                 createdAt: moment(short.created_at),
                                 user: {
                                     _id: 2,
@@ -99,7 +102,7 @@ export function ChatScreen({route, navigation}) {
                                     avatar: short.usr_avatar,
                                 },
                                 image: image.includes(short.attachment_extension) && short.attachment_url,
-                                doc: short.attachment_extension === 'pdf' && short.attachment_url
+                                doc: docs.includes(short.attachment_extension) && short.attachment_url
                             },
                         ));
                     }
@@ -119,6 +122,25 @@ export function ChatScreen({route, navigation}) {
         }
     };
 
+    const takePicture = async () => {
+        if (cameraRef.current) {
+            const options = { quality: 0.5, base64: true };
+            const data = await cameraRef.current.takePictureAsync(options);
+            ImagePicker.openCropper({
+                path: data.uri,
+                width: 300,
+                height: 400,
+                cropping: true,
+                cropperCircleOverlay: true,
+                cropperToolbarTitle: 'Recortar Imagem',
+                cropperStatusBarColor: Colors.primary
+            }).then(image => {
+                imagePath.current = image.path;
+            });
+        }
+    };
+
+
     const send = async (msg) => {
 
         const objToSend = {
@@ -126,6 +148,7 @@ export function ChatScreen({route, navigation}) {
             attach_name: img.current?.name ? img.current?.name : '',
             attach_base64: img.current?.base64 ? img.current?.base64 : ''
         };
+        console.log(objToSend)
         if (props.item.chat_sector_id !== sector && sector !== -1) {
             props = {
                 item: {
@@ -133,8 +156,6 @@ export function ChatScreen({route, navigation}) {
                 }
             }
         }
-        console.log(response)
-        console.log(objToSend)
         try {
             lastUrl.current = `app/chat/sector/${props.item.chat_sector_id}/send`;
             console.log(lastUrl);
@@ -142,6 +163,7 @@ export function ChatScreen({route, navigation}) {
             get()
             console.log(res);
             setResponse()
+            img.current = {}
         } catch (e) {
             console.log(e);
             let aux;
@@ -154,14 +176,12 @@ export function ChatScreen({route, navigation}) {
         }
     };
 
-
     const onSend = useCallback((msg = []) => {
-
+        console.log(msg[0])
         const obj = {
             ...msg[0],
             image: img.current?.uri
         }
-        console.log(obj)
         //setMessages(previousMessages => GiftedChat.append(previousMessages, obj));
         setTimeout(() => {
             console.log(messages);
@@ -170,23 +190,30 @@ export function ChatScreen({route, navigation}) {
         send(msg[0].text);
     }, []);
 
-    const library = () => {
-        launchImageLibrary(
-            {
-                mediaType: 'photo',
-                includeBase64: false,
-            },
-            (response) => {
-                setResponse(response);
-            },
-        )
-
-    }
     const getDoc = async () => {
         try {
             const res = await DocumentPicker.pick({
                 type: [DocumentPicker.types.images, DocumentPicker.types.docx, DocumentPicker.types.xls, DocumentPicker.types.pdf],
             });
+
+            const fs = RNFetchBlob.fs;
+            fs.readFile(res.uri, 'base64')
+                .then(data => {
+                    img.current = {
+                        name: res.name,
+                        uri: res.uri,
+                        base64: data
+                    }
+                    setResponse({
+                        name: res.name,
+                        uri: res.uri,
+                        base64: data,
+                        photo: false
+                    })
+                })
+
+
+                .catch(err => console.log(err));
             console.log(
                 res.uri,
                 res.type,
@@ -204,19 +231,26 @@ export function ChatScreen({route, navigation}) {
     const renderSend = (props) => {
         return (
             <>
-                {/*<TouchableOpacity style={{ marginRight: 10, marginBottom: 10, alignItems: "center", justifyContent: "center" }}*/}
-                {/*                  onPress={() => getDoc()}>*/}
-                {/*  <IonIcon name={"attach"} style={{ marginTop: 10 }} size={27} color={Colors.primary} />*/}
-                {/*</TouchableOpacity>*/}
-                <Send
-                    {...props}
-                >
+                <TouchableOpacity
+                    style={{marginRight: 10, marginBottom: 10, alignItems: "center", justifyContent: "center"}}
+                    onPress={() => getDoc()}>
+                    <IonIcon name={"attach"} style={{marginTop: 10}} size={27} color={Colors.primary}/>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={(messages) => {
+                    if (props.text) {
+                        onSend(props.text)
+
+                    } else {
+                        send()
+                    }
+
+                }}>
                     <View style={{marginRight: 10, marginBottom: 10, alignItems: "center", justifyContent: "center"}}>
                         <Text style={{textAlign: "center", fontSize: 20, color: Colors.primary}}>
                             Enviar
                         </Text>
                     </View>
-                </Send>
+                </TouchableOpacity>
             </>
         );
     };
@@ -238,7 +272,7 @@ export function ChatScreen({route, navigation}) {
                     }
 
                 </>}
-                {props.currentMessage.pdf ?
+                {props.currentMessage.doc ?
                     <>
                         <TouchableOpacity style={{
                             borderWidth: 1,
@@ -257,9 +291,7 @@ export function ChatScreen({route, navigation}) {
                                     {props.currentMessage.text}
                                 </Text>
                             </View>
-
                         </TouchableOpacity>
-
                     </>
                     :
                     <>
@@ -277,46 +309,60 @@ export function ChatScreen({route, navigation}) {
             <>
                 {!response?.didCancel &&
                 <>
-                    {response && (
-                        <View style={styles.image}>
-                            <TouchableOpacity style={{position: 'absolute', right: 5, top: 2}}
-                                              onPress={() => setResponse()}>
-                                <AntIcon name={"close"} style={{marginTop: 10}} size={25} color={"white"}/>
-                            </TouchableOpacity>
-                            <Image
-                                style={{width: 200, height: 200}}
-                                source={{uri: response.uri}}
-                            />
-                        </View>
-                    )}
+                    {response &&
+                    <>
+                        {response.image ?
+                            <View style={styles.image}>
+                                <TouchableOpacity style={{position: 'absolute', right: 5, top: 2}}
+                                                  onPress={() => setResponse()}>
+                                    <AntIcon name={"close"} style={{marginTop: 10}} size={25} color={"white"}/>
+                                </TouchableOpacity>
+                                <Image
+                                    style={{width: 200, height: 200}}
+                                    source={{uri: response.uri}}
+                                />
+                            </View>
+                            :
+                            <View style={styles.doc}>
+                                <TouchableOpacity style={{position: 'absolute', right: 5, top: 2}}
+                                                  onPress={() => setResponse()}>
+                                    <AntIcon name={"close"} style={{marginTop: 10}} size={25} color={"white"}/>
+                                </TouchableOpacity>
+                                <View style={{flexDirection: 'row'}}>
+                                    <AntIcon name={"pdffile1"} style={{}} size={25} color={"#f66"}/>
+                                    <Text style={{color: 'white'}}>
+                                        {response.name}
+                                    </Text>
+                                </View>
+
+                            </View>
+                        }
+
+                    </>
+                    }
                 </>
                 }
             </>
         );
     }
 
-    // const renderCustomView = (props) => {
-    //     console.log(props)
-    //     return (
-    //         <CustomView
-    //             {...props}
-    //         />
-    //     );
-    // };
+    const customOnPress = (text, onSend) => {
+        onSend({text: text.trim()}, true)
+    }
 
     useFocusEffect(
         React.useCallback(() => {
-            Colors.theme = Colors.primary;
-            console.log(sector)
-            if (props.item.chat_sector_id !== sector && sector !== -1) {
-                props = {
-                    item: {
-                        chat_sector_id: sector
+                Colors.theme = Colors.primary;
+                if (props.item.chat_sector_id !== sector && sector !== -1) {
+                    props = {
+                        item: {
+                            chat_sector_id: sector
+                        }
                     }
                 }
+                get();
             }
-            get();
-        }, [chat]),
+            , [chat]),
     );
 
     return (
@@ -347,26 +393,16 @@ export function ChatScreen({route, navigation}) {
                                 alignItems: "center",
                                 justifyContent: "center"
                             }}
-                                              onPress={() => launchImageLibrary(
+                                              onPress={() => launchCamera(
                                                   {
                                                       mediaType: 'photo',
                                                       includeBase64: false,
+                                                      maxHeight: 200,
+                                                      maxWidth: 200,
                                                   },
                                                   (response) => {
                                                       setResponse(response);
-                                                      ImgToBase64.getBase64String(response?.uri)
-                                                          .then(base64String => {
-                                                              img.current = {
-                                                                  name: response.fileName,
-                                                                  uri: response.uri,
-                                                                  base64: base64String
-                                                              }
-                                                              setResponse({
-                                                                  ...response,
-                                                                  [`base64`]: base64String
-                                                              })
-                                                          })
-                                                          .catch(err => console.log(err));
+
                                                   },
                                               )}>
                                 <IonIcon name={"camera-outline"} style={{marginTop: 10}} size={27} color={'white'}/>
@@ -380,52 +416,165 @@ export function ChatScreen({route, navigation}) {
                             locale={"pt-br"}
                             placeholder={"Digite sua menssagem..."}
                             messages={messages}
+                            renderSend={({onSend, text, sendButtonProps, ...props}) =>
+                                <>
+                                    <TouchableOpacity
+                                        style={{
+                                            marginRight: 10,
+                                            marginBottom: 10,
+                                            alignItems: "center",
+                                            justifyContent: "center"
+                                        }}
+                                        onPress={() => setIsVisible(true)}>
+                                        <IonIcon name={"attach"} style={{marginTop: 10}} size={30}
+                                                 color={Colors.primary}/>
+                                    </TouchableOpacity>
+                                    <Send {...props} containerStyle={{}} sendButtonProps={{
+                                        ...sendButtonProps,
+
+                                        onPress: () => customOnPress(text, onSend)
+                                    }}>
+                                        <IonIcon name={"md-send"}
+                                                 style={{
+                                                     borderRadius: 40,
+                                                     backgroundColor: Colors.primary,
+                                                     padding: 10,
+                                                     paddingLeft: 11,
+                                                     height: screenWidth * 0.12,
+                                                     width: screenWidth * 0.12,
+                                                     alignItems: 'center',
+                                                     justifyContent: 'center',
+                                                     marginBottom: 1,
+                                                     marginRight: 1
+                                                 }} size={27} color={'white'}/>
+                                    </Send>
+                                </>
+                            }
                             alwaysShowSend={true}
-                            onSend={messages => {
-                                console.log(messages)
-                                if(messages.text === ""){
-                                    messages.text = " "
+                            onSend={(messages) => {
+                                if (messages[0].text) {
+                                    console.log(messages)
+                                    onSend(messages)
+                                } else {
+                                    send()
                                 }
-                                onSend(messages)
+
                             }}
-                            renderSend={renderSend}
+                            //renderSend={renderSend}
                             renderChatFooter={renderChatFooter}
                             renderBubble={renderMessage}
                             // renderCustomView={renderCustomView}
                             user={user.current}
                         />
                         <Modal
-                            animationType="slide"
+                            animationType="fade"
                             transparent={true}
                             visible={isVisible}
                             onRequestClose={() => {
                                 setIsVisible(false);
                             }}
                         >
-                            <View style={[styles.modal,]}>
+                            <TouchableOpacity style={[styles.modal,]} onPress={() => setIsVisible(false)}>
                                 <View style={styles.card}>
-                                    <View style={styles.opt}>
-                                        <AntIcon name={"pdffile1"} style={{}} size={55} color={"#f66"}/>
-                                        <Text>
+                                    <TouchableOpacity style={styles.opt} onPress={() =>
+                                    {
+                                        setIsCam(true)
+                                    }}>
+                                        <View style={[styles.opt2, {backgroundColor: '#ec407a'}]}>
+
+                                            <MAIcon name={"photo-camera"} style={{}} size={35}
+                                                    color={'white'}/>
+
+                                        </View>
+                                        <Text style={{fontSize: 12, color: Colors.primary}}>
                                             Camera
                                         </Text>
-                                    </View>
-                                    <View style={styles.opt}>
-                                        <Text>
-                                            Foto
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity style={styles.opt} onPress={() => {
+                                        setIsVisible(false)
+                                        launchImageLibrary(
+                                            {
+                                                mediaType: 'photo',
+                                                includeBase64: false,
+                                            },
+                                            (response) => {
+                                                setResponse(response);
+                                                ImgToBase64.getBase64String(response?.uri)
+                                                    .then(base64String => {
+                                                        img.current = {
+                                                            name: response.fileName,
+                                                            uri: response.uri,
+                                                            base64: base64String
+                                                        }
+                                                        setResponse({
+                                                            ...response,
+                                                            [`base64`]: base64String
+                                                        })
+                                                    })
+                                                    .catch(err => console.log(err));
+                                            },
+                                        )
+                                    }}>
+                                        <View style={[styles.opt2, {backgroundColor: '#bf59cf'}]}>
+                                            <IonIcon name={"md-image"} style={{}} size={35} color={'white'}/>
+
+                                        </View>
+                                        <Text style={{fontSize: 12, color: Colors.primary}}>
+                                            Galeria
                                         </Text>
-                                    </View>
-                                    <View style={styles.opt}>
-                                        <AntIcon name={"pdffile1"} style={{}} size={55} color={"#f66"}/>
-                                        <Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity style={[styles.opt]} onPress={() => {
+                                        setIsVisible(false)
+                                        getDoc()
+                                    }}>
+                                        <View style={[styles.opt2, {backgroundColor: '#5f66cd'}]}>
+                                            <IonIcon name={"md-document"} style={{}} size={35}
+                                                     color={"white"}/>
+                                        </View>
+                                        <Text style={{fontSize: 12, color: Colors.primary}}>
                                             Documento
                                         </Text>
-                                    </View>
+                                    </TouchableOpacity>
+
 
                                 </View>
 
-                            </View>
+                            </TouchableOpacity>
 
+                        </Modal>
+                        <Modal
+                            animationType="fade"
+                            transparent={true}
+                            visible={isCam}
+                            onRequestClose={() => {
+                                setIsCam(false);
+                            }}
+                        >
+                            <View style={{flex: 1, flexDirection: "column"}}>
+                                <RNCamera
+                                    ref={camera => {
+                                        cameraRef.current = camera;
+                                    }}
+                                    style={styles.preview}
+                                    type={RNCamera.Constants.Type.front}
+                                    autoFocus={RNCamera.Constants.AutoFocus.on}
+                                    captureAudio={false}
+                                    flashMode={RNCamera.Constants.FlashMode.off}
+                                    androidCameraPermissionOptions={{
+                                        title: 'Permissão para usar a câmera',
+                                        message: "Nós precisamos de sua permissão para utilizar sua câmera",
+                                        buttonPositive: 'Ok',
+                                        buttonNegative: 'Cancelar',
+                                    }}
+                                />
+                                <View style={{flex: 0, flexDirection: "row", justifyContent: "center"}}>
+                                    <TouchableOpacity onPress={() => takePicture()} style={{flex: 0, backgroundColor: "#fff", borderRadius: 5, padding: 15, paddingHorizontal: 20, alignSelf: "center", margin: 20}}>
+                                        <Text style={styles.buttonText}> Tirar </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
                         </Modal>
                     </View>
                 )
@@ -435,7 +584,12 @@ export function ChatScreen({route, navigation}) {
 }
 
 const styles = StyleSheet.create({
-    item: {},
+    doc: {
+        padding: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#7c7c7c'
+    },
     image: {
         padding: 10,
         justifyContent: 'center',
@@ -443,13 +597,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#7c7c7c'
     },
     opt: {
-        borderWidth: 3,
-        borderColor: Colors.lightgray,
-        borderRadius: 10,
         width: 100,
         height: 100,
-        justifyContent:'center',
+        justifyContent: 'center',
         alignItems: 'center'
+    },
+    opt2: {
+        borderRadius: 50,
+        padding: 20
     },
     modal: {
         flex: 1,
