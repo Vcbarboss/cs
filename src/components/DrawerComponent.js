@@ -103,7 +103,7 @@ export function DrawerComponent(props,) {
           {notifications > 0 &&
           <Badge style={{
             position: "absolute",
-            top: "27%",
+            top: "10%",
             right: "10%",
             backgroundColor: "#ff190c",
             fontWeight: "bold",

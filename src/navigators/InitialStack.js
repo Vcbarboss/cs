@@ -27,7 +27,9 @@ export function InitialStackNavigator({navigation}) {
 
     if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
       messaging().onMessage(async remoteMessage => {
-        dispatch({type: 'new_notification'});
+        if (remoteMessage.data.page === 'notification-data') {
+          dispatch({type: 'new_notification'});
+        }
         refNotification.current.showToast(remoteMessage);
       });
 

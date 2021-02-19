@@ -1,7 +1,17 @@
 import React, {useState, useCallback, useEffect, useRef} from "react";
 import {Bubble, GiftedChat, InputToolbar, Message, Send} from "react-native-gifted-chat";
 import "dayjs/locale/pt-br";
-import {StyleSheet, Linking, Text, TouchableOpacity, View, Image, Modal, Dimensions} from "react-native";
+import {
+    StyleSheet,
+    Linking,
+    Text,
+    TouchableOpacity,
+    View,
+    Image,
+    Modal,
+    Dimensions,
+    ActivityIndicator
+} from "react-native";
 import {Colors} from "../../helpers/Colors";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
@@ -34,12 +44,13 @@ export function ChatScreen({route, navigation}) {
     const [loading, setLoading] = useState(false);
     const [isCam, setIsCam] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
+    const first = useRef(true)
+    const title = useRef()
     let props = route.params;
     const api = useApi();
     const user = useRef();
     const lastUrl = useRef();
     const refNotification = useRef();
-    const sector_id = useRef()
     const chat = useSelector((state) => state).chatReducer;
     const sector = useSelector((state) => state).sectorReducer;
     const msg_id = useRef();
@@ -49,10 +60,10 @@ export function ChatScreen({route, navigation}) {
     const imagePath = useRef(undefined);
 
     const get = async (e) => {
-        if (e) {
+        if (first.current) {
             setLoading(true);
-        } else {
-
+            console.log('first')
+            first.current = false
         }
         if (msg_id.current === '' || lastUrl.current !== `app/chat/sector/${props.item.chat_sector_id}/list${"?last_id=" + msg_id.current}`) {
             try {
@@ -64,7 +75,10 @@ export function ChatScreen({route, navigation}) {
                     setMessages([]);
                     lastUrl.current = `app/chat/sector/${props.item.chat_sector_id}/list`
                     res = await api.get(`app/chat/sector/${props.item.chat_sector_id}/list`);
+
                 }
+                console.log(res)
+                title.current = res.object?.chat?.description
                 const items = res?.object?.list;
                 items?.reverse();
                 for (let i = 0; i < items?.length; i++) {
@@ -87,7 +101,8 @@ export function ChatScreen({route, navigation}) {
                                     avatar: short.app_avatar,
                                 },
                                 image: image.includes(short.attachment_extension) && short.attachment_url,
-                                doc: docs.includes(short.attachment_extension) && short.attachment_url
+                                doc: docs.includes(short.attachment_extension) && short.attachment_url,
+                                ext: short?.attachment_extension
                             },
                         ));
                     } else {
@@ -102,13 +117,14 @@ export function ChatScreen({route, navigation}) {
                                     avatar: short.usr_avatar,
                                 },
                                 image: image.includes(short.attachment_extension) && short.attachment_url,
-                                doc: docs.includes(short.attachment_extension) && short.attachment_url
+                                doc: docs.includes(short.attachment_extension) && short.attachment_url,
+                                ext: short?.attachment_extension
                             },
                         ));
                     }
                     msg_id.current = short.chat_message_id;
                 }
-                //setLoading(false);
+                setLoading(false);
             } catch (e) {
                 console.log(e);
                 let aux;
@@ -124,7 +140,7 @@ export function ChatScreen({route, navigation}) {
 
     const takePicture = async () => {
         if (cameraRef.current) {
-            const options = { quality: 0.5, base64: true };
+            const options = {quality: 0.5, base64: true};
             const data = await cameraRef.current.takePictureAsync(options);
             ImagePicker.openCropper({
                 path: data.uri,
@@ -139,7 +155,6 @@ export function ChatScreen({route, navigation}) {
             });
         }
     };
-
 
     const send = async (msg) => {
 
@@ -163,6 +178,7 @@ export function ChatScreen({route, navigation}) {
             get()
             console.log(res);
             setResponse()
+
             img.current = {}
         } catch (e) {
             console.log(e);
@@ -193,7 +209,13 @@ export function ChatScreen({route, navigation}) {
     const getDoc = async () => {
         try {
             const res = await DocumentPicker.pick({
-                type: [DocumentPicker.types.images, DocumentPicker.types.docx, DocumentPicker.types.xls, DocumentPicker.types.pdf],
+                type: [
+                    DocumentPicker.types.docx,
+                    DocumentPicker.types.xls,
+                    DocumentPicker.types.pdf,
+                    DocumentPicker.types.doc,
+                    DocumentPicker.types.csv,
+                ],
             });
 
             const fs = RNFetchBlob.fs;
@@ -202,13 +224,15 @@ export function ChatScreen({route, navigation}) {
                     img.current = {
                         name: res.name,
                         uri: res.uri,
-                        base64: data
+                        base64: data,
+                        type: res.type
                     }
                     setResponse({
                         name: res.name,
                         uri: res.uri,
                         base64: data,
-                        photo: false
+                        doc: true,
+                        type: res.type
                     })
                 })
 
@@ -228,32 +252,59 @@ export function ChatScreen({route, navigation}) {
         }
     }
 
-    const renderSend = (props) => {
-        return (
-            <>
-                <TouchableOpacity
-                    style={{marginRight: 10, marginBottom: 10, alignItems: "center", justifyContent: "center"}}
-                    onPress={() => getDoc()}>
-                    <IonIcon name={"attach"} style={{marginTop: 10}} size={27} color={Colors.primary}/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={(messages) => {
-                    if (props.text) {
-                        onSend(props.text)
-
-                    } else {
-                        send()
-                    }
-
-                }}>
-                    <View style={{marginRight: 10, marginBottom: 10, alignItems: "center", justifyContent: "center"}}>
-                        <Text style={{textAlign: "center", fontSize: 20, color: Colors.primary}}>
-                            Enviar
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            </>
-        );
-    };
+    const getImage = (mode) => {
+        {
+            mode === 'cam' &&
+            launchCamera(
+                {
+                    mediaType: 'photo',
+                    includeBase64: false,
+                },
+                (response) => {
+                    ImgToBase64.getBase64String(response?.uri)
+                        .then(base64String => {
+                            img.current = {
+                                name: response.fileName,
+                                uri: response.uri,
+                                base64: base64String
+                            }
+                            console.log(response)
+                            setResponse({
+                                ...response,
+                                photo: true
+                            })
+                        })
+                        .catch(err => console.log(err));
+                },
+            )
+        }
+        {
+            mode === 'image' &&
+            launchImageLibrary(
+                {
+                    mediaType: 'photo',
+                    includeBase64: false,
+                },
+                (response) => {
+                    setResponse(response);
+                    ImgToBase64.getBase64String(response?.uri)
+                        .then(base64String => {
+                            img.current = {
+                                name: response.fileName,
+                                uri: response.uri,
+                                base64: base64String
+                            }
+                            setResponse({
+                                ...response,
+                                [`base64`]: base64String,
+                                photo: true
+                            })
+                        })
+                        .catch(err => console.log(err));
+                },
+            )
+        }
+    }
 
     const renderMessage = (props) => {
         //console.log(props)
@@ -275,21 +326,36 @@ export function ChatScreen({route, navigation}) {
                 {props.currentMessage.doc ?
                     <>
                         <TouchableOpacity style={{
-                            borderWidth: 1,
-                            borderColor: '#f66',
-                            borderRadius: 5,
                             padding: 5,
-                            maxWidth: screenWidth * 0.8,
-                            flexDirection: 'row'
-                        }} onPress={() => Linking.openURL(props.currentMessage.pdf)}>
-
-                            <View style={{justifyContent: 'center'}}>
-                                <AntIcon name={"pdffile1"} style={{}} size={25} color={"#f66"}/>
-                            </View>
-                            <View style={{justifyContent: 'center'}}>
-                                <Text style={{color: 'black'}}>
-                                    {props.currentMessage.text}
-                                </Text>
+                            maxWidth: screenWidth * 0.9,
+                            flexDirection: 'row',
+                        }} onPress={() => Linking.openURL(props.currentMessage.doc)}>
+                            <View style={{
+                                flexDirection: 'row',
+                                borderWidth: 1,
+                                borderColor: '#7c7c7c',
+                                borderRadius: 10,
+                                padding: 20,
+                                backgroundColor: 'white',
+                                justifyContent: 'center'
+                            }}>
+                                <>
+                                    {props.currentMessage.ext === 'pdf' ?
+                                        <>
+                                            <AntIcon name={"pdffile1"} style={{}} size={20} color={"#f66"}/>
+                                            <Text style={{color: 'black', marginLeft: 10}}>
+                                                {props.currentMessage.text}
+                                            </Text>
+                                        </>
+                                        :
+                                        <>
+                                            <IonIcon name={"document-outline"} style={{}} size={20} color={"black"}/>
+                                            <Text style={{color: 'black', marginLeft: 10}}>
+                                                {props.currentMessage.text}
+                                            </Text>
+                                        </>
+                                    }
+                                </>
                             </View>
                         </TouchableOpacity>
                     </>
@@ -297,6 +363,14 @@ export function ChatScreen({route, navigation}) {
                     <>
                         <Bubble
                             {...props}
+                            wrapperStyle={{
+                                left: {
+                                    backgroundColor: 'white',
+                                },
+                                right: {
+                                    backgroundColor: Colors.primary
+                                }
+                            }}
                         />
                     </>
                 }
@@ -305,39 +379,92 @@ export function ChatScreen({route, navigation}) {
     };
 
     const renderChatFooter = (props) => {
+
         return (
             <>
                 {!response?.didCancel &&
                 <>
                     {response &&
                     <>
-                        {response.image ?
-                            <View style={styles.image}>
-                                <TouchableOpacity style={{position: 'absolute', right: 5, top: 2}}
-                                                  onPress={() => setResponse()}>
-                                    <AntIcon name={"close"} style={{marginTop: 10}} size={25} color={"white"}/>
-                                </TouchableOpacity>
-                                <Image
-                                    style={{width: 200, height: 200}}
-                                    source={{uri: response.uri}}
-                                />
-                            </View>
-                            :
-                            <View style={styles.doc}>
-                                <TouchableOpacity style={{position: 'absolute', right: 5, top: 2}}
-                                                  onPress={() => setResponse()}>
-                                    <AntIcon name={"close"} style={{marginTop: 10}} size={25} color={"white"}/>
-                                </TouchableOpacity>
-                                <View style={{flexDirection: 'row'}}>
-                                    <AntIcon name={"pdffile1"} style={{}} size={25} color={"#f66"}/>
-                                    <Text style={{color: 'white'}}>
-                                        {response.name}
-                                    </Text>
+                        {response.photo &&
+                        <View style={styles.image}>
+                            <TouchableOpacity
+                                style={{
+                                    elevation: 2,
+                                    position: 'absolute',
+                                    right: 10,
+                                    top: 10,
+                                    minHeight: 20,
+                                    minWidth: 20
+                                }}
+                                onPress={() => {
+                                    setResponse()
+                                    image.current = {}
+                                }}>
+                                <View style={{
+                                    borderRadius: 50,
+                                    backgroundColor: "#4c4c4c"
+                                }}>
+                                    <AntIcon name={"close"} style={{margin: 1}} size={20} color={"white"}/>
                                 </View>
+                            </TouchableOpacity>
+                            <Image
+                                style={{width: "100%", resizeMode: "contain", flex: 1,}}
+                                source={{uri: response.uri}}
+                            />
+                        </View>
+                        }
+                        {response.doc &&
+                        <View style={styles.doc}>
+                            <TouchableOpacity
+                                style={{
+                                    elevation: 2,
+                                    position: 'absolute',
+                                    right: 10,
+                                    top: 10,
+                                    minHeight: 20,
+                                    minWidth: 20
+                                }}
+                                onPress={() => {
+                                    setResponse()
+                                    image.current = {}
+                                }}>
+                                <View style={{
+                                    borderRadius: 50,
+                                    backgroundColor: "#4c4c4c"
+                                }}>
+                                    <AntIcon name={"close"} style={{margin: 1}} size={20} color={"white"}/>
+                                </View>
+                            </TouchableOpacity>
+                            <View style={{
+                                flexDirection: 'row',
+                                borderWidth: 1,
+                                borderColor: '#7c7c7c',
+                                borderRadius: 10,
+                                padding: 20,
+                                backgroundColor: 'white',
+                                justifyContent: 'center'
+                            }}>
+                                {response.type === "application/pdf" ?
+                                    <>
+                                        <AntIcon name={"pdffile1"} style={{}} size={20} color={"#f66"}/>
+                                        <Text style={{color: 'black', marginLeft: 10}}>
+                                            {response.name}
+                                        </Text>
+                                    </>
+                                    :
+                                    <>
+                                        <IonIcon name={"document-outline"} style={{}} size={20} color={"black"}/>
+                                        <Text style={{color: 'black', marginLeft: 10}}>
+                                            {response.name}
+                                        </Text>
+                                    </>
+                                }
 
                             </View>
-                        }
 
+                        </View>
+                        }
                     </>
                     }
                 </>
@@ -385,33 +512,37 @@ export function ChatScreen({route, navigation}) {
                             <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
 
                                 <Text style={{color: "white", fontSize: 23}}>Construindo o Saber</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle}}>Chat </Text>
+                                <Text style={{color: "white", fontSize: Texts.subtitle}}>{title.current} </Text>
                             </View>
-                            <TouchableOpacity style={{
-                                marginRight: 10,
-                                marginBottom: 10,
-                                alignItems: "center",
-                                justifyContent: "center"
-                            }}
-                                              onPress={() => launchCamera(
-                                                  {
-                                                      mediaType: 'photo',
-                                                      includeBase64: false,
-                                                      maxHeight: 200,
-                                                      maxWidth: 200,
-                                                  },
-                                                  (response) => {
-                                                      setResponse(response);
-
-                                                  },
-                                              )}>
-                                <IonIcon name={"camera-outline"} style={{marginTop: 10}} size={27} color={'white'}/>
-                            </TouchableOpacity>
-
                         </View>
                         {/*<View style={styles.response}>*/}
                         {/*    <Text>Res: {JSON.stringify(response?.uri)}</Text>*/}
                         {/*</View>*/}
+                        {/*{moreVisible &&*/}
+                        {/*<TouchableOpacity*/}
+                        {/*    style={{*/}
+                        {/*        backgroundColor: 'white',*/}
+                        {/*        borderWidth: 2,*/}
+                        {/*        borderColor: '#737373',*/}
+                        {/*        alignItems: 'center',*/}
+                        {/*        padding: 10,*/}
+                        {/*        justifyContent: 'center'*/}
+                        {/*    }}*/}
+                        {/*    onPress={() => {*/}
+                        {/*        get(true)*/}
+                        {/*    }}*/}
+                        {/*>*/}
+                        {/*    {loading ?*/}
+                        {/*        <ActivityIndicator size="small" color={Colors.primary}/>*/}
+                        {/*        :*/}
+                        {/*        <Text style={{fontSize: 17, color: Colors.primary}}>*/}
+                        {/*            Carregar mensagens anteriores...*/}
+                        {/*        </Text>*/}
+                        {/*    }*/}
+
+                        {/*</TouchableOpacity>*/}
+                        {/*}*/}
+
                         <GiftedChat
                             locale={"pt-br"}
                             placeholder={"Digite sua menssagem..."}
@@ -426,7 +557,7 @@ export function ChatScreen({route, navigation}) {
                                             justifyContent: "center"
                                         }}
                                         onPress={() => setIsVisible(true)}>
-                                        <IonIcon name={"attach"} style={{marginTop: 10}} size={30}
+                                        <IonIcon name={"attach"} style={{marginTop: 9}} size={28}
                                                  color={Colors.primary}/>
                                     </TouchableOpacity>
                                     <Send {...props} containerStyle={{}} sendButtonProps={{
@@ -440,13 +571,13 @@ export function ChatScreen({route, navigation}) {
                                                      backgroundColor: Colors.primary,
                                                      padding: 10,
                                                      paddingLeft: 11,
-                                                     height: screenWidth * 0.12,
-                                                     width: screenWidth * 0.12,
+                                                     height: screenWidth * 0.11,
+                                                     width: screenWidth * 0.11,
                                                      alignItems: 'center',
                                                      justifyContent: 'center',
                                                      marginBottom: 1,
                                                      marginRight: 1
-                                                 }} size={27} color={'white'}/>
+                                                 }} size={25} color={'white'}/>
                                     </Send>
                                 </>
                             }
@@ -460,7 +591,7 @@ export function ChatScreen({route, navigation}) {
                                 }
 
                             }}
-                            //renderSend={renderSend}
+
                             renderChatFooter={renderChatFooter}
                             renderBubble={renderMessage}
                             // renderCustomView={renderCustomView}
@@ -476,59 +607,36 @@ export function ChatScreen({route, navigation}) {
                         >
                             <TouchableOpacity style={[styles.modal,]} onPress={() => setIsVisible(false)}>
                                 <View style={styles.card}>
-                                    <TouchableOpacity style={styles.opt} onPress={() =>
-                                    {
-                                        setIsCam(true)
-                                    }}>
+                                    <TouchableOpacity style={styles.opt}
+                                                      onPress={() => {
+                                                          setIsVisible(false)
+                                                          getImage('cam')
+                                                      }}>
                                         <View style={[styles.opt2, {backgroundColor: '#ec407a'}]}>
-
                                             <MAIcon name={"photo-camera"} style={{}} size={35}
                                                     color={'white'}/>
-
                                         </View>
                                         <Text style={{fontSize: 12, color: Colors.primary}}>
                                             Camera
                                         </Text>
                                     </TouchableOpacity>
-
-                                    <TouchableOpacity style={styles.opt} onPress={() => {
-                                        setIsVisible(false)
-                                        launchImageLibrary(
-                                            {
-                                                mediaType: 'photo',
-                                                includeBase64: false,
-                                            },
-                                            (response) => {
-                                                setResponse(response);
-                                                ImgToBase64.getBase64String(response?.uri)
-                                                    .then(base64String => {
-                                                        img.current = {
-                                                            name: response.fileName,
-                                                            uri: response.uri,
-                                                            base64: base64String
-                                                        }
-                                                        setResponse({
-                                                            ...response,
-                                                            [`base64`]: base64String
-                                                        })
-                                                    })
-                                                    .catch(err => console.log(err));
-                                            },
-                                        )
-                                    }}>
+                                    <TouchableOpacity style={styles.opt}
+                                                      onPress={() => {
+                                                          setIsVisible(false)
+                                                          getImage('image')
+                                                      }}>
                                         <View style={[styles.opt2, {backgroundColor: '#bf59cf'}]}>
                                             <IonIcon name={"md-image"} style={{}} size={35} color={'white'}/>
-
                                         </View>
                                         <Text style={{fontSize: 12, color: Colors.primary}}>
                                             Galeria
                                         </Text>
                                     </TouchableOpacity>
-
-                                    <TouchableOpacity style={[styles.opt]} onPress={() => {
-                                        setIsVisible(false)
-                                        getDoc()
-                                    }}>
+                                    <TouchableOpacity style={[styles.opt]}
+                                                      onPress={() => {
+                                                          setIsVisible(false)
+                                                          getDoc()
+                                                      }}>
                                         <View style={[styles.opt2, {backgroundColor: '#5f66cd'}]}>
                                             <IonIcon name={"md-document"} style={{}} size={35}
                                                      color={"white"}/>
@@ -537,12 +645,8 @@ export function ChatScreen({route, navigation}) {
                                             Documento
                                         </Text>
                                     </TouchableOpacity>
-
-
                                 </View>
-
                             </TouchableOpacity>
-
                         </Modal>
                         <Modal
                             animationType="fade"
@@ -570,7 +674,15 @@ export function ChatScreen({route, navigation}) {
                                     }}
                                 />
                                 <View style={{flex: 0, flexDirection: "row", justifyContent: "center"}}>
-                                    <TouchableOpacity onPress={() => takePicture()} style={{flex: 0, backgroundColor: "#fff", borderRadius: 5, padding: 15, paddingHorizontal: 20, alignSelf: "center", margin: 20}}>
+                                    <TouchableOpacity onPress={() => takePicture()} style={{
+                                        flex: 0,
+                                        backgroundColor: "#fff",
+                                        borderRadius: 5,
+                                        padding: 15,
+                                        paddingHorizontal: 20,
+                                        alignSelf: "center",
+                                        margin: 20
+                                    }}>
                                         <Text style={styles.buttonText}> Tirar </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -583,52 +695,52 @@ export function ChatScreen({route, navigation}) {
     );
 }
 
-const styles = StyleSheet.create({
-    doc: {
-        padding: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#7c7c7c'
-    },
-    image: {
-        padding: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#7c7c7c'
-    },
-    opt: {
-        width: 100,
-        height: 100,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    opt2: {
-        borderRadius: 50,
-        padding: 20
-    },
-    modal: {
-        flex: 1,
-        backgroundColor: "rgba(60, 60, 60, 0.5)",
-        justifyContent: "flex-end",
-        alignItems: "center",
-
-    },
-    card: {
-        margin: 20,
-        backgroundColor: "white",
-        borderRadius: 10,
-        padding: 15,
-        alignItems: "center",
-        shadowColor: "#000",
-        flexDirection: 'row',
-        shadowOffset: {
-            width: 0,
-            height: 2,
+const styles = StyleSheet.create(
+    {
+        doc: {
+            height: '25%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#c1c1c1',
+        }, image: {
+            height: '50%',
+            paddingRight: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#c1c1c1',
+            marginBottom: 8
         },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-        marginBottom: 50
-    }
-
-});
+        opt: {
+            width: 100,
+            height: 100,
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        opt2: {
+            borderRadius: 50,
+            padding: 20
+        },
+        modal: {
+            flex: 1,
+            backgroundColor: "rgba(60, 60, 60, 0.5)", justifyContent: "flex-end", alignItems: "center",
+        },
+        card: {
+            margin: 20,
+            backgroundColor: "white",
+            borderRadius: 10,
+            padding: 15,
+            alignItems: "center",
+            shadowColor: "#000",
+            flexDirection: 'row',
+            shadowOffset:
+                {
+                    width: 0,
+                    height:
+                        2,
+                },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+            marginBottom: 50
+        }
+    });
