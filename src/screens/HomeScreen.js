@@ -13,6 +13,7 @@ import Loading from "../components/Loading";
 import GeneralStatusBarColor from "../components/StatusBarColor";
 import * as Sentry from "@sentry/react-native";
 import Field from "../components/Field";
+import {Badge} from "react-native-paper";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -30,9 +31,11 @@ export function HomeScreen({ navigation }) {
   const refNotification = useRef();
   const { getFcmToken } = useAuth();
   const notifications = useSelector((state) => state).notificationReducer;
+  const chatBadge = useSelector((state) => state).chatBadgeReducer;
   const user = useSelector((state) => state).userReducer;
   const [refreshing, setRefreshing] = React.useState(false);
   const [fcm, setFcm] = useState()
+  const chat = useRef(0)
 
   const onRefresh  =  React.useCallback(async() => {
     setRefreshing(true);
@@ -48,10 +51,37 @@ export function HomeScreen({ navigation }) {
     setFcm( aux)
 
   }
+
+  const badgeChat = async () => {
+    setLoading(true)
+    try {
+      const res = await api.get("app/chat/sector/list")
+      chat.current = 0;
+
+      for (let i = 0; i < res.object.length; i++) {
+
+        if(res.object[i]?.chats[0]?.unread_messages){
+
+          chat.current = chat.current + res.object[i]?.chats[0]?.unread_messages;
+          console.log(res.object[i]?.chats[0]?.unread_messages)
+          console.log(chat.current)
+        }
+
+      }
+      console.log(chat)
+      dispatch({ type: "init_badgeChat", data: chat.current });
+      setLoading(false)
+    } catch (e) {
+      console.log(e)
+      setLoading(false)
+    }
+  }
+
   useFocusEffect(
     React.useCallback(() => {
       Colors.theme = Colors.primary
       get()
+      badgeChat()
     }, []),
   );
 
@@ -77,6 +107,17 @@ export function HomeScreen({ navigation }) {
               <View style={{ flexDirection: "row", padding: 20, backgroundColor: Colors.primary }}>
                 <TouchableOpacity style={{justifyContent: "center",  }}
                                   onPress={() => navigation.openDrawer()}>
+                  {notifications > 0 || chatBadge > 0 &&
+                  <Badge style={{
+                    position: "absolute",
+                    top: "25%",
+                    right: "10%",
+                    backgroundColor: "#ff190c",
+                    fontWeight: "bold",
+                    fontSize: 14,
+                    elevation: 1
+                  }}
+                         size={10}> </Badge>}
                     <Icon name={"menu-outline"} style={{ }} size={35} color={'white'} />
                 </TouchableOpacity>
                 <View style={{ flex: 1, marginLeft: 5, justifyContent: "flex-start", paddingVertical: 5, }}>

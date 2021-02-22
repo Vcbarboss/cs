@@ -89,17 +89,18 @@ export function SectorScreen({navigation}) {
                                             });
                                         }}>
 
-                                            {/*{item?.chats[0]?.status === 'PROGRESS' &&*/}
-                                            {/*<Badge style={{*/}
-                                            {/*    position: "absolute",*/}
-                                            {/*    top: "10%",*/}
-                                            {/*    right: "10%",*/}
-                                            {/*    backgroundColor: "#ff190c",*/}
-                                            {/*    fontWeight: "bold",*/}
-                                            {/*    fontSize: 14,*/}
-                                            {/*}} size={10}>*/}
-                                            {/*</Badge>*/}
-                                            {/*}*/}
+                                            {item?.chats[0]?.unread_messages > 0 &&
+                                            <Badge style={{
+                                                position: "absolute",
+                                                top: "10%",
+                                                right: "10%",
+                                                backgroundColor: "#ff190c",
+                                                fontWeight: "bold",
+                                                fontSize: 14,
+                                            }} size={20}>
+                                                {item?.chats[0]?.unread_messages}
+                                            </Badge>
+                                            }
 
                                             <IonIcon name={"chatbubble-ellipses-outline"} size={30}/>
                                             <Text style={{textAlign: "center"}}>{item.description}</Text>

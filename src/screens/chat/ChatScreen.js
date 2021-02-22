@@ -10,7 +10,9 @@ import {
     Image,
     Modal,
     Dimensions,
-    ActivityIndicator
+    ActivityIndicator,
+    PermissionsAndroid,
+    KeyboardAvoidingView
 } from "react-native";
 import {Colors} from "../../helpers/Colors";
 import AntIcon from "react-native-vector-icons/AntDesign";
@@ -33,6 +35,7 @@ import CustomView from "./CustomView";
 import RNFetchBlob from 'rn-fetch-blob';
 import ImagePicker from "react-native-image-crop-picker";
 
+
 const image = ['png', 'jpg', 'jpeg']
 const docs = ['pdf', 'txt', 'doc', 'docx', 'xls', 'xlsx']
 
@@ -42,6 +45,7 @@ const screenWidth = Math.round(Dimensions.get("window").width);
 export function ChatScreen({route, navigation}) {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [sendLoading, setSendLoading] = useState(false);
     const [isCam, setIsCam] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
     const first = useRef(true)
@@ -157,7 +161,7 @@ export function ChatScreen({route, navigation}) {
     };
 
     const send = async (msg) => {
-
+        setSendLoading(true)
         const objToSend = {
             message: msg,
             attach_name: img.current?.name ? img.current?.name : '',
@@ -180,6 +184,7 @@ export function ChatScreen({route, navigation}) {
             setResponse()
 
             img.current = {}
+            setSendLoading(false)
         } catch (e) {
             console.log(e);
             let aux;
@@ -188,11 +193,12 @@ export function ChatScreen({route, navigation}) {
                 break;
             }
             refNotification.current.showToast("warning", aux || "Conexão com servidor não estabelecida");
-
+            setSendLoading(false)
         }
     };
 
     const onSend = useCallback((msg = []) => {
+
         console.log(msg[0])
         const obj = {
             ...msg[0],
@@ -206,7 +212,7 @@ export function ChatScreen({route, navigation}) {
         send(msg[0].text);
     }, []);
 
-    const getDoc = async () => {
+    const getDoc = async (mode) => {
         try {
             const res = await DocumentPicker.pick({
                 type: [
@@ -252,7 +258,24 @@ export function ChatScreen({route, navigation}) {
         }
     }
 
+    const requestCameraPermission = async (mode) => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                getImage(mode)
+            } else {
+                console.log("Camera permission denied");
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    };
+
+
     const getImage = (mode) => {
+
         {
             mode === 'cam' &&
             launchCamera(
@@ -261,20 +284,23 @@ export function ChatScreen({route, navigation}) {
                     includeBase64: false,
                 },
                 (response) => {
-                    ImgToBase64.getBase64String(response?.uri)
-                        .then(base64String => {
-                            img.current = {
-                                name: response.fileName,
-                                uri: response.uri,
-                                base64: base64String
-                            }
-                            console.log(response)
-                            setResponse({
-                                ...response,
-                                photo: true
+
+                    if (response.uri) {
+                        ImgToBase64.getBase64String(response?.uri)
+                            .then(base64String => {
+                                img.current = {
+                                    name: response.fileName,
+                                    uri: response.uri,
+                                    base64: base64String
+                                }
+                                console.log(response)
+                                setResponse({
+                                    ...response,
+                                    photo: true
+                                })
                             })
-                        })
-                        .catch(err => console.log(err));
+                            .catch(err => console.log(err));
+                    }
                 },
             )
         }
@@ -286,21 +312,23 @@ export function ChatScreen({route, navigation}) {
                     includeBase64: false,
                 },
                 (response) => {
-                    setResponse(response);
-                    ImgToBase64.getBase64String(response?.uri)
-                        .then(base64String => {
-                            img.current = {
-                                name: response.fileName,
-                                uri: response.uri,
-                                base64: base64String
-                            }
-                            setResponse({
-                                ...response,
-                                [`base64`]: base64String,
-                                photo: true
+                    if (response.uri) {
+                        setResponse(response);
+                        ImgToBase64.getBase64String(response?.uri)
+                            .then(base64String => {
+                                img.current = {
+                                    name: response.fileName,
+                                    uri: response.uri,
+                                    base64: base64String
+                                }
+                                setResponse({
+                                    ...response,
+                                    [`base64`]: base64String,
+                                    photo: true
+                                })
                             })
-                        })
-                        .catch(err => console.log(err));
+                            .catch(err => console.log(err));
+                    }
                 },
             )
         }
@@ -399,7 +427,8 @@ export function ChatScreen({route, navigation}) {
                                 }}
                                 onPress={() => {
                                     setResponse()
-                                    image.current = {}
+                                    img.current = {}
+                                    console.log(image.current)
                                 }}>
                                 <View style={{
                                     borderRadius: 50,
@@ -427,7 +456,7 @@ export function ChatScreen({route, navigation}) {
                                 }}
                                 onPress={() => {
                                     setResponse()
-                                    image.current = {}
+                                    img.current = {}
                                 }}>
                                 <View style={{
                                     borderRadius: 50,
@@ -560,25 +589,23 @@ export function ChatScreen({route, navigation}) {
                                         <IonIcon name={"attach"} style={{marginTop: 9}} size={28}
                                                  color={Colors.primary}/>
                                     </TouchableOpacity>
-                                    <Send {...props} containerStyle={{}} sendButtonProps={{
-                                        ...sendButtonProps,
 
-                                        onPress: () => customOnPress(text, onSend)
-                                    }}>
-                                        <IonIcon name={"md-send"}
-                                                 style={{
-                                                     borderRadius: 40,
-                                                     backgroundColor: Colors.primary,
-                                                     padding: 10,
-                                                     paddingLeft: 11,
-                                                     height: screenWidth * 0.11,
-                                                     width: screenWidth * 0.11,
-                                                     alignItems: 'center',
-                                                     justifyContent: 'center',
-                                                     marginBottom: 1,
-                                                     marginRight: 1
-                                                 }} size={25} color={'white'}/>
-                                    </Send>
+                                    {sendLoading ?
+                                        <View style={styles.send}>
+                                            <ActivityIndicator size="small" color={'white'}/>
+                                        </View>
+                                        :
+                                        <Send {...props} containerStyle={{}} sendButtonProps={{
+                                            ...sendButtonProps,
+
+                                            onPress: () => customOnPress(text, onSend)
+                                        }}>
+                                            <IonIcon name={"md-send"}
+                                                     style={styles.send} size={screenWidth * 0.048} color={'white'}/>
+
+                                        </Send>
+                                    }
+
                                 </>
                             }
                             alwaysShowSend={true}
@@ -610,7 +637,7 @@ export function ChatScreen({route, navigation}) {
                                     <TouchableOpacity style={styles.opt}
                                                       onPress={() => {
                                                           setIsVisible(false)
-                                                          getImage('cam')
+                                                          requestCameraPermission('cam')
                                                       }}>
                                         <View style={[styles.opt2, {backgroundColor: '#ec407a'}]}>
                                             <MAIcon name={"photo-camera"} style={{}} size={35}
@@ -648,46 +675,6 @@ export function ChatScreen({route, navigation}) {
                                 </View>
                             </TouchableOpacity>
                         </Modal>
-                        <Modal
-                            animationType="fade"
-                            transparent={true}
-                            visible={isCam}
-                            onRequestClose={() => {
-                                setIsCam(false);
-                            }}
-                        >
-                            <View style={{flex: 1, flexDirection: "column"}}>
-                                <RNCamera
-                                    ref={camera => {
-                                        cameraRef.current = camera;
-                                    }}
-                                    style={styles.preview}
-                                    type={RNCamera.Constants.Type.front}
-                                    autoFocus={RNCamera.Constants.AutoFocus.on}
-                                    captureAudio={false}
-                                    flashMode={RNCamera.Constants.FlashMode.off}
-                                    androidCameraPermissionOptions={{
-                                        title: 'Permissão para usar a câmera',
-                                        message: "Nós precisamos de sua permissão para utilizar sua câmera",
-                                        buttonPositive: 'Ok',
-                                        buttonNegative: 'Cancelar',
-                                    }}
-                                />
-                                <View style={{flex: 0, flexDirection: "row", justifyContent: "center"}}>
-                                    <TouchableOpacity onPress={() => takePicture()} style={{
-                                        flex: 0,
-                                        backgroundColor: "#fff",
-                                        borderRadius: 5,
-                                        padding: 15,
-                                        paddingHorizontal: 20,
-                                        alignSelf: "center",
-                                        margin: 20
-                                    }}>
-                                        <Text style={styles.buttonText}> Tirar </Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        </Modal>
                     </View>
                 )
             }
@@ -697,6 +684,18 @@ export function ChatScreen({route, navigation}) {
 
 const styles = StyleSheet.create(
     {
+        send: {
+            borderRadius: 40,
+            backgroundColor: Colors.primary,
+            padding: 10,
+            paddingLeft: 11,
+            height: screenWidth * 0.11,
+            width: screenWidth * 0.11,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: 1,
+            marginRight: 1
+        },
         doc: {
             height: '25%',
             justifyContent: 'center',

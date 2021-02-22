@@ -26,6 +26,7 @@ import useAuth from "../../hooks/Auth";
 import Loading from "../../components/Loading";
 import GeneralStatusBarColor from "../../components/StatusBarColor";
 import { Avatar } from "react-native-paper";
+import placeholder from "../../assets/imgs/user-placeholder-300x300.jpg";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -132,7 +133,14 @@ console.log(res)
                 backgroundColor: "#fcfcfc",
 
               }}>
-                <Avatar.Image size={120} source={{ uri: data.avatar }} />
+
+                {data?.avatar ?
+
+                    <Avatar.Image size={120} source={{ uri: data.avatar }} />
+                    :
+                    <Image source={placeholder} style={{width: 120, height: 120}} />
+                }
+
 
               </View>
               <View style={styles.item}>
