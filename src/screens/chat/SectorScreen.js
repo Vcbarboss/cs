@@ -80,33 +80,44 @@ export function SectorScreen({navigation}) {
                                 flexDirection: "row",
                                 justifyContent: "space-between",
                             }}>
-                                {data?.map((item, index) =>
-                                    <View key={index}>
-                                        <TouchableOpacity style={styles.itemList} onPress={() => {
-                                            dispatch({type: 'rebase_sector', data: item.chat_sector_id})
-                                            navigation.navigate("ChatScreen", {
-                                                item: item,
-                                            });
-                                        }}>
+                                {data?.length > 0 ?
+                                    <>
+                                    {data?.map((item, index) =>
+                                        <View key={index}>
+                                            <TouchableOpacity style={styles.itemList} onPress={() => {
+                                                dispatch({type: 'rebase_sector', data: item.chat_sector_id})
+                                                navigation.navigate("ChatScreen", {
+                                                    item: item,
+                                                });
+                                            }}>
 
-                                            {item?.chats[0]?.unread_messages > 0 &&
-                                            <Badge style={{
-                                                position: "absolute",
-                                                top: "10%",
-                                                right: "10%",
-                                                backgroundColor: "#ff190c",
-                                                fontWeight: "bold",
-                                                fontSize: 14,
-                                            }} size={20}>
-                                                {item?.chats[0]?.unread_messages}
-                                            </Badge>
-                                            }
+                                                {item?.chats[0]?.unread_messages > 0 &&
+                                                <Badge style={{
+                                                    position: "absolute",
+                                                    top: "10%",
+                                                    right: "10%",
+                                                    backgroundColor: "#ff190c",
+                                                    fontWeight: "bold",
+                                                    fontSize: 14,
+                                                }} size={20}>
+                                                    {item?.chats[0]?.unread_messages}
+                                                </Badge>
+                                                }
 
-                                            <IonIcon name={"chatbubble-ellipses-outline"} size={30}/>
-                                            <Text style={{textAlign: "center"}}>{item.description}</Text>
-                                        </TouchableOpacity>
-                                    </View>,
-                                )}
+                                                <IonIcon name={"chatbubble-ellipses-outline"} size={30}/>
+                                                <Text style={{textAlign: "center"}}>{item.description}</Text>
+                                            </TouchableOpacity>
+                                        </View>,
+                                    )}
+                                    </>
+                                    :
+                                    <View style={{flex:1, alignItems:'center', justifyContent: 'center', padding: 10}}>
+                                        <Text style={{fontSize: Texts.title, textAlign: 'center'}}>
+                                            Ainda não existe nenhum canal de chat disponível
+                                        </Text>
+                                    </View>
+                                }
+
                             </View>
                         </ScrollView>
                     </>
