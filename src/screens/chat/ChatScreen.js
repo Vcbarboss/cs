@@ -624,6 +624,7 @@ export function ChatScreen({route, navigation}) {
                             // renderCustomView={renderCustomView}
                             user={user.current}
                         />
+
                         <Modal
                             animationType="fade"
                             transparent={true}

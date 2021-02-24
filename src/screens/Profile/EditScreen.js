@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     Dimensions,
     Text,
-    SafeAreaView, Modal, PermissionsAndroid
+    SafeAreaView, Modal, PermissionsAndroid, Platform
 } from "react-native";
 import {Colors} from "../../helpers/Colors";
 import Toast from "../../components/Toast";
@@ -360,7 +360,11 @@ setLoadingConfirm(false)
                         <TouchableOpacity style={styles.opt}
                                           onPress={() => {
                                               setIsVisible(false)
-                                              requestCameraPermission('cam')
+                                              if(Platform.OS === "ios" ){
+                                                  getImage('cam')
+                                              }else{
+                                                  requestCameraPermission('cam')
+                                              }
                                           }}>
                             <View style={[styles.opt2, {backgroundColor: '#ec407a'}]}>
                                 <MAIcon name={"photo-camera"} style={{}} size={35}
