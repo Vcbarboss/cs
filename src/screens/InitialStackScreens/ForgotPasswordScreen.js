@@ -1,5 +1,16 @@
 import React, {useState, useRef} from 'react';
-import {Image, StatusBar, StyleSheet, View, ImageBackground, TouchableOpacity, Dimensions, Text, Alert} from 'react-native';
+import {
+  Image,
+  StatusBar,
+  StyleSheet,
+  View,
+  ImageBackground,
+  TouchableOpacity,
+  Dimensions,
+  Text,
+  Alert,
+  Platform, KeyboardAvoidingView
+} from 'react-native';
 import useApi from "../../hooks/Api";
 import useAuth from '../../hooks/Auth';
 import ButtonStyle1 from "../../components/Buttons/ButtonStyle1";
@@ -56,6 +67,11 @@ export function ForgotPasswordScreen ({navigation}){
 
   return (
     <View style={styles.container}>
+      <KeyboardAvoidingView
+          behavior={"padding"}
+          enabled={Platform.OS === "ios"}
+          style={{flex: 1}}
+      >
        <Toast ref={refNotification}/>
 
       <StatusBar
@@ -99,6 +115,7 @@ export function ForgotPasswordScreen ({navigation}){
           onPress={() => doForgotPassword()}
         />
       </View>
+      </KeyboardAvoidingView>
     </View>
   );
 };

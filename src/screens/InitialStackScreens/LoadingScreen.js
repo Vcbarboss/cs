@@ -63,8 +63,7 @@ export function LoadingScreen({ navigation }) {
 
         try {
           const res = await api.put("app/set-firebase-token", { firebase_token: refreshToken });
-          console.log("refresh")
-console.log(refreshToken)
+
           await setFcmToken(refreshToken);
 
         } catch (e) {
@@ -84,8 +83,7 @@ console.log(refreshToken)
             if (fcm !== token) {
               try {
                 const res = await api.put("app/set-firebase-token", { firebase_token: token });
-                console.log("tok")
-                console.log(token)
+
                 await setFcmToken(token);
               } catch (e) {
                 let aux;

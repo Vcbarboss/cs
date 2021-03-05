@@ -1,5 +1,5 @@
 const sectorReducer = (state = 0, action) => {
-    console.log(action)
+
     switch (action.type) {
         case 'init_sector' :
             return action.data;

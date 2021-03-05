@@ -15,7 +15,7 @@ const ToastNotification = React.forwardRef((props, ref) => {
     let time1;
 
     const showToast = (notification) => {
-        console.log(notification)
+
         type.current = '';
         title.current = notification.notification.title;
         message.current = notification.notification.body;
@@ -23,7 +23,6 @@ const ToastNotification = React.forwardRef((props, ref) => {
             setVisible(true);
             hide()
         } else {
-            console.log('chegou')
             dispatch({type: 'rebase_sector', data: notification.data.chat_sector_id})
             dispatch({type: 'new_chat'});
             setVisible(false);
@@ -75,8 +74,8 @@ const ToastNotification = React.forwardRef((props, ref) => {
                             <Text numberOfLines={1} style={[styles.title, {color: '#f4fae5'}]}>
                                 {title.current}
                             </Text>
-                            {message.current &&
-                            <Text numberOfLines={3} style={[styles.text, {color: '#faf9e7'}]}>{message.current} </Text>}
+                            {/*{message.current &&*/}
+                            {/*<Text numberOfLines={3} style={[styles.text, {color: '#faf9e7'}]}>{message.current} </Text>}*/}
                         </View>
                         <TouchableOpacity onPress={() => hideToast()}
                                           style={{flexDirection: 'row-reverse', zIndex: 100}}>

@@ -46,7 +46,6 @@ export function ProfileScreen({ navigation }) {
     setLoading(true);
     try {
       const res = await api.get("app/me");
-console.log(res)
       setData({
         name: res.object?.name,
         natural_birthday: res.object?.natural_birthday,

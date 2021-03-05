@@ -17,10 +17,10 @@ export default function App() {
 
     Sentry.init({
         dsn: "https://9b576f563c304df7b1799ef0aefee7fa@o520906.ingest.sentry.io/5631872",
-        debug: true,
-        environment: 'dev',
+        debug: false,
+        environment: 'prod',
         autoSessionTracking: true,
-        release: 'cs ' + '1.3+chat',
+        release: 'cs ' + '1.5+',
     });
 
 

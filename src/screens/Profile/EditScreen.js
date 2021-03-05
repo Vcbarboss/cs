@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     Dimensions,
     Text,
-    SafeAreaView, Modal, PermissionsAndroid, Platform
+    SafeAreaView, Modal, PermissionsAndroid, Platform, KeyboardAvoidingView
 } from "react-native";
 import {Colors} from "../../helpers/Colors";
 import Toast from "../../components/Toast";
@@ -33,6 +33,7 @@ import {Avatar} from "react-native-paper";
 import MAIcon from "react-native-vector-icons/MaterialIcons";
 import ImagePicker from 'react-native-image-crop-picker';
 import placeholder from "../../assets/imgs/user-placeholder-300x300.jpg";
+import {openSettings, check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -50,6 +51,7 @@ export function EditScreen({navigation}) {
     const api = useApi({navigation});
     const refNotification = useRef();
     const [isVisible, setIsVisible] = useState(false)
+    const [isDenied, setIsDenied] = useState(false)
     const user = useSelector((state) => state).userReducer;
     const [data, setData] = useState();
     const [edit, setEdit] = useState();
@@ -100,12 +102,9 @@ export function EditScreen({navigation}) {
     };
 
     const handleEdit = async () => {
-setLoadingConfirm(true)
+        setLoadingConfirm(true)
         try {
-            console.log(edit)
             const res = await api.put("app/me", edit);
-            console.log(res)
-            console.log(edit)
             navigation.pop();
             setLoadingConfirm(false)
         } catch (e) {
@@ -115,7 +114,7 @@ setLoadingConfirm(true)
                 break;
             }
             refNotification.current.showToast("warning", aux || "Conexão com servidor não estabelecida");
-setLoadingConfirm(false)
+            setLoadingConfirm(false)
         }
     };
 
@@ -156,27 +155,74 @@ setLoadingConfirm(false)
                     })
                 })
                 .catch(err => console.log(err));
-
+setIsVisible(false)
             setLoading(false)
         });
 
     };
 
+    const checkPermission = (mode) => {
+        {
+
+            mode === 'cam' &&
+
+            check(PERMISSIONS.IOS.CAMERA)
+                .then((result) => {
+                    switch (result) {
+                        case RESULTS.UNAVAILABLE:
+                            console.log('This feature is not available (on this device / in this context)');
+                            setIsDenied(true)
+                            getImage(mode)
+                            break;
+                        case RESULTS.DENIED:
+                            console.log('The permission has not been requested / is denied but requestable');
+
+                            getImage(mode)
+                            break;
+                        case RESULTS.LIMITED:
+                            console.log('The permission is limited: some actions are possible');
+                            break;
+                        case RESULTS.GRANTED:
+                            console.log('The permission is granted');
+                            getImage(mode)
+                            break;
+                        case RESULTS.BLOCKED:
+                            console.log('The permission is denied and not requestable anymore');
+                            setIsDenied(true)
+                            getImage(mode)
+                            break;
+                    }
+                })
+                .catch((error) => {
+                    // …
+                });
+        }
+
+    }
+
     const getImage = (mode) => {
 
         {
+
             mode === 'cam' &&
+
             launchCamera(
                 {
                     mediaType: 'photo',
                     includeBase64: false,
                 },
                 (response) => {
+                    if (response?.errorCode === 'permission') {
 
-                    if (response.uri) {
+                        // openSettings().catch(() => console.warn('cannot open settings'));
+                    } else {
+                        console.log(response)
+                        if (response.uri) {
 
-                        crop(response.uri)
+                            crop(response.uri)
+                        }
                     }
+
                 },
             )
         }
@@ -188,6 +234,7 @@ setLoadingConfirm(false)
                     includeBase64: false,
                 },
                 (response) => {
+                    console.log(response)
                     if (response.uri) {
                         crop(response.uri)
                     }
@@ -211,142 +258,202 @@ setLoadingConfirm(false)
                 :
                 (
                     <View style={styles.container}>
-                        <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                               barStyle="light-content"/>
-                        {/*<StatusBar*/}
-                        {/*  backgroundColor={Colors.primary}*/}
-                        {/*  barStyle="light-content"*/}
-                        {/*/>*/}
-                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 20}}>
-                            <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
+                        <KeyboardAvoidingView
+                            behavior={"padding"}
+                            enabled={Platform.OS === "ios"}
+                            style={{flex: 1}}
+                        >
+                            <Toast ref={refNotification}/>
+                            <GeneralStatusBarColor backgroundColor={Colors.primary}
+                                                   barStyle="light-content"/>
+                            {/*<StatusBar*/}
+                            {/*  backgroundColor={Colors.primary}*/}
+                            {/*  barStyle="light-content"*/}
+                            {/*/>*/}
+                            <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 20}}>
+                                <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                                    <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
+                                </TouchableOpacity>
+                                <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
 
-                                <Text style={{color: "white", fontSize: 23,}}>Construindo o Saber</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle,}}>Editar perfil </Text>
+                                    <Text style={{color: "white", fontSize: 23,}}>Construindo o Saber</Text>
+                                    <Text style={{color: "white", fontSize: Texts.subtitle,}}>Editar perfil </Text>
+                                </View>
+                                {/*<TouchableOpacity style={{*/}
+                                {/*    marginRight: 10,*/}
+                                {/*    marginBottom: 10,*/}
+                                {/*    alignItems: "center",*/}
+                                {/*    justifyContent: "center"*/}
+                                {/*}}*/}
+                                {/*                  onPress={() => {*/}
+                                {/*                  }}>*/}
+                                {/*    <IonIcon name={"camera-outline"} style={{marginTop: 10}} size={27} color={'white'}/>*/}
+                                {/*</TouchableOpacity>*/}
                             </View>
-                            {/*<TouchableOpacity style={{*/}
-                            {/*    marginRight: 10,*/}
-                            {/*    marginBottom: 10,*/}
-                            {/*    alignItems: "center",*/}
-                            {/*    justifyContent: "center"*/}
-                            {/*}}*/}
-                            {/*                  onPress={() => {*/}
-                            {/*                  }}>*/}
-                            {/*    <IonIcon name={"camera-outline"} style={{marginTop: 10}} size={27} color={'white'}/>*/}
-                            {/*</TouchableOpacity>*/}
-                        </View>
 
-                        <ScrollView style={{paddingHorizontal: 15}}>
-                            <View style={{
-                                paddingHorizontal: 10,
-                                display: "flex",
-                                justifyContent: "space-between",
-                            }}>
+                            <ScrollView style={{paddingHorizontal: 15}}>
                                 <View style={{
-                                    alignItems: "center",
-                                    margin: 10,
-                                    marginBottom: 30
+                                    paddingHorizontal: 10,
+                                    display: "flex",
+                                    justifyContent: "space-between",
                                 }}>
+                                    <View style={{
+                                        alignItems: "center",
+                                        margin: 10,
+                                        marginBottom: 30
+                                    }}>
 
-                                    <TouchableOpacity onPress={() =>
-                                        setIsVisible(true)
-                                    }>
-                                        <View style={{position: 'absolute', right: 0, top: 0}}>
-                                            <AntIcon name={"edit"}
-                                                     style={{
-                                                         elevation: 1,
-                                                         padding: 5,
-                                                         marginTop: 10,
-                                                         backgroundColor: 'white',
-                                                         borderRadius: 50
-                                                     }} size={15} color={"#707070"}/>
-                                        </View>
-                                        {edit?.avatar || response ?
+                                        <TouchableOpacity onPress={() =>
+                                            setIsVisible(true)
+                                        }>
 
-                                            <Avatar.Image size={120} source={{uri: response ? response : edit?.avatar }}/>
-                                            :
-                                            <Image source={placeholder} style={{width: 120, height: 120}} />
-                                        }
+                                            {edit?.avatar || response ?
 
-                                    </TouchableOpacity>
+                                                <Avatar.Image size={120}
+                                                              source={{uri: response ? response : edit?.avatar}}/>
+                                                :
+                                                <Image source={placeholder} style={{width: 120, height: 120}}/>
+                                            }
+                                            <View style={{position: 'absolute', right: 0, top: 0}}>
+                                                <View style={{
+                                                    elevation: 1,
+                                                    padding: 5,
+                                                    marginTop: 10,
+                                                    backgroundColor: 'white',
+                                                    borderRadius: 50
+                                                }}>
+                                                    <AntIcon name={"edit"} size={15} color={"#707070"}/>
+                                                </View>
+                                            </View>
+                                        </TouchableOpacity>
+
+                                    </View>
+                                    <View>
+                                        <Field
+                                            icon={"calendar-outline"}
+                                            keyboardType={"number-pad"}
+                                            placeholder={"Sua data de nascimento"}
+                                            value={edit?.natural_birthday ? maskDate(edit?.natural_birthday) : maskDate(data?.natural_birthday)}
+                                            label={"Data de Nascimento"}
+                                            change={(e) => handleChange("natural_birthday", e)}/>
+                                    </View>
+                                    <View>
+                                        <SelectField icon={"male-female"} label={"Gênero"}
+                                                     initialValue={edit?.natural_gender ? edit?.natural_gender : data?.natural_gender}
+                                                     placeholder={edit?.natural_gender ? edit?.natural_gender : data?.natural_gender}
+                                                     list={optGender}
+                                                     change={(e) => handleChange("natural_gender", e)}/>
+                                    </View>
+                                    <View>
+                                        <Field
+                                            icon={"home-outline"}
+                                            keyboardType={"number-pad"}
+                                            placeholder={"Seu telefone residencial"}
+                                            value={edit?.contact_home_phone ? maskPhone(edit?.contact_home_phone) : maskPhone(data?.contact_home_phone)}
+                                            label={"Telefone Residencial"}
+                                            change={(e) => handleChange("contact_home_phone", e)}/>
+                                    </View>
+                                    <View>
+                                        <Field
+                                            icon={"call-outline"}
+                                            keyboardType={"number-pad"}
+                                            placeholder={"Seu telefone celular"}
+                                            value={edit?.contact_mobile_phone ? maskPhone(edit?.contact_mobile_phone) : maskPhone(data?.contact_mobile_phone)}
+                                            label={"Telefone Celular"}
+                                            change={(e) => handleChange("contact_mobile_phone", e)}/>
+                                    </View>
+                                    <View>
+                                        <Field
+                                            icon={"mail-outline"}
+                                            placeholder={"Seu Email"}
+                                            value={edit?.contact_mail ? edit?.contact_mail : data?.contact_mail}
+                                            label={"Seu email"}
+                                            change={(e) => handleChange("contact_mail", e)}/>
+                                    </View>
+
+                                    <View>
+                                        <Field
+                                            icon={"business"}
+                                            keyboardType={"number-pad"}
+                                            placeholder={"Seu Telefone de Trabalho"}
+                                            value={edit?.contact_business_phone ? maskPhone(edit?.contact_business_phone) : maskPhone(data?.contact_business_phone)}
+                                            label={"Telefone de Trabalho"}
+                                            change={(e) => handleChange("contact_business_phone", e)}/>
+                                    </View>
+
 
                                 </View>
-                                <View>
-                                    <Field
-                                        icon={"calendar-outline"}
-                                        keyboardType={"number-pad"}
-                                        placeholder={"Sua data de nascimento"}
-                                        value={edit?.natural_birthday ? maskDate(edit?.natural_birthday) : maskDate(data?.natural_birthday)}
-                                        label={"Data de Nascimento"}
-                                        change={(e) => handleChange("natural_birthday", e)}/>
-                                </View>
-                                <View>
-                                    <SelectField icon={"male-female"} label={"Gênero"}
-                                                 initialValue={edit?.natural_gender ? edit?.natural_gender : data?.natural_gender}
-                                                 placeholder={edit?.natural_gender ? edit?.natural_gender : data?.natural_gender}
-                                                 list={optGender}
-                                                 change={(e) => handleChange("natural_gender", e)}/>
-                                </View>
-                                <View>
-                                    <Field
-                                        icon={"home-outline"}
-                                        keyboardType={"number-pad"}
-                                        placeholder={"Seu telefone residencial"}
-                                        value={edit?.contact_home_phone ? maskPhone(edit?.contact_home_phone) : maskPhone(data?.contact_home_phone)}
-                                        label={"Telefone Residencial"}
-                                        change={(e) => handleChange("contact_home_phone", e)}/>
-                                </View>
-                                <View>
-                                    <Field
-                                        icon={"call-outline"}
-                                        keyboardType={"number-pad"}
-                                        placeholder={"Seu telefone celular"}
-                                        value={edit?.contact_mobile_phone ? maskPhone(edit?.contact_mobile_phone) : maskPhone(data?.contact_mobile_phone)}
-                                        label={"Telefone Celular"}
-                                        change={(e) => handleChange("contact_mobile_phone", e)}/>
-                                </View>
-                                <View>
-                                    <Field
-                                        icon={"mail-outline"}
-                                        placeholder={"Seu Email"}
-                                        value={edit?.contact_mail ? edit?.contact_mail : data?.contact_mail}
-                                        label={"Seu email"}
-                                        change={(e) => handleChange("contact_mail", e)}/>
-                                </View>
-
-                                <View>
-                                    <Field
-                                        icon={"business"}
-                                        keyboardType={"number-pad"}
-                                        placeholder={"Seu Telefone de Trabalho"}
-                                        value={edit?.contact_business_phone ? maskPhone(edit?.contact_business_phone) : maskPhone(data?.contact_business_phone)}
-                                        label={"Telefone de Trabalho"}
-                                        change={(e) => handleChange("contact_business_phone", e)}/>
-                                </View>
-
-
+                            </ScrollView>
+                            <View style={{display: "flex", paddingHorizontal: 10}}>
+                                <ButtonStyle1
+                                    text={"Confirmar"}
+                                    style={{margin: 3, padding: 8}}
+                                    loading={loadingConfirm}
+                                    primaryColor={Colors.primary}
+                                    secondaryColor={Colors.primary}
+                                    color={'white'}
+                                    borderRadius={15}
+                                    onPress={() => {
+                                        handleEdit();
+                                    }}
+                                />
                             </View>
-                        </ScrollView>
-                        <View style={{display: "flex", paddingHorizontal: 10}}>
-                            <ButtonStyle1
-                                text={"Confirmar"}
-                                style={{margin: 3, padding: 8}}
-                                loading={loadingConfirm}
-                                primaryColor={Colors.primary}
-                                secondaryColor={Colors.primary}
-                                color={'white'}
-                                borderRadius={15}
-                                onPress={() => {
-                                    handleEdit();
-                                }}
-                            />
-                        </View>
+                        </KeyboardAvoidingView>
                     </View>
 
                 )}
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={isDenied}
+                onRequestClose={() => {
+                    setIsDenied(false);
+                }}
+            >
+                <TouchableOpacity style={[styles.modal,]} onPress={() => setIsDenied(false)}>
+                    <View style={[styles.card, {flexDirection: 'column'}]}>
+                        <Text>É necessário autorizar o uso da câmera em ajustes.</Text>
+                        <View style={{flexDirection: 'row', margin: 10}}>
+                            <TouchableOpacity
+                                style={{
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderWidth: 1,
+                                    borderColor: '#1e61f5',
+                                    borderRadius: 10,
+                                    padding: 10,
+                                    marginHorizontal: 5
+                                }}
+                                onPress={() => {
+                                    openSettings().then((e) => console.log(e))
+                                        .catch(() => console.warn('cannot open settings'))
+                                    setIsDenied(false)
+                                }}>
+                                <Text style={{textAlign: 'center', color: '#1e61f5'}}>
+                                    Ajustes
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{
+                                flex: 1,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderWidth: 1,
+                                borderColor: '#e73c51',
+                                borderRadius: 10,
+                                padding: 10,
+                                marginHorizontal: 5
+                            }} onPress={() => setIsDenied(false)}>
+                                <Text style={{textAlign: 'center', color: '#e73c51'}}>
+                                    Cancelar
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+
+                    </View>
+                </TouchableOpacity>
+
+            </Modal>
             <Modal
                 animationType="fade"
                 transparent={true}
@@ -360,9 +467,9 @@ setLoadingConfirm(false)
                         <TouchableOpacity style={styles.opt}
                                           onPress={() => {
                                               setIsVisible(false)
-                                              if(Platform.OS === "ios" ){
-                                                  getImage('cam')
-                                              }else{
+                                              if (Platform.OS === "ios") {
+                                                  checkPermission('cam')
+                                              } else {
                                                   requestCameraPermission('cam')
                                               }
                                           }}>
@@ -376,7 +483,7 @@ setLoadingConfirm(false)
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.opt}
                                           onPress={() => {
-                                              setIsVisible(false)
+                                              // setIsVisible(false)
                                               getImage('image')
                                           }}>
                             <View style={[styles.opt2, {backgroundColor: '#bf59cf'}]}>

@@ -63,16 +63,13 @@ export function HomeScreen({ navigation }) {
         if(res.object[i]?.chats[0]?.unread_messages){
 
           chat.current = chat.current + res.object[i]?.chats[0]?.unread_messages;
-          console.log(res.object[i]?.chats[0]?.unread_messages)
-          console.log(chat.current)
+
         }
 
       }
-      console.log(chat)
       dispatch({ type: "init_badgeChat", data: chat.current });
       setLoading(false)
     } catch (e) {
-      console.log(e)
       setLoading(false)
     }
   }
@@ -87,12 +84,12 @@ export function HomeScreen({ navigation }) {
 
   return (
     <>
-      {loading ? (
-          <Loading />
+      {/*{loading ? (*/}
+      {/*    <Loading />*/}
 
-        )
-        :
-        (
+      {/*  )*/}
+      {/*  :*/}
+      {/*  (*/}
           <View style={styles.container}>
             <Toast ref={refNotification} />
 
@@ -171,7 +168,7 @@ export function HomeScreen({ navigation }) {
               {/*</TouchableOpacity>*/}
             </ScrollView>
           </View>
-        )}
+        {/*)}*/}
     </>
 
   );

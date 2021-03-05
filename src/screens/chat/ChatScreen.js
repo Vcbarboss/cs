@@ -34,7 +34,7 @@ import ImgToBase64 from "react-native-image-base64";
 import CustomView from "./CustomView";
 import RNFetchBlob from 'rn-fetch-blob';
 import ImagePicker from "react-native-image-crop-picker";
-
+import {openSettings, check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
 const image = ['png', 'jpg', 'jpeg']
 const docs = ['pdf', 'txt', 'doc', 'docx', 'xls', 'xlsx']
@@ -62,11 +62,11 @@ export function ChatScreen({route, navigation}) {
     const cameraRef = useRef();
     const [response, setResponse] = React.useState(null);
     const imagePath = useRef(undefined);
+    const [isDenied, setIsDenied] = useState(false)
 
     const get = async (e) => {
         if (first.current) {
             setLoading(true);
-            console.log('first')
             first.current = false
         }
         if (msg_id.current === '' || lastUrl.current !== `app/chat/sector/${props.item.chat_sector_id}/list${"?last_id=" + msg_id.current}`) {
@@ -81,7 +81,6 @@ export function ChatScreen({route, navigation}) {
                     res = await api.get(`app/chat/sector/${props.item.chat_sector_id}/list`);
 
                 }
-                console.log(res)
                 title.current = res.object?.chat?.description
                 const items = res?.object?.list;
                 items?.reverse();
@@ -167,7 +166,6 @@ export function ChatScreen({route, navigation}) {
             attach_name: img.current?.name ? img.current?.name : '',
             attach_base64: img.current?.base64 ? img.current?.base64 : ''
         };
-        console.log(objToSend)
         if (props.item.chat_sector_id !== sector && sector !== -1) {
             props = {
                 item: {
@@ -177,10 +175,8 @@ export function ChatScreen({route, navigation}) {
         }
         try {
             lastUrl.current = `app/chat/sector/${props.item.chat_sector_id}/send`;
-            console.log(lastUrl);
             const res = await api.post(`app/chat/sector/${props.item.chat_sector_id}/send`, objToSend);
             get()
-            console.log(res);
             setResponse()
 
             img.current = {}
@@ -199,14 +195,12 @@ export function ChatScreen({route, navigation}) {
 
     const onSend = useCallback((msg = []) => {
 
-        console.log(msg[0])
         const obj = {
             ...msg[0],
             image: img.current?.uri
         }
         //setMessages(previousMessages => GiftedChat.append(previousMessages, obj));
         setTimeout(() => {
-            console.log(messages);
         }, 1500);
 
         send(msg[0].text);
@@ -223,6 +217,7 @@ export function ChatScreen({route, navigation}) {
                     DocumentPicker.types.csv,
                 ],
             });
+
 
             const fs = RNFetchBlob.fs;
             fs.readFile(res.uri, 'base64')
@@ -244,17 +239,16 @@ export function ChatScreen({route, navigation}) {
 
 
                 .catch(err => console.log(err));
-            console.log(
-                res.uri,
-                res.type,
-                res.name,
-                res.size
-            );
+
+            setIsVisible(false)
         } catch (err) {
             if (DocumentPicker.isCancel(err)) {
+                console.log(err)
             } else {
                 throw err;
+                console.log(err)
             }
+            setIsVisible(false)
         }
     }
 
@@ -272,6 +266,45 @@ export function ChatScreen({route, navigation}) {
             console.warn(err);
         }
     };
+
+    const checkPermission = (mode) => {
+        {
+
+            mode === 'cam' &&
+
+            check(PERMISSIONS.IOS.CAMERA)
+                .then((result) => {
+                    switch (result) {
+                        case RESULTS.UNAVAILABLE:
+                            console.log('This feature is not available (on this device / in this context)');
+                            setIsDenied(true)
+                            getImage(mode)
+                            break;
+                        case RESULTS.DENIED:
+                            console.log('The permission has not been requested / is denied but requestable');
+
+                            getImage(mode)
+                            break;
+                        case RESULTS.LIMITED:
+                            console.log('The permission is limited: some actions are possible');
+                            break;
+                        case RESULTS.GRANTED:
+                            console.log('The permission is granted');
+                            getImage(mode)
+                            break;
+                        case RESULTS.BLOCKED:
+                            console.log('The permission is denied and not requestable anymore');
+                            setIsDenied(true)
+                            getImage(mode)
+                            break;
+                    }
+                })
+                .catch((error) => {
+                    // …
+                });
+        }
+
+    }
 
 
     const getImage = (mode) => {
@@ -293,7 +326,6 @@ export function ChatScreen({route, navigation}) {
                                     uri: response.uri,
                                     base64: base64String
                                 }
-                                console.log(response)
                                 setResponse({
                                     ...response,
                                     photo: true
@@ -364,6 +396,7 @@ export function ChatScreen({route, navigation}) {
                                 borderColor: '#7c7c7c',
                                 borderRadius: 10,
                                 padding: 20,
+                                maxWidth: screenWidth * 0.8,
                                 backgroundColor: 'white',
                                 justifyContent: 'center'
                             }}>
@@ -416,19 +449,31 @@ export function ChatScreen({route, navigation}) {
                     <>
                         {response.photo &&
                         <View style={styles.image}>
+
+                            <Image
+                                style={{width: "100%", resizeMode: "contain", flex: 1,}}
+                                source={{uri: response.uri}}
+                            />
                             <TouchableOpacity
                                 style={{
-                                    elevation: 2,
-                                    position: 'absolute',
                                     right: 10,
                                     top: 10,
+                                    position: 'absolute',
                                     minHeight: 20,
-                                    minWidth: 20
+                                    minWidth: 20,
+                                    shadowColor: "#000",
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 2,
+                                    },
+                                    shadowOpacity: 0.23,
+                                    shadowRadius: 2.62,
+
+                                    elevation: 4,
                                 }}
                                 onPress={() => {
                                     setResponse()
                                     img.current = {}
-                                    console.log(image.current)
                                 }}>
                                 <View style={{
                                     borderRadius: 50,
@@ -437,10 +482,6 @@ export function ChatScreen({route, navigation}) {
                                     <AntIcon name={"close"} style={{margin: 1}} size={20} color={"white"}/>
                                 </View>
                             </TouchableOpacity>
-                            <Image
-                                style={{width: "100%", resizeMode: "contain", flex: 1,}}
-                                source={{uri: response.uri}}
-                            />
                         </View>
                         }
                         {response.doc &&
@@ -577,7 +618,7 @@ export function ChatScreen({route, navigation}) {
                             placeholder={"Digite sua menssagem..."}
                             messages={messages}
                             renderSend={({onSend, text, sendButtonProps, ...props}) =>
-                                <>
+                                <View style={{alignItems: 'center', justifyContent: 'center', flexDirection: 'row'}}>
                                     <TouchableOpacity
                                         style={{
                                             marginRight: 10,
@@ -595,23 +636,26 @@ export function ChatScreen({route, navigation}) {
                                             <ActivityIndicator size="small" color={'white'}/>
                                         </View>
                                         :
-                                        <Send {...props} containerStyle={{}} sendButtonProps={{
+                                        <Send {...props} containerStyle={{position: 'relative', alignItems: "center",
+                                            justifyContent: "center"}} sendButtonProps={{
                                             ...sendButtonProps,
 
                                             onPress: () => customOnPress(text, onSend)
                                         }}>
-                                            <IonIcon name={"md-send"}
-                                                     style={styles.send} size={screenWidth * 0.048} color={'white'}/>
+                                            <View style={styles.send} >
+                                                <IonIcon name={"md-send"}
+                                                         size={screenWidth * 0.048} color={'white'}/>
+                                            </View>
+
 
                                         </Send>
                                     }
 
-                                </>
+                                </View>
                             }
                             alwaysShowSend={true}
                             onSend={(messages) => {
                                 if (messages[0].text) {
-                                    console.log(messages)
                                     onSend(messages)
                                 } else {
                                     send()
@@ -628,6 +672,59 @@ export function ChatScreen({route, navigation}) {
                         <Modal
                             animationType="fade"
                             transparent={true}
+                            visible={isDenied}
+                            onRequestClose={() => {
+                                setIsDenied(false);
+                            }}
+                        >
+                            <TouchableOpacity style={[styles.modal,]} onPress={() => setIsDenied(false)}>
+                                <View style={[styles.card, {flexDirection: 'column'}]}>
+                                    <Text>É necessário autorizar o uso da câmera em ajustes.</Text>
+                                    <View style={{flexDirection: 'row', margin: 10}}>
+                                        <TouchableOpacity
+                                            style={{
+                                                flex: 1,
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                borderWidth: 1,
+                                                borderColor: '#1e61f5',
+                                                borderRadius: 10,
+                                                padding: 10,
+                                                marginHorizontal: 5
+                                            }}
+                                            onPress={() => {
+                                                openSettings().then((e) => console.log(e))
+                                                    .catch(() => console.warn('cannot open settings'))
+                                                setIsDenied(false)
+                                            }}>
+                                            <Text style={{textAlign: 'center', color: '#1e61f5'}}>
+                                                Ajustes
+                                            </Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={{
+                                            flex: 1,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            borderWidth: 1,
+                                            borderColor: '#e73c51',
+                                            borderRadius: 10,
+                                            padding: 10,
+                                            marginHorizontal: 5
+                                        }} onPress={() => setIsDenied(false)}>
+                                            <Text style={{textAlign: 'center', color: '#e73c51'}}>
+                                                Cancelar
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                </View>
+                            </TouchableOpacity>
+
+                        </Modal>
+
+                        <Modal
+                            animationType="fade"
+                            transparent={true}
                             visible={isVisible}
                             onRequestClose={() => {
                                 setIsVisible(false);
@@ -638,7 +735,11 @@ export function ChatScreen({route, navigation}) {
                                     <TouchableOpacity style={styles.opt}
                                                       onPress={() => {
                                                           setIsVisible(false)
-                                                          requestCameraPermission('cam')
+                                                          if (Platform.OS === 'ios') {
+                                                              checkPermission('cam')
+                                                          } else {
+                                                              requestCameraPermission('cam')
+                                                          }
                                                       }}>
                                         <View style={[styles.opt2, {backgroundColor: '#ec407a'}]}>
                                             <MAIcon name={"photo-camera"} style={{}} size={35}
@@ -662,7 +763,6 @@ export function ChatScreen({route, navigation}) {
                                     </TouchableOpacity>
                                     <TouchableOpacity style={[styles.opt]}
                                                       onPress={() => {
-                                                          setIsVisible(false)
                                                           getDoc()
                                                       }}>
                                         <View style={[styles.opt2, {backgroundColor: '#5f66cd'}]}>

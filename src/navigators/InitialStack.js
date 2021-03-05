@@ -14,6 +14,8 @@ import {FirstLoginScreen} from "../screens/InitialStackScreens/FirstLoginScreen"
 import { MainStack } from "./DrawerStack";
 import {StudentNotificationList} from "../screens/Student/StudentNotificationList";
 import {ChatScreen} from "../screens/chat/ChatScreen";
+import {ProtocolScreen} from "../screens/chat/ProtocolScreen";
+import {DocumentSendScreen} from "../screens/Student/DocumentSendScreen";
 
 
 const InitialStack = createStackNavigator();
@@ -65,13 +67,14 @@ export function InitialStackNavigator({navigation}) {
 
   return (
     <ErrorBoundary screenType={'initialStack'}>
-      <KeyboardAvoidingView
-        behavior={"padding"}
-        enabled={Platform.OS === "ios"}
-        style={{flex: 1}}
-      >
+
         <ToastNotification ref={refNotification} navigation={(e) => navigation.navigate(e)} />
-        <InitialStack.Navigator initialRouteName={'LoadingScreen'}>
+        <InitialStack.Navigator initialRouteName={'ProtocolScreen'}>
+          <InitialStack.Screen name={'DocumentSendScreen'} component={DocumentSendScreen} options={{
+            headerShown: false,
+            gesturesEnabled: false,
+            animationEnabled: false,
+          }}/>
           <InitialStack.Screen name={'LoadingScreen'} component={LoadingScreen} options={{
             headerShown: false,
             gesturesEnabled: false,
@@ -85,11 +88,7 @@ export function InitialStackNavigator({navigation}) {
             return {...CustomBackButton({title: "Esqueci minha Senha", navigation})}
           }}/>
 
-          <InitialStack.Screen name={'LoginScreen'} component={LoginScreen} options={{
-            headerShown: false,
-            gesturesEnabled: false,
-            animationEnabled: false,
-          }}/>
+
           <InitialStack.Screen name={'FirstLoginScreen'} component={FirstLoginScreen} options={{
             headerShown: false,
             gesturesEnabled: false,
@@ -118,7 +117,6 @@ export function InitialStackNavigator({navigation}) {
           }}/>
 
         </InitialStack.Navigator>
-      </KeyboardAvoidingView>
     </ErrorBoundary>
   );
 }

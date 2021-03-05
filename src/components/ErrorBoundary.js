@@ -28,7 +28,7 @@ export default class ErrorBoundary extends React.Component {
   render() {
     if(this.state.error) {
       return(<View style={{flex: 1}}>
-        <EmptyComponent image={errorImg} buttonText={'Recarregar'} onPress={() => this.setState({error: false})} title={'Ops, algo deu errado )='} subTitle={'Buscaremos corrigir isto o mais rápido possível, caso o erro persista, mande uma mensagem em nosso whatsapp - ' + Env.number}/>
+        <EmptyComponent image={errorImg} buttonText={'Recarregar'} onPress={() => this.setState({error: false})} title={'Ops, algo deu errado )='} subTitle={'Buscaremos corrigir isto o mais rápido possível'}/>
       </View>);
     } else {
       return this.props.children;

@@ -12,9 +12,22 @@ target 'cs' do
 
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
+
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
+   permissions_path = '../node_modules/react-native-permissions/ios'
+
+        pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+        pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
+        pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+        pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly"
+
   target 'csTests' do
     inherit! :complete
     # Pods for testing
+
+
+
   end
 
   # Enables Flipper.

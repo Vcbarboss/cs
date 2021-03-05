@@ -74,6 +74,14 @@ PODS:
     - nanopb/encode (= 2.30907.0)
   - nanopb/decode (2.30907.0)
   - nanopb/encode (2.30907.0)
+  - Permission-Camera (3.0.1):
+    - RNPermissions
+  - Permission-Notifications (3.0.1):
+    - RNPermissions
+  - Permission-PhotoLibrary (3.0.1):
+    - RNPermissions
+  - Permission-PhotoLibraryAddOnly (3.0.1):
+    - RNPermissions
   - PromisesObjC (1.2.12)
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
@@ -241,13 +249,13 @@ PODS:
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
   - React-jsinspector (0.63.4)
-  - react-native-camera (3.42.2):
+  - react-native-camera (3.42.3):
     - React-Core
-    - react-native-camera/RCT (= 3.42.2)
-    - react-native-camera/RN (= 3.42.2)
-  - react-native-camera/RCT (3.42.2):
+    - react-native-camera/RCT (= 3.42.3)
+    - react-native-camera/RN (= 3.42.3)
+  - react-native-camera/RCT (3.42.3):
     - React-Core
-  - react-native-camera/RN (3.42.2):
+  - react-native-camera/RN (3.42.3):
     - React-Core
   - react-native-document-picker (5.0.0):
     - React-Core
@@ -257,7 +265,7 @@ PODS:
     - React-Core
   - react-native-safe-area-context (3.1.8):
     - React-Core
-  - react-native-webview (11.0.2):
+  - react-native-webview (11.2.3):
     - React-Core
   - React-RCTActionSheet (0.63.4):
     - React-Core/RCTActionSheetHeaders (= 0.63.4)
@@ -343,6 +351,8 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
+  - RNPermissions (3.0.1):
+    - React-Core
   - RNReanimated (1.13.2):
     - React-Core
   - RNScreens (2.17.1):
@@ -364,6 +374,10 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
+  - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications`)
+  - Permission-PhotoLibrary (from `../node_modules/react-native-permissions/ios/PhotoLibrary`)
+  - Permission-PhotoLibraryAddOnly (from `../node_modules/react-native-permissions/ios/PhotoLibraryAddOnly`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -399,6 +413,7 @@ DEPENDENCIES:
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
@@ -432,6 +447,14 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  Permission-Camera:
+    :path: "../node_modules/react-native-permissions/ios/Camera"
+  Permission-Notifications:
+    :path: "../node_modules/react-native-permissions/ios/Notifications"
+  Permission-PhotoLibrary:
+    :path: "../node_modules/react-native-permissions/ios/PhotoLibrary"
+  Permission-PhotoLibraryAddOnly:
+    :path: "../node_modules/react-native-permissions/ios/PhotoLibraryAddOnly"
   RCTRequired:
     :path: "../node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
@@ -498,6 +521,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -525,6 +550,10 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 1024b1a4dfbd7a0e92cb20d7e0a6f1fb66b449a4
   GoogleUtilities: 31c5b01f978a70c6cff2afc6272b3f1921614b43
   nanopb: 59221d7f958fb711001e6a449489542d92ae113e
+  Permission-Camera: 0d2d15352e9c54c3ea8686c8c21fb1a9edf3431b
+  Permission-Notifications: 0db4fc644c3f5a8628f81696ca1b3019ce8bce32
+  Permission-PhotoLibrary: e5d0500209f22e2a5b281501cd3744a965747726
+  Permission-PhotoLibraryAddOnly: fba90734d82a6e577631b3267d660de42ebd649f
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
@@ -536,12 +565,12 @@ SPEC CHECKSUMS:
   React-jsi: a0418934cf48f25b485631deb27c64dc40fb4c31
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
-  react-native-camera: 48557b70b49c5c8a099b0600d774ba374cf18587
+  react-native-camera: 5e765cc9841e3a48ae27b3ab252c9f32b41c3390
   react-native-document-picker: 5a7dc439cc7ce9bc7644605458bfc7e3f4b524d5
   react-native-image-base64: acfe962aa79535d826a2668e66474e85a9ee468d
   react-native-image-picker: 0c28bf3cb089cfe840bc5cc9fac3dcc10f2188d9
   react-native-safe-area-context: 01158a92c300895d79dee447e980672dc3fb85a6
-  react-native-webview: b2542d6fd424bcc3e3b2ec5f854f0abb4ec86c87
+  react-native-webview: 36561eaf7508e67f72d8c959b713bac841f3652e
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
   React-RCTBlob: a97d378b527740cc667e03ebfa183a75231ab0f0
@@ -559,6 +588,7 @@ SPEC CHECKSUMS:
   RNFBMessaging: 643ec4102ee0d780f928718c2632bb1e90487f04
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNImageCropPicker: e641bf83ac47324994cac139bde74635ec52c17c
+  RNPermissions: eb94f9fdc0a8ecd02fcce0676d56ffb1395d41e1
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
   RNSentry: 6aeba1adc242fd22a6826acae92f430697b47a9c
@@ -567,6 +597,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: e6b9cb2cd9939b66d7c2d8df4caff8ba6e0b3994
+PODFILE CHECKSUM: 7c14693e283be7734c0b403adbfec5e0e5702937
 
 COCOAPODS: 1.10.0

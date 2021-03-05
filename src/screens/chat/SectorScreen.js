@@ -29,7 +29,6 @@ export function SectorScreen({navigation}) {
         setLoading(true);
         try {
             const res = await api.get("app/chat/sector/list");
-            console.log(res);
             setData(res.object);
             setLoading(false);
         } catch (e) {

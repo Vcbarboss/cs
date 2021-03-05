@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     Dimensions,
     Text,
-    SafeAreaView
+    SafeAreaView, Platform, KeyboardAvoidingView
 } from "react-native";
 import {Colors} from "../../helpers/Colors";
 import Toast from "../../components/Toast";
@@ -75,75 +75,86 @@ export function ChangePasswordScreen({navigation}) {
     return (
         <>
             <View style={styles.container}>
-                <Toast ref={refNotification}/>
-                <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                       barStyle="light-content"/>
-                {/*<StatusBar*/}
-                {/*    backgroundColor={Colors.primary}*/}
-                {/*    barStyle="light-content"*/}
-                {/*/>*/}
-                <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 20}}>
-                    <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                        <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
-                    </TouchableOpacity>
-                    <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
+                <KeyboardAvoidingView
+                    behavior={"padding"}
+                    enabled={Platform.OS === "ios"}
+                    style={{flex: 1}}
+                >
+                    <Toast ref={refNotification}/>
+                    <GeneralStatusBarColor backgroundColor={Colors.primary}
+                                           barStyle="light-content"/>
+                    {/*<StatusBar*/}
+                    {/*    backgroundColor={Colors.primary}*/}
+                    {/*    barStyle="light-content"*/}
+                    {/*/>*/}
+                    <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 20}}>
+                        <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                            <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
+                        </TouchableOpacity>
+                        <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
 
-                        <Text style={{color: "white", fontSize: 25}}>Construindo o Saber</Text>
-                        <Text style={{color: "white", fontSize: Texts.subtitle}}> Trocar Senha </Text>
+                            <Text style={{color: "white", fontSize: 25}}>Construindo o Saber</Text>
+                            <Text style={{color: "white", fontSize: Texts.subtitle}}> Trocar Senha </Text>
+                        </View>
+                        <TouchableOpacity style={{alignItems: "flex-end", justifyContent: "center"}}>
+
+                        </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={{alignItems: "flex-end", justifyContent: "center"}}>
 
-                    </TouchableOpacity>
-                </View>
+                    <ScrollView style={{padding: 15}}>
+                        <View style={{
+                            padding: 10,
+                            display: "flex",
+                            flexWrap: "wrap",
+                            justifyContent: "space-between",
+                        }}>
 
-                <ScrollView style={{padding: 15}}>
-                    <View style={{
-                        padding: 10,
-                        display: "flex",
-                        flexWrap: "wrap",
-                        justifyContent: "space-between",
-                    }}>
+                            <Field
+                                placeholder="Senha Atual"
+                                label={"Senha Atual"}
+                                value={currentPassword}
+                                change={(e) => setCurrentPassword(e)}
+                                secureTextEntry={true}
+                                icon={"key"}
+                            />
 
-                        <Field
-                            placeholder="Senha Atual"
-                            label={"Senha Atual"}
-                            value={currentPassword}
-                            change={(e) => setCurrentPassword(e)}
-                            secureTextEntry={true}
-                            icon={"key"}
+                            <Field
+                                placeholder="Nova Senha"
+                                label={"Nova Senha"}
+                                value={newPassword}
+                                secureTextEntry={true}
+                                change={(e) => setNewPassword(e)}
+                                icon={"key"}
+                            />
+
+                        </View>
+                    </ScrollView>
+                    <View style={{display: "flex", paddingHorizontal: 10}}>
+                        <ButtonStyle1
+                            text={"Trocar Senha"}
+                            style={{margin: 3, padding: 8}}
+                            loading={loading}
+                            primaryColor={Colors.primary}
+                            secondaryColor={Colors.primary}
+                            color={"white"}
+                            borderRadius={15}
+                            onPress={() =>
+                                handleChange()
+                            }
                         />
-
-                        <Field
-                            placeholder="Nova Senha"
-                            label={"Nova Senha"}
-                            value={newPassword}
-                            secureTextEntry={true}
-                            change={(e) => setNewPassword(e)}
-                            icon={"key"}
-                        />
-
                     </View>
-                </ScrollView>
-                <View style={{display: "flex", paddingHorizontal: 10}}>
-                    <ButtonStyle1
-                        text={"Trocar Senha"}
-                        style={{margin: 3, padding: 8}}
-                        loading={loading}
-                        primaryColor={Colors.primary}
-                        secondaryColor={Colors.primary}
-                        color={"white"}
-                        borderRadius={15}
-                        onPress={() =>
-                            handleChange()
-                        }
-                    />
-                </View>
+                </KeyboardAvoidingView>
             </View>
         </>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        display: "flex",
+        backgroundColor: "white",
+    },
     title: {
         fontSize: 17,
         fontWeight: "bold",

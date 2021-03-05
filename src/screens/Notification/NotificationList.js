@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     Dimensions,
     Text,
-    Modal, SafeAreaView,
+    Modal, SafeAreaView, Platform, KeyboardAvoidingView,
 } from "react-native";
 import {Colors} from "../../helpers/Colors";
 import Toast from "../../components/Toast";
@@ -126,130 +126,142 @@ export function NotificationList({navigation}) {
                 :
                 (
                     <View style={styles.container}>
-                        <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                               barStyle="light-content"/>
-                        {/*<StatusBar*/}
-                        {/*    backgroundColor={Colors.primary}*/}
-                        {/*    barStyle="light-content"*/}
-                        {/*/>*/}
-                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 20}}>
-                            <View>
-                                <TouchableOpacity style={{flex:1}} onPress={() => {
-                                    navigation.reset({index: 0, routes: [{name: "HomeStack"}]});
-                                }}>
-                                    <AntIcon name={"arrowleft"} style={{marginTop: 20,}} size={25} color={"white"}/>
+                        <KeyboardAvoidingView
+                            behavior={"padding"}
+                            enabled={Platform.OS === "ios"}
+                            style={{flex: 1}}
+                        >
+                            <Toast ref={refNotification}/>
+                            <GeneralStatusBarColor backgroundColor={Colors.primary}
+                                                   barStyle="light-content"/>
+                            {/*<StatusBar*/}
+                            {/*    backgroundColor={Colors.primary}*/}
+                            {/*    barStyle="light-content"*/}
+                            {/*/>*/}
+                            <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 20}}>
+                                <View>
+                                    <TouchableOpacity style={{flex: 1}} onPress={() => {
+                                        navigation.reset({index: 0, routes: [{name: "HomeStack"}]});
+                                    }}>
+                                        <AntIcon name={"arrowleft"} style={{marginTop: 20,}} size={25} color={"white"}/>
+                                    </TouchableOpacity>
+                                </View>
+
+                                <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
+                                    <Text style={{color: "white", fontSize: 23,}}>Construindo o Saber</Text>
+                                    <Text style={{color: "white", fontSize: Texts.subtitle,}}> Notificações </Text>
+                                </View>
+                                <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center'}}
+                                                  onPress={() => setFilterModal(true)}>
+                                    <Icon name={"filter-outline"} style={{}} size={25} color={"white"}/>
+                                    <Text style={{color: 'white', fontWeight: 'bold'}}>{filter.label}</Text>
                                 </TouchableOpacity>
                             </View>
+                            {notifications.current.length > 0 ?
+                                <ScrollView style={{}} onMomentumScrollEnd={(e) => handleScroll(e.nativeEvent)}>
+                                    {notifications.current?.map((item, index) =>
 
-                            <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
-                                <Text style={{color: "white", fontSize: 23,}}>Construindo o Saber</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle,}}> Notificações </Text>
-                            </View>
-                            <TouchableOpacity style={{alignItems:'center', justifyContent: 'center'}}
-                                              onPress={() => setFilterModal(true)}>
-                                <Icon name={"filter-outline"} style={{}} size={25} color={"white"}/>
-                                <Text style={{color: 'white', fontWeight: 'bold'}}>{filter.label}</Text>
-                            </TouchableOpacity>
-                        </View>
-                        {notifications.current.length > 0 ?
-                            <ScrollView style={{}} onMomentumScrollEnd={(e) => handleScroll(e.nativeEvent)}>
-                                {notifications.current?.map((item, index) =>
-
-                                    <TouchableOpacity
-                                        key={index}
-                                        style={[styles.itemList, {}]}
-                                        onPress={() => {
-                                            setIsVisible(true)
-                                            setId(item.push_notification_id);
-                                            setRead(item.read_at)
-                                        }}>
-                                        <View style={{
-                                            flex: 1,
-                                            flexDirection: "row",
-                                            marginHorizontal: 15,
-                                            marginVertical: 10
-                                        }}>
-                                            <View style={{flex: 1}}>
-                                                <View style={{flex: 1, justifyContent: "center"}}>
-                                                    <Text
-                                                        style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listTitle}]}>{item.title}</Text>
+                                        <TouchableOpacity
+                                            key={index}
+                                            style={[styles.itemList, {}]}
+                                            onPress={() => {
+                                                setIsVisible(true)
+                                                setId(item.push_notification_id);
+                                                setRead(item.read_at)
+                                            }}>
+                                            <View style={{
+                                                flex: 1,
+                                                flexDirection: "row",
+                                                marginHorizontal: 15,
+                                                marginVertical: 10
+                                            }}>
+                                                <View style={{flex: 1}}>
+                                                    <View style={{flex: 1, justifyContent: "center"}}>
+                                                        <Text
+                                                            style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listTitle}]}>{item.title}</Text>
+                                                    </View>
+                                                    <View style={{flex: 1, justifyContent: "flex-end"}}>
+                                                        <Text
+                                                            style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listDescription}]}>{moment(item?.created_at.substr(0, 10)).format("L")} {item?.created_at.substr(11, 5)}</Text>
+                                                    </View>
                                                 </View>
-                                                <View style={{flex: 1, justifyContent: "flex-end"}}>
-                                                    <Text
-                                                        style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listDescription}]}>{moment(item?.created_at.substr(0, 10)).format("L")} {item?.created_at.substr(11, 5)}</Text>
+                                                <View style={{flex: 0.5,}}>
+                                                    <View
+                                                        style={{
+                                                            alignItems: "flex-end",
+                                                            flex: 1,
+                                                            justifyContent: "center"
+                                                        }}>
+                                                        {item.read_at ?
+                                                            <Text
+                                                                style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listDescription}]}>Lido</Text>
+                                                            :
+                                                            <Text
+                                                                style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listDescription}]}>Não
+                                                                lido</Text>
+                                                        }
+                                                    </View>
+                                                    <View style={{
+                                                        flex: 1,
+                                                        alignItems: "flex-end",
+                                                        justifyContent: "flex-end"
+                                                    }}>
+                                                        <Text
+                                                            style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listDescription}]}>{moment(item.created_at).fromNow()}</Text>
+                                                    </View>
                                                 </View>
                                             </View>
-                                            <View style={{flex: 0.5,}}>
-                                                <View
-                                                    style={{alignItems: "flex-end", flex: 1, justifyContent: "center"}}>
-                                                    {item.read_at ?
-                                                        <Text
-                                                            style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listDescription}]}>Lido</Text>
-                                                        :
-                                                        <Text
-                                                            style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listDescription}]}>Não
-                                                            lido</Text>
-                                                    }
-                                                </View>
-                                                <View style={{
-                                                    flex: 1,
-                                                    alignItems: "flex-end",
-                                                    justifyContent: "flex-end"
-                                                }}>
-                                                    <Text
-                                                        style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listDescription}]}>{moment(item.created_at).fromNow()}</Text>
-                                                </View>
-                                            </View>
-                                        </View>
-                                    </TouchableOpacity>,
-                                )}
+                                        </TouchableOpacity>,
+                                    )}
 
 
-                            </ScrollView>
-                            :
-                            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', padding: 10}}>
-                                {/*<Image source={logo} style={styles.logo} />*/}
-                                <Text style={{fontSize: Texts.title, textAlign: 'center'}}>
-                                    Você ainda não possui nenhuma notificação
-                                </Text>
-                            </View>
-                        }
-                        <Modal
-                            animationType="slide"
-                            transparent={false}
-                            visible={isVisible}
-                            onRequestClose={() => {
-                                setIsVisible(false);
-                            }}
-                        >
-                            <NotificationComponent aluno={false} id={id} read={read}
-                                                   toast={(e) => refNotification.current.showToast(e)} close={(e) => {
-                                getData();
-                                setIsVisible(e);
-                            }}/>
-
-                        </Modal>
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={filterModal}
-                            onRequestClose={() => {
-                                setFilterModal(false);
-                            }}
-                        >
-                            <View style={styles.centeredView}>
-                                <View style={styles.modalView}>
-
-                                    <FilterNotification title={'Filtre suas notificações'} list={list}
-                                                        selected={filter.label} close={(e) => setFilterModal(e)}
-                                                        select={(item) => {
-                                                            isFilter.current = true;
-                                                            setFilter(item);
-                                                        }}/>
+                                </ScrollView>
+                                :
+                                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', padding: 10}}>
+                                    {/*<Image source={logo} style={styles.logo} />*/}
+                                    <Text style={{fontSize: Texts.title, textAlign: 'center'}}>
+                                        Você ainda não possui nenhuma notificação
+                                    </Text>
                                 </View>
-                            </View>
-                        </Modal>
+                            }
+                            <Modal
+                                animationType="slide"
+                                transparent={false}
+                                visible={isVisible}
+                                onRequestClose={() => {
+                                    setIsVisible(false);
+                                }}
+                            >
+
+                                <NotificationComponent aluno={false} id={id} read={read}
+                                                       toast={(e) => refNotification.current.showToast(e)}
+                                                       close={(e) => {
+                                                           getData();
+                                                           setIsVisible(e);
+                                                       }}/>
+
+                            </Modal>
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={filterModal}
+                                onRequestClose={() => {
+                                    setFilterModal(false);
+                                }}
+                            >
+                                <View style={styles.centeredView}>
+                                    <View style={styles.modalView}>
+
+                                        <FilterNotification title={'Filtre suas notificações'} list={list}
+                                                            selected={filter.label} close={(e) => setFilterModal(e)}
+                                                            select={(item) => {
+                                                                isFilter.current = true;
+                                                                setFilter(item);
+                                                            }}/>
+                                    </View>
+                                </View>
+                            </Modal>
+                        </KeyboardAvoidingView>
                     </View>
 
                 )}
