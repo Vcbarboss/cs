@@ -16,6 +16,7 @@ import {StudentNotificationList} from "../screens/Student/StudentNotificationLis
 import {ChatScreen} from "../screens/chat/ChatScreen";
 import {ProtocolScreen} from "../screens/chat/ProtocolScreen";
 import {DocumentSendScreen} from "../screens/Student/DocumentSendScreen";
+import {SchoolCalendar} from "../screens/InitialStackScreens/SchoolCalendar";
 
 
 const InitialStack = createStackNavigator();
@@ -70,7 +71,7 @@ export function InitialStackNavigator({navigation}) {
 
         <ToastNotification ref={refNotification} navigation={(e) => navigation.navigate(e)} />
         <InitialStack.Navigator initialRouteName={'ProtocolScreen'}>
-          <InitialStack.Screen name={'DocumentSendScreen'} component={DocumentSendScreen} options={{
+          <InitialStack.Screen name={'SchoolCalendar'} component={SchoolCalendar} options={{
             headerShown: false,
             gesturesEnabled: false,
             animationEnabled: false,

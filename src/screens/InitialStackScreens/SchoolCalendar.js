@@ -1,7 +1,7 @@
 import React, {useState, useCallback, useEffect, useRef} from "react";
 import "dayjs/locale/pt-br";
 import Loading from "../../components/Loading";
-import {Text, TouchableOpacity, View, ScrollView, StyleSheet, Dimensions} from "react-native";
+import {Alert, Text, TouchableOpacity, View, ScrollView, StyleSheet, Dimensions} from "react-native";
 import {Colors} from "../../helpers/Colors";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import IonIcon from "react-native-vector-icons/Ionicons";
@@ -12,13 +12,62 @@ import Toast from "../../components/Toast";
 import GeneralStatusBarColor from "../../components/StatusBarColor";
 import {useDispatch} from "react-redux";
 import Field from "../../components/Field";
+import {Calendar, LocaleConfig, CalendarList, Agenda} from 'react-native-calendars';
+import {Divider} from "react-native-paper";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 const screenWidth = Math.round(Dimensions.get("window").width);
+LocaleConfig.locales['br'] = {
+    monthNames: [
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro"
+    ],
+    monthNamesShort: [
+        "Jan.",
+        "Fev.",
+        "Mar",
+        "Abr",
+        "Mai",
+        "Jun",
+        "Jul.",
+        "Ago",
+        "Set.",
+        "Out.",
+        "Nov.",
+        "Dez."
+    ],
+    dayNames: [
+        "Domingo",
+        "Segunda",
+        "Terça",
+        "Quarta",
+        "Quinta",
+        "Sexta",
+        "Sábado"
+    ],
+    dayNamesShort: ["Dom.", "Seg.", "Ter.", "Qua.", "Qui.", "Sex.", "Sáb."]
+};
+
+LocaleConfig.defaultLocale = "br";
+
+const vacation = {key:'vacation', color: 'red', selectedDotColor: 'blue'};
+const massage = {key:'massage', color: 'blue', selectedDotColor: 'blue'};
+const workout = {key:'workout', color: 'green'};
 
 export function SchoolCalendar({navigation}) {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState();
+    const [items, setItems] = useState({})
     const api = useApi();
     const refNotification = useRef();
 
@@ -28,6 +77,59 @@ export function SchoolCalendar({navigation}) {
 
         }, []),
     );
+
+    const loadItems = (day) => {
+        setTimeout(() => {
+            for (let i = -15; i < 85; i++) {
+                const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+                const strTime = timeToString(time);
+                if (!items[strTime]) {
+                    items[strTime] = [];
+                    const numItems = Math.floor(Math.random() * 3 + 1);
+                    for (let j = 0; j < numItems; j++) {
+                        items[strTime].push({
+                            name: 'Item for ' + strTime + ' #' + j,
+                            height: Math.max(50, Math.floor(Math.random() * 150))
+                        });
+                    }
+                }
+            }
+            const newItems = {};
+            Object.keys(items).forEach(key => {
+                newItems[key] = items[key];
+            });
+            setItems(newItems)
+        }, 1000);
+    }
+
+    const renderItem = (item) => {
+        return (
+            <TouchableOpacity
+                testID={'item'}
+                style={[styles.it, {height: item.height}]}
+                onPress={() => Alert.alert(item.name)}
+            >
+                <Text>{item.name}</Text>
+            </TouchableOpacity>
+        );
+    }
+
+    const renderEmptyDate = () => {
+        return (
+            <View style={styles.emptyDate}>
+                <Text>This is empty date!</Text>
+            </View>
+        );
+    }
+
+    const rowHasChanged = (r1, r2) => {
+        return r1.name !== r2.name;
+    }
+
+    const timeToString = (time) => {
+        const date = new Date(time);
+        return date.toISOString().split('T')[0];
+    }
 
     return (
         <>
@@ -48,72 +150,27 @@ export function SchoolCalendar({navigation}) {
                             <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
 
                                 <Text style={{color: "white", fontSize: 23}}>Construindo o Saber</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle}}>Envio de Documento </Text>
+                                <Text style={{color: "white", fontSize: Texts.subtitle}}>Calendário Escolar</Text>
                             </View>
                         </View>
-                        <ScrollView style={{padding: 20, backgroundColor: 'white'}}>
-
-
-                            <View style={{flex: 1}}>
-                                <Field
-                                    label={'Nome do documento'}
-                                    placeholder={'Nome do documento...'}
-                                    change={(e) => {
-                                        console.log(e)
-                                    }}
+                        <View style={{flex: 1}}>
+                            <Agenda
+                                items={items}
+                                loadItemsForMonth={loadItems}
+                                selected={'2021-03-16'}
                                 />
-                            </View>
-                            <View>
-                                <TouchableOpacity style={{
-                                    borderWidth: 2,
-                                    borderRadius: 15,
-                                    borderColor: Colors.primary,
-                                    padding: 10,
-                                    marginVertical: 10,
-                                    backgroundColor: Colors.primary
-                                }}>
-                                    <Text style={{color: 'white', fontSize: 15}}>Selecionar documento</Text>
-                                </TouchableOpacity>
-                                <Text style={{marginLeft: 5}}>
-                                    Documentos selecionados...
-                                </Text>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    borderWidth: 1,
-                                    borderColor: '#7c7c7c',
-                                    borderRadius: 10,
-                                    padding: 20,
-                                    maxWidth: screenWidth * 0.8,
-                                    backgroundColor: 'white',
-                                    justifyContent: 'center',
-                                    marginVertical: 10,
-                                }}>
-                                    <IonIcon name={"document-outline"} style={{}} size={20} color={"black"}/>
-                                    <Text style={{color: Colors.primary, fontSize: 17}}>Certidão de Nascimento</Text>
-                                </View>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    borderWidth: 1,
-                                    borderColor: '#7c7c7c',
-                                    borderRadius: 10,
-                                    padding: 20,
-                                    maxWidth: screenWidth * 0.8,
-                                    backgroundColor: 'white',
-                                    justifyContent: 'center',
-                                    marginVertical: 10,
-                                }}>
-                                    <IonIcon name={"document-outline"} style={{}} size={20} color={"black"}/>
-                                    <Text style={{color: Colors.primary, fontSize: 17}}>Carteira de Vacinação</Text>
-                                </View>
-                            </View>
+                        </View>
 
-                        </ScrollView>
                     </>
                 )
             }
         </>
     );
+
+
 }
+
+
 
 const styles = StyleSheet.create({
     itemList: {
@@ -141,4 +198,17 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         color: Colors.primary,
     },
+    it: {
+        backgroundColor: 'white',
+        flex: 1,
+        borderRadius: 5,
+        padding: 10,
+        marginRight: 10,
+        marginTop: 17
+    },
+    emptyDate: {
+        height: 15,
+        flex: 1,
+        paddingTop: 30
+    }
 });
