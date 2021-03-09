@@ -116,12 +116,7 @@ const StudentList = React.forwardRef((props, ref) => {
                             right: -10,
                             zIndex: 10,
                           }}>{item.push_notification_recipients_count}</Badge>}
-                          {item.student.person.avatar ?
                             <Avatar.Image size={screenWidth*0.30} source={{ uri: item.student.person.avatar }} />
-                            :
-                            <Image source={image} style={styles.img} />
-                          }
-
                         </View>
                       </View>
                     </TouchableOpacity>

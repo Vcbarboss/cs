@@ -17,6 +17,7 @@ import {ChatScreen} from "../screens/chat/ChatScreen";
 import {ProtocolScreen} from "../screens/chat/ProtocolScreen";
 import {DocumentSendScreen} from "../screens/Student/DocumentSendScreen";
 import {SchoolCalendar} from "../screens/InitialStackScreens/SchoolCalendar";
+import {ClassScheduleScreen} from "../screens/Student/ClassScheduleScreen";
 
 
 const InitialStack = createStackNavigator();
@@ -70,12 +71,19 @@ export function InitialStackNavigator({navigation}) {
     <ErrorBoundary screenType={'initialStack'}>
 
         <ToastNotification ref={refNotification} navigation={(e) => navigation.navigate(e)} />
-        <InitialStack.Navigator initialRouteName={'ProtocolScreen'}>
+        <InitialStack.Navigator initialRouteName={'ClassScheduleScreen'}>
+
+          <InitialStack.Screen name={'ClassScheduleScreen'} component={ClassScheduleScreen} options={{
+            headerShown: false,
+            gesturesEnabled: false,
+            animationEnabled: false,
+          }}/>
           <InitialStack.Screen name={'SchoolCalendar'} component={SchoolCalendar} options={{
             headerShown: false,
             gesturesEnabled: false,
             animationEnabled: false,
           }}/>
+
           <InitialStack.Screen name={'LoadingScreen'} component={LoadingScreen} options={{
             headerShown: false,
             gesturesEnabled: false,
@@ -84,17 +92,23 @@ export function InitialStackNavigator({navigation}) {
               close: config,
             },
           }}/>
+          <InitialStack.Screen name={'FirstLoginScreen'} component={FirstLoginScreen} options={{
+            headerShown: false,
+            gesturesEnabled: false,
+            animationEnabled: false,
+          }}/>
+          <InitialStack.Screen name={'LoginScreen'} component={LoginScreen} options={{
+            headerShown: false,
+            gesturesEnabled: false,
+            animationEnabled: false,
+          }}/>
 
           <InitialStack.Screen name={'ForgotScreen'} component={ForgotPasswordScreen}  options={({navigation}) => {
             return {...CustomBackButton({title: "Esqueci minha Senha", navigation})}
           }}/>
 
 
-          <InitialStack.Screen name={'FirstLoginScreen'} component={FirstLoginScreen} options={{
-            headerShown: false,
-            gesturesEnabled: false,
-            animationEnabled: false,
-          }}/>
+
           <InitialStack.Screen name={'HomeStack'} component={MainStack} options={{
             headerShown: false,
             gesturesEnabled: false,

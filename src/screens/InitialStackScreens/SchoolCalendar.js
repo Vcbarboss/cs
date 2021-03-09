@@ -157,7 +157,7 @@ export function SchoolCalendar({navigation}) {
                             <Agenda
                                 items={items}
                                 loadItemsForMonth={loadItems}
-                                selected={'2021-03-16'}
+                                renderItem={renderItem}
                                 />
                         </View>
 
