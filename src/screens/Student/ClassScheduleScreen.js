@@ -181,7 +181,7 @@ export function ClassScheduleScreen({navigation}) {
                                 </TouchableOpacity>
                             </View>
                             <View style={{marginTop: 10}}>
-                                <View style={{backgroundColor: 'white', paddingVertical: 10}}>
+                                <View style={{backgroundColor: 'white', paddingTop: 10}}>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                         <View style={{
                                             height: 10,
