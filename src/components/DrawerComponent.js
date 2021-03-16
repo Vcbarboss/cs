@@ -155,6 +155,20 @@ export function DrawerComponent(props,) {
                         }}
                         labelStyle={{color: Colors.primary}}
                     />
+                    <DrawerItem
+                        icon={({color, size}) => (
+                            <IonIcon
+                                name="key-outline"
+                                color={Colors.primary}
+                                size={size}
+                            />
+                        )}
+                        label="Calendario"
+                        onPress={() => {
+                            props.navigation.navigate("SchoolCalendarScreen");
+                        }}
+                        labelStyle={{color: Colors.primary}}
+                    />
                     <DrawerItem icon={({color, size}) => (
                         <IonIcon
                             name={"ios-exit-outline"}

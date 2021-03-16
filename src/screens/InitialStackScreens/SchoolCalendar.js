@@ -14,6 +14,7 @@ import {useDispatch} from "react-redux";
 import Field from "../../components/Field";
 import {Calendar, LocaleConfig, CalendarList, Agenda} from 'react-native-calendars';
 import {Divider} from "react-native-paper";
+import moment from "moment";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 const screenWidth = Math.round(Dimensions.get("window").width);
@@ -60,30 +61,64 @@ LocaleConfig.locales['br'] = {
 
 LocaleConfig.defaultLocale = "br";
 
-const vacation = {key:'vacation', color: 'red', selectedDotColor: 'blue'};
-const massage = {key:'massage', color: 'blue', selectedDotColor: 'blue'};
-const workout = {key:'workout', color: 'green'};
+const vacation = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
+const massage = {key: 'massage', color: 'blue', selectedDotColor: 'blue'};
+const workout = {key: 'workout', color: 'green'};
 
-export function SchoolCalendar({navigation}) {
+export function SchoolCalendarScreen({navigation}) {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState();
     const [items, setItems] = useState({})
     const api = useApi();
     const refNotification = useRef();
+    const year = '2021'
+    const tst = useRef()
+
+    const getData = async () => {
+        try {
+            const res = await api.get(`app/calendar/${year}/list`);
+
+            //setItems(res.object.dates)
+            loadItems(res.object.dates)
+        } catch (e) {
+            console.log(e)
+            let aux;
+            for (let i = 0; i < Object.keys(e.validator).length; i++) {
+                aux = e.validator[Object.keys(e.validator)[i]][0];
+                break;
+            }
+            refNotification.current.showToast("warning", aux || "Conexão com servidor não estabelecida");
+
+        }
+    }
+
+    const loadItems = (date) => {
+        console.log(date)
+        const objArray = Object.entries(date)
+        objArray.map((item, index) => {
+            // console.log(item[0])
+            tst.current = {
+                ...tst.current,
+                [item[0]]: item[1].events
+            }
+        })
+        setItems(tst.current)
+    }
 
     useFocusEffect(
         React.useCallback(() => {
             Colors.theme = Colors.primary;
-
+            getData()
         }, []),
     );
 
-    const loadItems = (day) => {
+    const test = (day) => {
         setTimeout(() => {
             for (let i = -15; i < 85; i++) {
                 const time = day.timestamp + i * 24 * 60 * 60 * 1000;
                 const strTime = timeToString(time);
                 if (!items[strTime]) {
+
                     items[strTime] = [];
                     const numItems = Math.floor(Math.random() * 3 + 1);
                     for (let j = 0; j < numItems; j++) {
@@ -109,7 +144,7 @@ export function SchoolCalendar({navigation}) {
                 style={[styles.it, {height: item.height}]}
                 onPress={() => Alert.alert(item.name)}
             >
-                <Text>{item.name}</Text>
+                <Text>{item.description}</Text>
             </TouchableOpacity>
         );
     }
@@ -152,13 +187,15 @@ export function SchoolCalendar({navigation}) {
                                 <Text style={{color: "white", fontSize: 23}}>Construindo o Saber</Text>
                                 <Text style={{color: "white", fontSize: Texts.subtitle}}>Calendário Escolar</Text>
                             </View>
+                            <TouchableOpacity style={{}} onPress={() => console.log(tst.current)}>
+                                <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
+                            </TouchableOpacity>
                         </View>
                         <View style={{flex: 1}}>
                             <Agenda
                                 items={items}
-                                loadItemsForMonth={loadItems}
                                 renderItem={renderItem}
-                                />
+                            />
                         </View>
 
                     </>
@@ -169,7 +206,6 @@ export function SchoolCalendar({navigation}) {
 
 
 }
-
 
 
 const styles = StyleSheet.create({

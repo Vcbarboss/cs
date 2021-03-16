@@ -73,16 +73,12 @@ export function InitialStackNavigator({navigation}) {
         <ToastNotification ref={refNotification} navigation={(e) => navigation.navigate(e)} />
         <InitialStack.Navigator initialRouteName={'ClassScheduleScreen'}>
 
-          <InitialStack.Screen name={'ClassScheduleScreen'} component={ClassScheduleScreen} options={{
-            headerShown: false,
-            gesturesEnabled: false,
-            animationEnabled: false,
-          }}/>
-          <InitialStack.Screen name={'SchoolCalendar'} component={SchoolCalendar} options={{
-            headerShown: false,
-            gesturesEnabled: false,
-            animationEnabled: false,
-          }}/>
+          {/*<InitialStack.Screen name={'ClassScheduleScreen'} component={ClassScheduleScreen} options={{*/}
+          {/*  headerShown: false,*/}
+          {/*  gesturesEnabled: false,*/}
+          {/*  animationEnabled: false,*/}
+          {/*}}/>*/}
+
 
           <InitialStack.Screen name={'LoadingScreen'} component={LoadingScreen} options={{
             headerShown: false,
