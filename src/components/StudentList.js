@@ -39,6 +39,7 @@ const StudentList = React.forwardRef((props, ref) => {
       setLoading(true);
       try {
         const res = await api.get("app/enrollment/list");
+        console.log(res)
         setList(res.object);
       } catch (e) {
         let aux;
@@ -116,7 +117,11 @@ const StudentList = React.forwardRef((props, ref) => {
                             right: -10,
                             zIndex: 10,
                           }}>{item.push_notification_recipients_count}</Badge>}
-                            <Avatar.Image size={screenWidth*0.30} source={{ uri: item.student.person.avatar }} />
+                          {item.student.person.avatar ?
+                              <Avatar.Image size={screenWidth*0.30} source={{ uri: item.student.person.avatar }} />
+                              :
+                              <Image source={image} style={styles.img} />
+                          }
                         </View>
                       </View>
                     </TouchableOpacity>
@@ -148,6 +153,7 @@ const styles = StyleSheet.create({
   },
   img: {
     width: "100%",
+    height: 120,
     resizeMode: "contain",
     flex: 1,
   },

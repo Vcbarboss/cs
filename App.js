@@ -20,7 +20,7 @@ export default function App() {
         debug: false,
         environment: 'dev',
         autoSessionTracking: true,
-        release: 'cs ' + '1.5+',
+        release: 'cs ' + '1.9+',
     });
 
 

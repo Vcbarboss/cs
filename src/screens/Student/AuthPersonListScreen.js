@@ -37,7 +37,7 @@ export function AuthPersonListScreen({route, navigation}) {
         setLoading(true);
         try {
             const res = await api.get(`app/enrollment/${props.item.enrollment_id}/auth-person/list`);
-
+console.log(res)
             setData(res.object);
             setLoading(false);
         } catch (e) {
@@ -249,6 +249,7 @@ export function AuthPersonListScreen({route, navigation}) {
 }
 
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         display: "flex",

@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     Dimensions,
     Text,
-    SafeAreaView
+    SafeAreaView, Image
 } from "react-native";
 import {Colors} from "../../helpers/Colors";
 import Toast from "../../components/Toast";
@@ -23,8 +23,10 @@ import {StudentProfileComponent} from "../../components/StudentProfileComponent"
 import Badge from "react-native-paper/src/components/Badge";
 import Loading from "../../components/Loading";
 import GeneralStatusBarColor from "../../components/StatusBarColor";
+import image from "../../assets/imgs/userStudent.png";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
+const screenWidth = Math.round(Dimensions.get("window").width);
 
 export function StudentScreen({route, navigation}) {
 
@@ -76,7 +78,12 @@ export function StudentScreen({route, navigation}) {
                                 alignItems: "center",
 
                             }}>
-                                <Avatar.Image style={{}} size={100} source={{uri: props?.item.student.person.avatar}}/>
+                                {props?.item.student.person.avatar ?
+                                    <Avatar.Image style={{}} size={screenWidth*0.25} source={{uri: props?.item.student.person.avatar}}/>
+                                    :
+                                    <View style={{flex: 0.5}}>
+                                    </View>
+                                }
                             </View>
                         </View>
                         <ScrollView style={{backgroundColor: "white", elevation: 5}}>
@@ -124,7 +131,7 @@ export function StudentScreen({route, navigation}) {
                                                   onPress={() => navigation.navigate('FormListScreen',
                                                       {item: props?.item},
                                                   )}>
-                                    <AntIcon name={'filetext1'} size={30}/>
+                                    <AntIcon name={'form'} size={30}/>
                                     <Text style={{textAlign: 'center'}}> Formulários </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.itemList}
@@ -146,6 +153,33 @@ export function StudentScreen({route, navigation}) {
 
                                     <Text style={{textAlign: 'center'}}> Resposáveis retirada </Text>
                                 </TouchableOpacity>
+                            </View>
+                            <View style={{
+                                display: "flex",
+                                padding: 5,
+                                flexDirection: "row",
+                                justifyContent: "space-between"
+                            }}>
+                                {/*<TouchableOpacity style={styles.itemList}>*/}
+                                {/*  <AntIcon name={'table'} size={30}/>*/}
+                                {/*  <Text style={{textAlign: 'center'}}> Horário </Text>*/}
+                                {/*</TouchableOpacity>*/}
+                                <TouchableOpacity style={styles.itemList}
+                                                  onPress={() => navigation.navigate('DocumentSendScreen',
+                                                      {item: props?.item},
+                                                  )}>
+                                    <Icon name={'documents-outline'} size={30}/>
+                                    <Text style={{textAlign: 'center'}}> Documentos </Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={styles.itemList}
+                                                  onPress={() => navigation.navigate('ReportScreen',
+                                                      {item: props?.item},
+                                                  )}>
+                                    <Icon name={'documents-outline'} size={30}/>
+                                    <Text style={{textAlign: 'center'}}> Boletim </Text>
+                                </TouchableOpacity>
+
                             </View>
                         </ScrollView>
                         <Modal
@@ -220,5 +254,10 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: "white",
         textAlign: 'center'
+    },
+    img: {
+        width: "100%",
+        resizeMode: "contain",
+        flex: 1,
     },
 });

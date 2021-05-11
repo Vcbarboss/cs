@@ -6,8 +6,8 @@ export const Env = {
   header: {
     'X-Client-Device': 'android',
     Accept: 'application/json',
-    'X-Version-Name': '1.5',
-    'X-Version-Code': '6',
+    'X-Version-Name': '1.7',
+    'X-Version-Code': '8',
     'Content-Type': 'application/json',
   },
 };

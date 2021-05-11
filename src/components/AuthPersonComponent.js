@@ -107,7 +107,6 @@ export function AuthPersonComponent(props, { navigation }) {
       <View style={{
         padding: 20,
         display: "flex",
-        flexWrap: "wrap",
         justifyContent: "space-between",
       }}>
 

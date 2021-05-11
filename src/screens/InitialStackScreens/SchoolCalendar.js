@@ -15,9 +15,25 @@ import Field from "../../components/Field";
 import {Calendar, LocaleConfig, CalendarList, Agenda} from 'react-native-calendars';
 import {Divider} from "react-native-paper";
 import moment from "moment";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 const screenWidth = Math.round(Dimensions.get("window").width);
+const monthNames = [
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro"
+]
+
 LocaleConfig.locales['br'] = {
     monthNames: [
         "Janeiro",
@@ -73,6 +89,10 @@ export function SchoolCalendarScreen({navigation}) {
     const refNotification = useRef();
     const year = '2021'
     const tst = useRef()
+    const atualDay = useRef()
+    const [month, setMonth] = useState();
+    const [letivo, setLetivo] = useState()
+    const [calendarOpen, setCalendarOpen] = useState(false)
 
     const getData = async () => {
         try {
@@ -93,15 +113,28 @@ export function SchoolCalendarScreen({navigation}) {
     }
 
     const loadItems = (date) => {
-        console.log(date)
         const objArray = Object.entries(date)
+        let letivoArray = []
         objArray.map((item, index) => {
-            // console.log(item[0])
+            //console.log(item)
+
+            if(item[1].events.length > 0){
+                item[1].events[0] = {
+                    ...item[1].events[0],
+                    school_day: item[1].school_day
+                }
+            }
             tst.current = {
                 ...tst.current,
                 [item[0]]: item[1].events
             }
+            if(item[1].school_day){
+                letivoArray.push(item[0])
+
+            }
+
         })
+        setLetivo(letivoArray)
         setItems(tst.current)
     }
 
@@ -123,7 +156,7 @@ export function SchoolCalendarScreen({navigation}) {
                     const numItems = Math.floor(Math.random() * 3 + 1);
                     for (let j = 0; j < numItems; j++) {
                         items[strTime].push({
-                            name: 'Item for ' + strTime + ' #' + j,
+                            name: 'item para ' + strTime + ' #' + j,
                             height: Math.max(50, Math.floor(Math.random() * 150))
                         });
                     }
@@ -139,26 +172,48 @@ export function SchoolCalendarScreen({navigation}) {
 
     const renderItem = (item) => {
         return (
-            <TouchableOpacity
+            <View
                 testID={'item'}
-                style={[styles.it, {height: item.height}]}
-                onPress={() => Alert.alert(item.name)}
+                style={[styles.it, {height: item.height,flexDirection: 'row'}]}
             >
-                <Text>{item.description}</Text>
-            </TouchableOpacity>
-        );
-    }
+                <Text style={{flex: 1}}>{item.description}</Text>
+                <View style={{flex: 0.5,alignItems: 'flex-end', justifyContent: 'center'}}>
+                    {item.school_day ?
+                        <Text style={{color: '#46c38b'}}>Dia letivo</Text>
+                        :
+                        <Text style={{color: Colors.red}}>Dia não letivo</Text>
+                    }
+                </View>
 
-    const renderEmptyDate = () => {
-        return (
-            <View style={styles.emptyDate}>
-                <Text>This is empty date!</Text>
             </View>
         );
     }
 
-    const rowHasChanged = (r1, r2) => {
-        return r1.name !== r2.name;
+    function pad(d) {
+        return (d < 10) ? '0' + d.toString() : d.toString();
+    }
+
+    const renderEmpty = (e) => {
+        let aux
+           aux = moment(e[0]).add(1, 'days').format('YYYY-MM-DD')
+
+        const date = aux
+        return (
+            <View
+                testID={'item'}
+                 style={[styles.it, {flexDirection: 'row'}]}
+            >
+                <Text style={{flex: 1}}></Text>
+                <View style={{flex: 0.5,alignItems: 'flex-end', justifyContent: 'center'}}>
+                    {letivo.includes(date) ?
+                        <Text style={{color: '#46c38b'}}>Dia letivo</Text>
+                        :
+                        <Text style={{color: Colors.red}}>Dia não letivo</Text>
+                    }
+                </View>
+
+            </View>
+        );
     }
 
     const timeToString = (time) => {
@@ -187,24 +242,55 @@ export function SchoolCalendarScreen({navigation}) {
                                 <Text style={{color: "white", fontSize: 23}}>Construindo o Saber</Text>
                                 <Text style={{color: "white", fontSize: Texts.subtitle}}>Calendário Escolar</Text>
                             </View>
-                            <TouchableOpacity style={{}} onPress={() => console.log(tst.current)}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
-                            </TouchableOpacity>
+                        </View>
+
+                        <View style={{
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            height: "auto",
+                            backgroundColor: 'white'
+                        }}>
+                            {calendarOpen ?
+
+                                <Text style={styles.date}> Calendário </Text>
+                                :
+                                <Text style={styles.date}> {month} </Text>
+                            }
                         </View>
                         <View style={{flex: 1}}>
+
+
                             <Agenda
                                 items={items}
                                 renderItem={renderItem}
+                                renderEmptyDate={renderEmpty}
+                                loadItemsForMonth={(e) => setMonth(monthNames[e.month - 1] + ' ' + e.year)}
+                                onDayChange={(e) => {
+                                    setMonth(monthNames[e.month - 1] + ' ' + e.year)
+                                    atualDay.current = e.dateString
+                                }}
+                                onDayPress={(e) => setMonth(monthNames[e.month - 1] + ' ' + e.year)}
+                                onCalendarToggled={(calendarOpened) => setCalendarOpen(calendarOpened)}
+                                renderKnob={() => {
+                                    return (
+                                        <TouchableOpacity>
+                                            <Icon name="chevron-down" size={20} color="#2079B3"/>
+                                        </TouchableOpacity>
+                                    );
+                                }}
+
+                                theme={{
+                                    selectedDayBackgroundColor: '#00adf5',
+                                    selectedDayTextColor: '#ffffff',
+                                }}
+
                             />
                         </View>
-
                     </>
                 )
             }
         </>
     );
-
-
 }
 
 
@@ -246,5 +332,12 @@ const styles = StyleSheet.create({
         height: 15,
         flex: 1,
         paddingTop: 30
-    }
+    },
+    date: {
+        color: "#2079B3",
+        fontSize: 18,
+        padding: 10,
+        margin: 5,
+        borderRadius: 5
+    },
 });

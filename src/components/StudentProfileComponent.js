@@ -20,8 +20,10 @@ import { Texts } from "../helpers/Texts";
 import moment from "moment";
 import { Avatar } from "react-native-paper";
 import GeneralStatusBarColor from "./StatusBarColor";
+import image from "../assets/imgs/userStudent.png";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
+const screenWidth = Math.round(Dimensions.get("window").width);
 
 export function StudentProfileComponent(props, { navigation }) {
 
@@ -48,7 +50,12 @@ export function StudentProfileComponent(props, { navigation }) {
           backgroundColor: Colors.theme,
           alignItems: "center",
         }}>
-          <Avatar.Image size={150} source={{ uri: data.student.person.avatar }} />
+          {data.student.person.avatar ?
+
+              <Avatar.Image size={screenWidth*0.35} source={{ uri: data.student.person.avatar }} />
+              :
+              <Image source={image} style={styles.img} />
+          }
           <Text
             style={{
               fontSize: 25,
@@ -148,5 +155,12 @@ const styles = StyleSheet.create({
   class: {
     fontSize: 20,
     color: "white",
+  },
+
+  img: {
+    width: "100%",
+    height: 120,
+    resizeMode: "contain",
+    flex: 1,
   },
 });

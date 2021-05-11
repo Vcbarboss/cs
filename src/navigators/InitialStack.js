@@ -15,8 +15,6 @@ import { MainStack } from "./DrawerStack";
 import {StudentNotificationList} from "../screens/Student/StudentNotificationList";
 import {ChatScreen} from "../screens/chat/ChatScreen";
 import {ProtocolScreen} from "../screens/chat/ProtocolScreen";
-import {DocumentSendScreen} from "../screens/Student/DocumentSendScreen";
-import {SchoolCalendar} from "../screens/InitialStackScreens/SchoolCalendar";
 import {ClassScheduleScreen} from "../screens/Student/ClassScheduleScreen";
 
 
@@ -71,7 +69,7 @@ export function InitialStackNavigator({navigation}) {
     <ErrorBoundary screenType={'initialStack'}>
 
         <ToastNotification ref={refNotification} navigation={(e) => navigation.navigate(e)} />
-        <InitialStack.Navigator initialRouteName={'ClassScheduleScreen'}>
+        <InitialStack.Navigator initialRouteName={'LoadingScreen'}>
 
           {/*<InitialStack.Screen name={'ClassScheduleScreen'} component={ClassScheduleScreen} options={{*/}
           {/*  headerShown: false,*/}
