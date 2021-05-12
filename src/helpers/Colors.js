@@ -3,6 +3,7 @@ export const Colors = {
   secondary: "#f29993",
   theme: '#00296b',
   lightgray: "gainsboro",
+  mediumGrey: '#9c9c9c',
   backgroundDefault: "#eff0f4",
   selected: "#e9f9f4",
   selectedBorder: "#22c58b",

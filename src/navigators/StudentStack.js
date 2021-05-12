@@ -9,7 +9,8 @@ import {StudentNotificationList} from "../screens/Student/StudentNotificationLis
 import {FormEditScreen} from "../screens/Student/Form/FormEditScreen";
 import {KeyboardAvoidingView, Platform} from "react-native";
 import {DocumentSendScreen} from "../screens/Student/DocumentSendScreen";
-import {ReportScreen} from "../screens/Student/ReportScreen";
+import {ReportScreen} from "../screens/Student/Report/ReportScreen";
+import {ReportDetailsScreen} from "../screens/Student/Report/ReportDetailsScreen";
 
 const StudentStack = createStackNavigator();
 
@@ -81,6 +82,13 @@ export function StudentStackNavigator({route, navigation}) {
 
                     <StudentStack.Screen name={'ReportScreen'} initialParams={props}
                                          component={ReportScreen} options={{
+                        headerShown: false,
+                        gesturesEnabled: false,
+                        animationEnabled: false,
+                    }}/>
+
+                    <StudentStack.Screen name={'ReportDetailsScreen'} initialParams={props}
+                                         component={ReportDetailsScreen} options={{
                         headerShown: false,
                         gesturesEnabled: false,
                         animationEnabled: false,
