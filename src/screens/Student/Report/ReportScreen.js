@@ -21,56 +21,13 @@ import {Picker} from '@react-native-picker/picker';
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
-const materias = ["Artes", "Biologia", "Educacao Fisica", "Fisica", "Geografia", "Historia", "Ingles", "Matematica", "Portugues", "Quimica"]
+// const materias = ["Artes", "Biologia", "Educacao Fisica", "Fisica", "Geografia", "Historia", "Ingles", "Matematica", "Portugues", "Quimica"]
 
-const colors = ["#3a86ff", "#02bef1", "#0091ad", "#4d908e", "#a2e983", "#ffae1b", "#ff6b6b", "#E63946", "#f72585", "#7209B7"]
+// const colors = ["#3a86ff", "#02bef1", "#0091ad", "#4d908e", "#a2e983", "#ffae1b", "#ff6b6b", "#E63946", "#f72585", "#7209B7"]
 
-const notas = [
-    {
-        value: 10,
-        color: '#80ED99'
-    },
-    {
-        value: 9,
-        color: '#6FD3B3'
-    },
-    {
-        value: 8,
-        color: '#5DBACC'
-    },
-    {
-        value: 7,
-        color: '#4CA0E6'
-    },
-    {
-        value: 6,
-        color: '#3A86FF'
-    },
-    {
-        value: 5,
-        color: '#FFCB47'
-    },
-    {
-        value: 4,
-        color: '#FFB139'
-    },
-    {
-        value: 3,
-        color: '#FF962B'
-    },
-    {
-        value: 2,
-        color: '#FF7C1C'
-    },
-    {
-        value: 1,
-        color: '#FF610E'
-    },
-    {
-        value: 0,
-        color: '#FF4700'
-    },
-]
+const media = ['#80ED99', '#6FD3B3', '#5DBACC', '#4CA0E6', '#3A86FF', '#FFCB47', '#FFB139', '#FF962B', '#FF7C1C', '#FF610E','#FF4700',]
+
+const colors = {}
 
 export function ReportScreen({route, navigation}) {
 
@@ -78,16 +35,23 @@ export function ReportScreen({route, navigation}) {
     const api = useApi({navigation});
     const refNotification = useRef();
     const props = route.params;
-    const [data, setData] = useState();
+    const data = useRef()
     const [isVisible, setIsVisible] = useState(false);
+    const sections = useRef([])
+    const [currentData, setCurrentData] = useState()
     const [selected, setSelected] = useState("Bimestre 1");
 
     const getData = async () => {
-        setLoading(true);
+        //setLoading(true);
         try {
-            const res = await api.get(`app/enrollment/${props.item.enrollment_id}/auth-person/list`);
+            const res = await api.get(`app/student-grade/${props.item.enrollment_id}/list`);
+            sections.current = []
             console.log(res)
-            setData(res.object);
+            data.current = res.object;
+            for (let i = 0; i < res.object.length; i++) {
+                sections.current.push(res.object[i].stage_description)
+            }
+            onChange(0)
             setLoading(false);
         } catch (e) {
             let aux;
@@ -100,10 +64,16 @@ export function ReportScreen({route, navigation}) {
         }
     };
 
+    const onChange = (value) => {
+        console.log(value)
+        setCurrentData(data.current[value])
+
+    }
+
     useFocusEffect(
         React.useCallback(() => {
             if (!isVisible) {
-                // getData()
+                getData()
             }
         }, [isVisible]),
     );
@@ -138,51 +108,51 @@ export function ReportScreen({route, navigation}) {
                                 <Text style={{color: "white", fontSize: Texts.subtitle,}}>Boletim Escolar</Text>
 
                             </View>
-                            <TouchableOpacity style={{marginTop: 10, alignItems: "flex-end"}}
-                                              onPress={() => setIsVisible(true)}>
-
-                            </TouchableOpacity>
+                            {/*<TouchableOpacity style={{marginTop: 10, alignItems: "flex-end"}}*/}
+                            {/*                  onPress={() => console.log(currentData)}>*/}
+                            {/*    <Text>Print</Text>*/}
+                            {/*</TouchableOpacity>*/}
                         </View>
 
                         <View style={{backgroundColor: 'white', margin: 10, width: 180}}>
                             <Picker
                                 selectedValue={selected}
                                 dropdownIconColor={Colors.theme}
-                                onValueChange={(itemValue, itemIndex) =>
+                                onValueChange={(itemValue, itemIndex) => {
                                     setSelected(itemValue)
-                                }>
-                                <Picker.Item label={"Bimestre 1"} value={1}/>
-                                <Picker.Item label={"Bimestre 2"} value={2}/>
-                                <Picker.Item label={"Bimestre 3"} value={3}/>
-                                <Picker.Item label={"Bimestre 4"} value={4}/>
+                                    onChange(itemValue)
+                                }                                }>
+                                {sections.current.map((item, index) =>
+                                    <Picker.Item label={item} value={index} key={index}/>
+                                )}
                             </Picker>
                         </View>
 
 
                         <ScrollView>
-                            {materias.map((item, index) =>
+                            {currentData?.school_subject_list.map((item, index) =>
                                 <TouchableOpacity
                                     key={index}
                                     style={styles.card}
                                     onPress={() => navigation.navigate('ReportDetailsScreen', {
-                                        subject: item,
-                                        color: notas[index]?.color,
-                                        value: notas[index]?.value,
-                                        selected: selected
+                                        record: item,
+                                        selected: currentData.stage_description,
+                                        attendance: currentData.attendance
                                     })}
                                 >
                                     <View style={{padding: 20, flex: 1}}>
                                         <Text style={{fontSize: Texts.subtitle, fontWeight: 'bold'}}>
-                                            {item}
+                                            {item.school_subject_acronym}
                                         </Text>
                                         <View style={{justifyContent: 'flex-end',}}>
-                                            <Text style={{fontSize: Texts.normal, color: Colors.mediumGrey}}>Faltas: 9</Text>
+                                            <Text style={{fontSize: Texts.normal, color: Colors.mediumGrey}}>
+                                                Faltas: {item.attendance}</Text>
                                         </View>
                                     </View>
 
                                     <View style={{
                                         flex: 0.3,
-                                        backgroundColor: notas[index]?.color,
+                                        backgroundColor: item.grade_general ? Colors.notas[parseInt(item.grade_general)]?.color : '#1c2838',
                                         borderTopRightRadius: 15,
                                         borderBottomRightRadius: 15,
                                         justifyContent: 'center',
@@ -191,8 +161,9 @@ export function ReportScreen({route, navigation}) {
                                         <Text style={{
                                             color: 'white',
                                             fontWeight: 'bold',
-                                            fontSize: 35
-                                        }}>{notas[index]?.value}</Text>
+                                            fontSize: 30
+                                        }}>{item.grade_general ? parseFloat(item.grade_general).toFixed(1) : '-'}</Text>
+                                        <Text style={{color: 'white'}}>{item.grade_status ? item.grade_status : "Parcial"}</Text>
                                     </View>
 
                                 </TouchableOpacity>
