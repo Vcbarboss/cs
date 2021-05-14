@@ -97,7 +97,7 @@ export function SchoolCalendarScreen({navigation}) {
     const getData = async () => {
         try {
             const res = await api.get(`app/calendar/${year}/list`);
-
+console.log(res)
             //setItems(res.object.dates)
             loadItems(res.object.dates)
         } catch (e) {
@@ -233,13 +233,13 @@ export function SchoolCalendarScreen({navigation}) {
                         <Toast ref={refNotification}/>
                         <GeneralStatusBarColor backgroundColor={Colors.primary}
                                                barStyle="light-content"/>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 20}}>
+                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
                             <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
                                 <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
                             </TouchableOpacity>
                             <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
 
-                                <Text style={{color: "white", fontSize: 23}}>Construindo o Saber</Text>
+                                <Text style={{color: "white", fontSize: Texts.title}}>Construindo o Saber</Text>
                                 <Text style={{color: "white", fontSize: Texts.subtitle}}>Calendário Escolar</Text>
                             </View>
                         </View>

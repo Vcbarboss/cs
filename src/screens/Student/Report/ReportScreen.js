@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import {
     Modal,
     StyleSheet,
@@ -42,11 +42,10 @@ export function ReportScreen({route, navigation}) {
     const [selected, setSelected] = useState("Bimestre 1");
 
     const getData = async () => {
-        //setLoading(true);
+        setLoading(true);
         try {
             const res = await api.get(`app/student-grade/${props.item.enrollment_id}/list`);
             sections.current = []
-            console.log(res)
             data.current = res.object;
             for (let i = 0; i < res.object.length; i++) {
                 sections.current.push(res.object[i].stage_description)
@@ -65,18 +64,14 @@ export function ReportScreen({route, navigation}) {
     };
 
     const onChange = (value) => {
-        console.log(value)
         setCurrentData(data.current[value])
 
     }
 
-    useFocusEffect(
-        React.useCallback(() => {
-            if (!isVisible) {
-                getData()
-            }
-        }, [isVisible]),
-    );
+
+    useEffect(() => {
+        getData()
+    },[]);
 
     return (
 
@@ -98,13 +93,13 @@ export function ReportScreen({route, navigation}) {
                         <View style={{backgroundColor: Colors.opt1}}>
 
                         </View>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 20}}>
+                        <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 10}}>
                             <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
                                 <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
                             </TouchableOpacity>
                             <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                                <Text style={{color: "white", fontSize: 23,}}>Construindo o Saber</Text>
+                                <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
                                 <Text style={{color: "white", fontSize: Texts.subtitle,}}>Boletim Escolar</Text>
 
                             </View>
@@ -114,8 +109,9 @@ export function ReportScreen({route, navigation}) {
                             {/*</TouchableOpacity>*/}
                         </View>
 
-                        <View style={{backgroundColor: 'white', margin: 10, width: 180}}>
+                        <View style={styles.drop }>
                             <Picker
+
                                 selectedValue={selected}
                                 dropdownIconColor={Colors.theme}
                                 onValueChange={(itemValue, itemIndex) => {
@@ -142,7 +138,7 @@ export function ReportScreen({route, navigation}) {
                                 >
                                     <View style={{padding: 20, flex: 1}}>
                                         <Text style={{fontSize: Texts.subtitle, fontWeight: 'bold'}}>
-                                            {item.school_subject_acronym}
+                                            {item.school_subject_description}
                                         </Text>
                                         <View style={{justifyContent: 'flex-end',}}>
                                             <Text style={{fontSize: Texts.normal, color: Colors.mediumGrey}}>
@@ -182,39 +178,22 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         display: "flex",
+        // backgroundColor: 'white',
+    },
+    drop:{
         backgroundColor: 'white',
-    },
-    centeredView: {
-        flex: 1,
-        backgroundColor: "rgba(60, 60, 60, 0.5)",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: "white",
-        borderRadius: 10,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
+        borderWidth: 1,
+        borderColor: 'grey',
+        margin: 10,
+        borderRadius: 5,
+        elevation: 2,
+        shadowColor: "#000000",
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
         shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-    },
-    title: {
-        fontSize: Texts.listTitle,
-        fontWeight: "bold",
-        marginVertical: 5,
-        color: Colors.primary,
-    },
-    subtitle: {
-        fontSize: Texts.listDescription,
-        marginTop: 5,
-        color: Colors.primary
+            height: 1,
+            width: 1
+        }
     },
     card: {
         flexDirection: 'row',

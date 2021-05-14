@@ -12,6 +12,7 @@ import { StudentStackNavigator } from "./StudentStack";
 import {ChatScreen} from "../screens/chat/ChatScreen";
 import {SectorScreen} from "../screens/chat/SectorScreen";
 import {SchoolCalendar, SchoolCalendarScreen} from "../screens/InitialStackScreens/SchoolCalendar";
+import {ClassScheduleScreen} from "../screens/Student/ClassScheduleScreen";
 
 const HomeStack = createStackNavigator();
 
@@ -57,6 +58,7 @@ export function HomeStackNavigator({navigation}) {
             gesturesEnabled: false,
             animationEnabled: false,
           }}/>
+
           <HomeStack.Screen name={'EditScreen'} component={EditScreen} options={{
             headerShown: false,
             gesturesEnabled: false,

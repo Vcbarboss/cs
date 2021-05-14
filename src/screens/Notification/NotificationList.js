@@ -138,17 +138,17 @@ export function NotificationList({navigation}) {
                             {/*    backgroundColor={Colors.primary}*/}
                             {/*    barStyle="light-content"*/}
                             {/*/>*/}
-                            <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 20}}>
+                            <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
                                 <View>
                                     <TouchableOpacity style={{flex: 1}} onPress={() => {
                                         navigation.reset({index: 0, routes: [{name: "HomeStack"}]});
                                     }}>
-                                        <AntIcon name={"arrowleft"} style={{marginTop: 20,}} size={25} color={"white"}/>
+                                        <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
                                     </TouchableOpacity>
                                 </View>
 
                                 <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
-                                    <Text style={{color: "white", fontSize: 23,}}>Construindo o Saber</Text>
+                                    <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
                                     <Text style={{color: "white", fontSize: Texts.subtitle,}}> Notificações </Text>
                                 </View>
                                 <TouchableOpacity style={{alignItems: 'center', justifyContent: 'center'}}

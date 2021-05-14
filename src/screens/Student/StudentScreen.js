@@ -63,14 +63,14 @@ export function StudentScreen({route, navigation}) {
                         <View style={{backgroundColor: Colors.opt1}}>
 
                         </View>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 20}}>
+                        <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 10}}>
                             <View>
                                 <TouchableOpacity style={{ flex: 1}} onPress={() => navigation.pop()}>
                                     <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
                                 </TouchableOpacity>
                             </View>
 
-                            <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+                            <View style={{flex: 1, alignItems: "center", justifyContent: "center", padding: 10}}>
                                 <Text style={styles.name}>{props?.item.student.person.name}</Text>
                                 <Text style={styles.class}>{props?.item.class_room.description} </Text>
                             </View>
@@ -176,8 +176,25 @@ export function StudentScreen({route, navigation}) {
                                                   onPress={() => navigation.navigate('ReportScreen',
                                                       {item: props?.item},
                                                   )}>
-                                    <Icon name={'documents-outline'} size={30}/>
+                                    <Icon name={'ios-receipt-outline'} size={30}/>
                                     <Text style={{textAlign: 'center'}}> Boletim </Text>
+                                </TouchableOpacity>
+
+                            </View>
+                            <View style={{
+                                display: "flex",
+                                padding: 5,
+                                flexDirection: "row",
+                                justifyContent: "space-between"
+                            }}>
+                                <TouchableOpacity style={styles.itemList}
+                                onPress={() =>
+                                navigation.navigate('ClassScheduleScreen',
+                                    {item: props?.item},
+                                )
+                                }>
+                                  <AntIcon name={'table'} size={30}/>
+                                  <Text style={{textAlign: 'center'}}> Horário </Text>
                                 </TouchableOpacity>
 
                             </View>

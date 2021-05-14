@@ -83,7 +83,7 @@ export function FormListScreen({ route, navigation }) {
             <View style={{ backgroundColor: Colors.opt1 }}>
 
             </View>
-            <View style={{ flexDirection: "row", backgroundColor: Colors.theme, padding: 20 }}>
+            <View style={{ flexDirection: "row", backgroundColor: Colors.theme, padding: 10,  }}>
               <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
                 <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"} />
               </TouchableOpacity>

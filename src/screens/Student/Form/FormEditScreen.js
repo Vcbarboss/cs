@@ -209,13 +209,13 @@ export function FormEditScreen({route, navigation}) {
                         {/*    barStyle="light-content"*/}
                         {/*/>*/}
 
-                        <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 20}}>
+                        <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 10}}>
                             <TouchableOpacity style={{}} onPress={() => navigation.pop(2)}>
                                 <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
                             </TouchableOpacity>
                             <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
 
-                                <Text style={{color: "white", fontSize: 23,}}>Construindo o Saber</Text>
+                                <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
                                 <Text style={{color: "white", fontSize: Texts.subtitle,}}> {data?.form.title} </Text>
                             </View>
                             <TouchableOpacity style={{alignItems: "flex-end", justifyContent: "center"}}

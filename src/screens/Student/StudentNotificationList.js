@@ -141,7 +141,7 @@ export function StudentNotificationList({route, navigation}) {
                             {/*  backgroundColor={Colors.theme}*/}
                             {/*  barStyle="light-content"*/}
                             {/*/>*/}
-                            <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 20}}>
+                            <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 10}}>
                                 <TouchableOpacity style={{}} onPress={() => {
                                     if (props?.notification) {
                                         navigation.reset({index: 0, routes: [{name: "HomeStack"}]});
@@ -153,7 +153,7 @@ export function StudentNotificationList({route, navigation}) {
                                     <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
                                 </TouchableOpacity>
                                 <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
-                                    <Text style={{color: "white", fontSize: 23,}}>Construindo o Saber</Text>
+                                    <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
                                     <Text style={{color: "white", fontSize: Texts.subtitle,}}>Notificações </Text>
                                 </View>
                                 <TouchableOpacity style={{alignItems: "center", justifyContent: 'center'}}

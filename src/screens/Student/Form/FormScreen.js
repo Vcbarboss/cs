@@ -80,7 +80,7 @@ export function FormScreen({ route, navigation }) {
             {/*  barStyle="light-content"*/}
             {/*/>*/}
 
-            <View style={{ flexDirection: "row", backgroundColor: Colors.theme, padding: 20 }}>
+            <View style={{ flexDirection: "row", backgroundColor: Colors.theme, padding: 10,  }}>
               <TouchableOpacity style={{  }} onPress={() => navigation.pop()}>
                 <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"} />
               </TouchableOpacity>

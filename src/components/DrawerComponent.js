@@ -100,6 +100,7 @@ export function DrawerComponent(props,) {
                         labelStyle={{color: Colors.primary}}
                     />
 
+
                 </Drawer.Section>
                 <Drawer.Section style={styles.drawerSection}>
                     <DrawerItem

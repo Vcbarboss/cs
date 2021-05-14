@@ -12,7 +12,7 @@ export const Colors = {
     pink: '#ef7d95',
     green: "#5bc077",
     red: "#e83b52",
-    opt1: "#4b62c2",
+    opt1: "#263e96",
     opt2: "#3fb65f",
     opt3: "#f29993",
     opt4: "#5c4e8e",

@@ -130,13 +130,13 @@ export function FirstLoginScreen({navigation}) {
                 {/*    backgroundColor={Colors.primary}*/}
                 {/*    barStyle="light-content"*/}
                 {/*/>*/}
-                <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 20}}>
+                <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
                     <TouchableOpacity style={{}} onPress={() => doLogout()}>
                         <AntIcon name={"arrowleft"} style={{}} size={25} color={"white"}/>
                     </TouchableOpacity>
                     <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                        <Text style={{color: "white", fontSize: 23,}}>Construindo o Saber</Text>
+                        <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
                         <Text style={{color: "white", fontSize: Texts.subtitle,}}>Contato </Text>
                     </View>
                     <TouchableOpacity style={{alignItems: "flex-end", justifyContent: "center"}}>

@@ -21,69 +21,17 @@ import {Picker} from '@react-native-picker/picker';
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
-const notas = [
-    {
-        title: 'Nota Mensal 1',
-        value: 4,
-    },
-    {
-        title: 'Nota Mensal 2',
-        value: 8,
-    },
-    {
-        title: 'Nota Bimestral',
-        value: 6,
-    },
-    {
-        title: 'Nota de Projetos',
-        value: 6,
-    },
-    {
-        title: 'Simulado 1',
-        value: 3,
-    },
-    {
-        title: 'Simulado 2',
-        value: 2,
-    },
-    {
-        title: 'Média Final',
-        value: 6,
-    },
-]
-
 export function ReportDetailsScreen({route, navigation}) {
 
     const [loading, setLoading] = useState(false);
     const api = useApi({navigation});
     const refNotification = useRef();
     const props = route.params;
-    const [data, setData] = useState();
     const [isVisible, setIsVisible] = useState(false);
-    const [selected, setSelected] = useState();
-
-    const getData = async () => {
-        setLoading(true);
-        try {
-            const res = await api.get(`app/enrollment/${props.item.enrollment_id}/auth-person/list`);
-            console.log(res)
-            setData(res.object);
-            setLoading(false);
-        } catch (e) {
-            let aux;
-            for (let i = 0; i < Object.keys(e.validator).length; i++) {
-                aux = e.validator[Object.keys(e.validator)[i]][0];
-                break;
-            }
-            refNotification.current.showToast("warning", aux || "Conexão com servidor não estabelecida");
-            setLoading(false);
-        }
-    };
 
     useFocusEffect(
         React.useCallback(() => {
             if (!isVisible) {
-                console.log(props)
                 // getData()
             }
         }, [isVisible]),
@@ -109,7 +57,7 @@ export function ReportDetailsScreen({route, navigation}) {
                         <View style={{backgroundColor: Colors.opt1}}>
 
                         </View>
-                        <View style={{flexDirection: "row", backgroundColor: 'white', padding: 20, elevation: 3,}}>
+                        <View style={{flexDirection: "row", backgroundColor: 'white', padding: 10, elevation: 3,}}>
                             <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
                                 <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={Colors.theme}/>
                             </TouchableOpacity>
@@ -139,10 +87,14 @@ export function ReportDetailsScreen({route, navigation}) {
                                     fontWeight: 'bold',
                                     color: 'black'
                                 }}>{props.item.student.person.name}</Text>
-                                <Text style={{fontSize: Texts.normal}}>{props.record.teacher_name}</Text>
-                                <Text style={{color: 'black'}}>{props.selected} - Resultado {props.record.grade_status}</Text>
-                                <Text style={{color: 'black', fontWeight: 'bold'}}>Média Anual : <Text style={{color: 'black'}}>{parseFloat(props.record.grade_anual).toFixed(1)}</Text></Text>
+                                <Text
+                                    style={{fontSize: Texts.normal}}>{props.record.teacher_name ? props.record.teacher_name : '-'}</Text>
+                                <Text
+                                    style={{color: 'black'}}>{props.selected} {props.record.grade_status ? '- Resultado ' + props.record.grade_status : ''}</Text>
+                                <Text style={{color: 'black', fontWeight: 'bold'}}>Média Anual: <Text
+                                    style={{color: 'black'}}>{props.record.grade_anual ? parseFloat(props.record.grade_anual).toFixed(1) : '-'}</Text></Text>
                             </View>
+
                             <View style={{
                                 alignItems: 'flex-end',
                                 justifyContent: 'center'
@@ -150,7 +102,7 @@ export function ReportDetailsScreen({route, navigation}) {
                                 <View>
                                     <View style={{
                                         borderRadius: 50,
-                                        backgroundColor: props.record.grade_general ? Colors.notas[parseInt(props.record.grade_general)].color: '#1c2838',
+                                        backgroundColor: props.record.grade_general ? Colors.notas[parseInt(props.record.grade_general)].color : '#1c2838',
                                         justifyContent: 'center',
                                         alignItems: 'center',
                                         height: 80,
@@ -161,25 +113,35 @@ export function ReportDetailsScreen({route, navigation}) {
                                             fontWeight: 'bold',
                                             fontSize: 35
                                         }}>
-                                            {parseFloat(props.record.grade_general).toFixed(1)}
+                                            {props.record.grade_general ? parseFloat(props.record.grade_general).toFixed(1) : '-'}
                                         </Text>
 
                                     </View>
-                                    <Text style={{fontSize: Texts.normal, color: Colors.mediumGrey ,marginTop: 5}}>    Faltas: {props.record.attendance}</Text>
+                                    <Text style={{
+                                        fontSize: Texts.normal,
+                                        color: Colors.mediumGrey,
+                                        marginTop: 5
+                                    }}> Faltas: {props.record.attendance}</Text>
                                 </View>
                             </View>
 
                         </View>
-
+                        {Platform.OS === 'ios' &&
+                        <View style={{borderBottomWidth: 1, borderColor: 'grey'}}/>
+                        }
                         <ScrollView style={{marginTop: 15, backgroundColor: 'white'}}>
                             {props.record.grade_list.map((item, index) =>
                                 <View key={index}
                                       style={[styles.item, {backgroundColor: index % 2 == 0 ? 'white' : '#f3f5f8',}]}>
                                     <View style={{flex: 1, justifyContent: 'center'}}>
-                                        <Text style={{fontWeight: 'bold', color: 'black'}}>{item.grade_type_description}</Text>
+                                        <Text style={{
+                                            fontWeight: 'bold',
+                                            color: 'black'
+                                        }}>{item.grade_type_description}</Text>
                                     </View>
                                     <View>
-                                        <Text style={{fontSize: Texts.title}}>{item.grade ? parseFloat(item.grade).toFixed(1) : '-'}</Text>
+                                        <Text
+                                            style={{fontSize: Texts.title}}>{item.grade ? parseFloat(item.grade).toFixed(1) : '-'}</Text>
 
                                     </View>
 

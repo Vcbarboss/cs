@@ -11,6 +11,7 @@ import {KeyboardAvoidingView, Platform} from "react-native";
 import {DocumentSendScreen} from "../screens/Student/DocumentSendScreen";
 import {ReportScreen} from "../screens/Student/Report/ReportScreen";
 import {ReportDetailsScreen} from "../screens/Student/Report/ReportDetailsScreen";
+import {ClassScheduleScreen} from "../screens/Student/ClassScheduleScreen";
 
 const StudentStack = createStackNavigator();
 
@@ -65,6 +66,11 @@ export function StudentStackNavigator({route, navigation}) {
                                              animationEnabled: false,
                                          }}/>
 
+                    <StudentStack.Screen name={'ClassScheduleScreen'} component={ClassScheduleScreen} options={{
+                        headerShown: false,
+                        gesturesEnabled: false,
+                        animationEnabled: false,
+                    }}/>
 
                     <StudentStack.Screen name={'StudentNotificationList'} initialParams={props}
                                          component={StudentNotificationList} options={{

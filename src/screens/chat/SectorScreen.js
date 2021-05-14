@@ -61,13 +61,13 @@ export function SectorScreen({navigation}) {
                         <Toast ref={refNotification}/>
                         <GeneralStatusBarColor backgroundColor={Colors.primary}
                                                barStyle="light-content"/>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 20}}>
+                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
                             <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
                                 <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
                             </TouchableOpacity>
                             <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
 
-                                <Text style={{color: "white", fontSize: 23}}>Construindo o Saber</Text>
+                                <Text style={{color: "white", fontSize: Texts.title}}>Construindo o Saber</Text>
                                 <Text style={{color: "white", fontSize: Texts.subtitle}}>Setores </Text>
                             </View>
                         </View>
@@ -75,9 +75,6 @@ export function SectorScreen({navigation}) {
                             <View style={{
                                 display: "flex",
                                 padding: 5,
-                                flexWrap: 'wrap',
-                                flexDirection: "row",
-                                justifyContent: "space-between",
                             }}>
                                 {data?.length > 0 ?
                                     <>
@@ -103,8 +100,9 @@ export function SectorScreen({navigation}) {
                                                 </Badge>
                                                 }
 
-                                                <IonIcon name={"chatbubble-ellipses-outline"} size={30}/>
-                                                <Text style={{textAlign: "center"}}>{item.description}</Text>
+
+                                                <Text style={{fontSize: Texts.title, flex: 1}}>{item.description}</Text>
+                                                <IonIcon style={{}} name={"chatbubble-ellipses-outline"} size={30}/>
                                             </TouchableOpacity>
                                         </View>,
                                     )}
@@ -128,16 +126,21 @@ export function SectorScreen({navigation}) {
 
 const styles = StyleSheet.create({
     itemList: {
-        flex: 1,
-        borderWidth: 2,
-        borderColor: "#eaebef",
+        padding: 20,
+        flexDirection: 'row',
+        elevation: 2,
+        backgroundColor: 'white',
+        marginHorizontal: 5,
         marginVertical: 5,
-        borderRadius: 15,
-        minWidth: screenWidth * 0.475,
-        height: 120,
-        padding: 10,
-        alignItems: 'center',
-        justifyContent: 'center'
+        borderColor: "#d9dade",
+        borderRadius: 7,
+        shadowColor: "#000000",
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+            height: 1,
+            width: 1
+        }
     },
     item: {
         padding: 20,

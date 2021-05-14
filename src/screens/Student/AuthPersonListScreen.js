@@ -95,13 +95,13 @@ console.log(res)
                         <View style={{backgroundColor: Colors.opt1}}>
 
                         </View>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 20}}>
+                        <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 10}}>
                             <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
                                 <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
                             </TouchableOpacity>
                             <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                                <Text style={{color: "white", fontSize: 23,}}>Construindo o Saber</Text>
+                                <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
                                 <Text style={{color: "white", fontSize: Texts.subtitle,}}>Responsáveis retirada </Text>
 
                             </View>

@@ -202,7 +202,7 @@ export function FormEditComponent(props, { navigation }) {
               barStyle="light-content"
             />
 
-            <View style={{ flexDirection: "row", backgroundColor: Colors.theme, padding: 20 }}>
+            <View style={{ flexDirection: "row", backgroundColor: Colors.theme, padding: 10, paddingTop: 0 }}>
               <TouchableOpacity style={{}} onPress={() => props.close(false)}>
                 <AntIcon name={"arrowleft"} style={{}} size={25} color={"white"} />
               </TouchableOpacity>

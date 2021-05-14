@@ -186,12 +186,12 @@ export function NotificationComponent(props, {navigation}) {
                                                    barStyle="light-content"/>
                             <Toast ref={refNotification}/>
 
-                            <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 20}}>
+                            <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 10}}>
                                 <TouchableOpacity style={{}} onPress={() => props.close(false)}>
                                     <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
                                 </TouchableOpacity>
                                 <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
-                                    <Text style={{color: "white", fontSize: 23}}>Construindo o Saber</Text>
+                                    <Text style={{color: "white", fontSize: Texts.title}}>Construindo o Saber</Text>
 
                                     <Text style={{color: "white", fontSize: Texts.subtitle}}>Conteúdo da
                                         Notificação </Text>

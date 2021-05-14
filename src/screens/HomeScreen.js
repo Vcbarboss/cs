@@ -101,25 +101,25 @@ export function HomeScreen({ navigation }) {
             {/*/>*/}
             <View style={{ backgroundColor: "#fafafa",
               borderBottomWidth: 1, borderColor: '#e0dede'}}>
-              <View style={{ flexDirection: "row", padding: 20, backgroundColor: Colors.primary }}>
+              <View style={{ flexDirection: "row", padding: 10, backgroundColor: Colors.primary }}>
                 <TouchableOpacity style={{justifyContent: "center",  }}
                                   onPress={() => navigation.openDrawer()}>
                   {notifications > 0 || chatBadge > 0 &&
                   <Badge style={{
                     position: "absolute",
                     top: "25%",
-                    right: "10%",
+                    right: "8%",
                     backgroundColor: "#ff190c",
                     fontWeight: "bold",
                     fontSize: 14,
                     elevation: 1
                   }}
-                         size={10}> </Badge>}
+                         size={12}> </Badge>}
                     <Icon name={"menu-outline"} style={{ }} size={35} color={'white'} />
                 </TouchableOpacity>
                 <View style={{ flex: 1, marginLeft: 5, justifyContent: "flex-start", paddingVertical: 5, }}>
                   {/*<Image source={logo} style={styles.logo} />*/}
-                  <Text style={{ color: "white", fontSize: 23, }}>Construindo o Saber</Text>
+                  <Text style={{ color: "white", fontSize: Texts.title, }}>Construindo o Saber</Text>
                   <Text style={{ color: "white", fontSize: Texts.subtitle, }}>Alunos </Text>
                 </View>
 
@@ -183,7 +183,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     elevation: 3,
   },
-
   subtitle: {
     color: Colors.secondary,
     fontSize: Texts.subtitle,
