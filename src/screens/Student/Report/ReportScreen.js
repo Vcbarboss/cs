@@ -47,6 +47,7 @@ export function ReportScreen({route, navigation}) {
             const res = await api.get(`app/student-grade/${props.item.enrollment_id}/list`);
             sections.current = []
             data.current = res.object;
+            console.log(res)
             for (let i = 0; i < res.object.length; i++) {
                 sections.current.push(res.object[i].stage_description)
             }
@@ -158,7 +159,7 @@ export function ReportScreen({route, navigation}) {
                                             color: 'white',
                                             fontWeight: 'bold',
                                             fontSize: 30
-                                        }}>{item.grade_general ? parseFloat(item.grade_general).toFixed(1) : '-'}</Text>
+                                        }}>{item.grade_general ? item.grade_general : '-'}</Text>
                                         <Text style={{color: 'white'}}>{item.grade_status ? item.grade_status : "Parcial"}</Text>
                                     </View>
 

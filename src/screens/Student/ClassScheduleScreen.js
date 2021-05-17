@@ -175,6 +175,7 @@ export function ClassScheduleScreen({route, navigation}) {
                                         }}>
 
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                {/*TODO arrumar quando nao vier foto*/}
                                                 <Avatar.Image style={{marginRight: 10}} size={60}
                                                               source={{uri: item.teacher_avatar}}/>
                                                 <View>

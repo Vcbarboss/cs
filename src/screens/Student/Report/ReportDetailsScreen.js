@@ -92,7 +92,7 @@ export function ReportDetailsScreen({route, navigation}) {
                                 <Text
                                     style={{color: 'black'}}>{props.selected} {props.record.grade_status ? '- Resultado ' + props.record.grade_status : ''}</Text>
                                 <Text style={{color: 'black', fontWeight: 'bold'}}>Média Anual: <Text
-                                    style={{color: 'black'}}>{props.record.grade_anual ? parseFloat(props.record.grade_anual).toFixed(1) : '-'}</Text></Text>
+                                    style={{color: 'black'}}>{props.record.grade_anual ? props.record.grade_anual : '-'}</Text></Text>
                             </View>
 
                             <View style={{
@@ -113,7 +113,7 @@ export function ReportDetailsScreen({route, navigation}) {
                                             fontWeight: 'bold',
                                             fontSize: 35
                                         }}>
-                                            {props.record.grade_general ? parseFloat(props.record.grade_general).toFixed(1) : '-'}
+                                            {props.record.grade_general ? props.record.grade_general : '-'}
                                         </Text>
 
                                     </View>
@@ -141,7 +141,7 @@ export function ReportDetailsScreen({route, navigation}) {
                                     </View>
                                     <View>
                                         <Text
-                                            style={{fontSize: Texts.title}}>{item.grade ? parseFloat(item.grade).toFixed(1) : '-'}</Text>
+                                            style={{fontSize: Texts.title}}>{item.grade ? item.grade : '-'}</Text>
 
                                     </View>
 
