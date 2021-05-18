@@ -65,7 +65,7 @@ export function StudentScreen({route, navigation}) {
                         </View>
                         <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 10}}>
                             <View>
-                                <TouchableOpacity style={{ flex: 1}} onPress={() => navigation.pop()}>
+                                <TouchableOpacity style={{flex: 1}} onPress={() => navigation.pop()}>
                                     <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
                                 </TouchableOpacity>
                             </View>
@@ -79,7 +79,8 @@ export function StudentScreen({route, navigation}) {
 
                             }}>
                                 {props?.item.student.person.avatar ?
-                                    <Avatar.Image style={{}} size={screenWidth*0.25} source={{uri: props?.item.student.person.avatar}}/>
+                                    <Avatar.Image style={{}} size={screenWidth * 0.25}
+                                                  source={{uri: props?.item.student.person.avatar}}/>
                                     :
                                     <View style={{flex: 0.5}}>
                                     </View>
@@ -188,15 +189,23 @@ export function StudentScreen({route, navigation}) {
                                 justifyContent: "space-between"
                             }}>
                                 <TouchableOpacity style={styles.itemList}
-                                onPress={() =>
-                                navigation.navigate('ClassScheduleScreen',
-                                    {item: props?.item},
-                                )
-                                }>
-                                  <AntIcon name={'table'} size={30}/>
-                                  <Text style={{textAlign: 'center'}}> Horário </Text>
+                                                  onPress={() =>
+                                                      navigation.navigate('ClassScheduleScreen',
+                                                          {item: props?.item},
+                                                      )
+                                                  }>
+                                    <AntIcon name={'table'} size={30}/>
+                                    <Text style={{textAlign: 'center'}}> Horário </Text>
                                 </TouchableOpacity>
-
+                                <TouchableOpacity style={styles.itemList}
+                                                  onPress={() =>
+                                                      navigation.navigate('HomeworkListScreen',
+                                                          {item: props?.item},
+                                                      )
+                                                  }>
+                                    <AntIcon name={'table'} size={30}/>
+                                    <Text style={{textAlign: 'center'}}> Tarefas </Text>
+                                </TouchableOpacity>
                             </View>
                         </ScrollView>
                         <Modal
