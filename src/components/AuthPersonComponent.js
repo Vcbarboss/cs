@@ -82,14 +82,14 @@ export function AuthPersonComponent(props, { navigation }) {
 
   return (
     <View style={styles.container}>
-      <GeneralStatusBarColor backgroundColor={Colors.theme}
+      <GeneralStatusBarColor backgroundColor={Colors.primary}
                              barStyle="light-content"/>
       {/*<StatusBar*/}
-      {/*  backgroundColor={Colors.theme}*/}
+      {/*  backgroundColor={Colors.primary}*/}
       {/*  barStyle="light-content"*/}
       {/*/>*/}
       <Toast ref={refNotification} />
-      <View style={{ flexDirection: "row", backgroundColor: Colors.theme, padding: 10, paddingTop: 0 }}>
+      <View style={{ flexDirection: "row", backgroundColor: Colors.primary, padding: 10, paddingTop: 0 }}>
         <TouchableOpacity style={{   }} onPress={() => props.close(false)}>
           <AntIcon name={"arrowleft"} style={{}} size={25} color={"white"} />
         </TouchableOpacity>

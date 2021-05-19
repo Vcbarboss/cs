@@ -182,11 +182,11 @@ export function NotificationComponent(props, {navigation}) {
                             enabled={Platform.OS === "ios"}
                             style={{flex: 1}}
                         >
-                            <GeneralStatusBarColor backgroundColor={Colors.theme}
+                            <GeneralStatusBarColor backgroundColor={Colors.primary}
                                                    barStyle="light-content"/>
                             <Toast ref={refNotification}/>
 
-                            <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 10}}>
+                            <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
                                 <TouchableOpacity style={{}} onPress={() => props.close(false)}>
                                     <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
                                 </TouchableOpacity>

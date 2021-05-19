@@ -86,23 +86,23 @@ console.log(res)
                 (
                     <View style={styles.container}>
                         <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.theme}
+                        <GeneralStatusBarColor backgroundColor={Colors.primary}
                                                barStyle="light-content"/>
                         {/*<StatusBar*/}
-                        {/*  backgroundColor={Colors.theme}*/}
+                        {/*  backgroundColor={Colors.primary}*/}
                         {/*  barStyle="light-content"*/}
                         {/*/>*/}
                         <View style={{backgroundColor: Colors.opt1}}>
 
                         </View>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 10}}>
+                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
                             <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
                                 <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
                             </TouchableOpacity>
                             <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                                <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle,}}>Responsáveis retirada </Text>
+                                <Text style={{color: "white", fontSize: Texts.title,textAlign: 'center'}}>CONSTRUINDO O SABER</Text>
+                                <Text style={{color: "white", fontSize: Texts.subtitle, textAlign: 'center'}}>Responsáveis de retirada do aluno da escola </Text>
 
                             </View>
                             <TouchableOpacity style={{marginTop: 10, alignItems: "flex-end"}}
@@ -110,6 +110,7 @@ console.log(res)
 
                             </TouchableOpacity>
                         </View>
+
                         {data?.length > 0 ?
                             <ScrollView style={{backgroundColor: "white", elevation: 5}}>
 
@@ -145,6 +146,8 @@ console.log(res)
 
                                     </TouchableOpacity>,
                                 )}
+
+
 
 
                             </ScrollView>

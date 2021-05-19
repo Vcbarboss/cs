@@ -39,15 +39,15 @@ export function StudentProfileComponent(props, { navigation }) {
 
   return (
     <View style={styles.container}>
-      <GeneralStatusBarColor backgroundColor={Colors.theme}
+      <GeneralStatusBarColor backgroundColor={Colors.primary}
                              barStyle="light-content"/>
         <View style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView >
-        <TouchableOpacity style={{ backgroundColor: Colors.theme }} onPress={() => props.close(false)}>
+        <TouchableOpacity style={{ backgroundColor: Colors.primary }} onPress={() => props.close(false)}>
           <AntIcon name={"arrowleft"} style={{ margin: 10 }} size={25} color={"white"} />
         </TouchableOpacity>
         <View style={{
-          backgroundColor: Colors.theme,
+          backgroundColor: Colors.primary,
           alignItems: "center",
         }}>
           {data.student.person.avatar ?
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     display: "flex",
-    backgroundColor: Colors.theme,
+    backgroundColor: Colors.primary,
   },
   logo: {
     width: "100%",

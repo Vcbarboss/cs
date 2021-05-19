@@ -198,11 +198,11 @@ export function FormEditComponent(props, { navigation }) {
           <SafeAreaView style={styles.container}>
             <Toast ref={refNotification} />
             <StatusBar
-              backgroundColor={Colors.theme}
+              backgroundColor={Colors.primary}
               barStyle="light-content"
             />
 
-            <View style={{ flexDirection: "row", backgroundColor: Colors.theme, padding: 10, paddingTop: 0 }}>
+            <View style={{ flexDirection: "row", backgroundColor: Colors.primary, padding: 10, paddingTop: 0 }}>
               <TouchableOpacity style={{}} onPress={() => props.close(false)}>
                 <AntIcon name={"arrowleft"} style={{}} size={25} color={"white"} />
               </TouchableOpacity>

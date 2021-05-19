@@ -135,13 +135,13 @@ export function StudentNotificationList({route, navigation}) {
                             style={{flex: 1}}
                         >
                             <Toast ref={refNotification}/>
-                            <GeneralStatusBarColor backgroundColor={Colors.theme}
+                            <GeneralStatusBarColor backgroundColor={Colors.primary}
                                                    barStyle="light-content"/>
                             {/*<StatusBar*/}
-                            {/*  backgroundColor={Colors.theme}*/}
+                            {/*  backgroundColor={Colors.primary}*/}
                             {/*  barStyle="light-content"*/}
                             {/*/>*/}
-                            <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 10}}>
+                            <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
                                 <TouchableOpacity style={{}} onPress={() => {
                                     if (props?.notification) {
                                         navigation.reset({index: 0, routes: [{name: "HomeStack"}]});

@@ -22,6 +22,8 @@ target 'cs' do
         pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
         pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly"
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
   target 'csTests' do
     inherit! :complete
     # Pods for testing

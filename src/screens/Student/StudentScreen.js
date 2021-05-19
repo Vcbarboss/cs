@@ -15,6 +15,7 @@ import Toast from "../../components/Toast";
 import {useFocusEffect} from "@react-navigation/native";
 import useApi from "../../hooks/Api";
 import Icon from "react-native-vector-icons/Ionicons";
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import AntIcon from "react-native-vector-icons/AntDesign";
 import {Texts} from "../../helpers/Texts";
 import moment from "moment";
@@ -54,52 +55,91 @@ export function StudentScreen({route, navigation}) {
                 (
                     <View style={styles.container}>
                         <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.theme}
+                        <GeneralStatusBarColor backgroundColor={Colors.primary}
                                                barStyle="light-content"/>
                         {/*<StatusBar*/}
-                        {/*    backgroundColor={Colors.theme}*/}
+                        {/*    backgroundColor={Colors.primary}*/}
                         {/*    barStyle="light-content"*/}
                         {/*/>*/}
-                        <View style={{backgroundColor: Colors.opt1}}>
+                        <View style={{backgroundColor: Colors.primary,}}>
+                            <View style={{
+                                flexDirection: "row",
+                                padding: 10,
+                                borderColor: '#8b98ae',
+                                backgroundColor: Colors.primary,
+                                borderBottomWidth: 1
+                            }}>
 
-                        </View>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.theme, padding: 10}}>
-                            <View>
-                                <TouchableOpacity style={{flex: 1}} onPress={() => navigation.pop()}>
+                                <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
                                     <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
                                 </TouchableOpacity>
+                                <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
+
+                                    <Text style={{color: "white", fontSize: Texts.title, textAlign: 'center'}}>CONSTRUINDO O SABER</Text>
+                                    <Text style={{color: "#8b98ae", fontSize: Texts.subtitle, textAlign: 'center'}}>Área do aluno </Text>
+                                </View>
+
                             </View>
 
-                            <View style={{flex: 1, alignItems: "center", justifyContent: "center", padding: 10}}>
-                                <Text style={styles.name}>{props?.item.student.person.name}</Text>
-                                <Text style={styles.class}>{props?.item.class_room.description} </Text>
-                            </View>
                             <View style={{
-                                alignItems: "center",
-
+                                backgroundColor: 'white',
+                                margin: 10,
+                                borderBottomRightRadius: 5,
+                                borderBottomLeftRadius: 5,
+                                borderTopLeftRadius: 3,
+                                borderTopRightRadius: 35,
+                                borderTopColor: Colors.tertiary,
+                                borderBottomColor: Colors.tertiary,
+                                borderTopWidth: 35,
+                                borderBottomWidth: 5
                             }}>
+                                <View style={{flexDirection: 'row', borderBottomWidth: 1, borderColor: Colors.lightgray}}>
+                                    <View style={{flex: 0.7, justifyContent: "center", padding: 20}}>
+                                        <Text style={styles.name}>{props?.item.student.person.name.toUpperCase()}</Text>
+
+                                        <Text style={styles.class}>{moment().diff(props?.item.student.person.natural_birthday, "years") + " anos"}</Text>
+                                    </View>
+                                </View>
+                                <View style={{padding: 5}}>
+                                    <Text style={[styles.class, {textAlign: 'center'}]}>{props?.item.class_room.description}</Text>
+                                </View>
+
+
+
                                 {props?.item.student.person.avatar ?
-                                    <Avatar.Image style={{}} size={screenWidth * 0.25}
-                                                  source={{uri: props?.item.student.person.avatar}}/>
+                                    <View style={{
+                                        borderWidth: 2,
+                                        borderColor: Colors.theme,
+                                        backgroundColor: 'white',
+                                        borderRadius: 55,
+                                        padding: 3,
+                                        position: 'absolute',
+                                        right: 10,
+                                        top: -15
+                                    }}>
+                                        <Avatar.Image style={{}} size={screenWidth * 0.25}
+                                                      source={{uri: props?.item.student.person.avatar}}/>
+                                    </View>
                                     :
                                     <View style={{flex: 0.5}}>
                                     </View>
                                 }
                             </View>
+
+
                         </View>
-                        <ScrollView style={{backgroundColor: "white", elevation: 5}}>
+                        <ScrollView style={{backgroundColor: 'white', elevation: 5, padding: 5}} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
 
                             <View style={{
                                 display: "flex",
-                                padding: 5,
                                 flexDirection: "row",
                                 justifyContent: "space-between"
                             }}>
-                                <TouchableOpacity style={styles.itemList} onPress={() => setIsVisible(true)}>
-                                    <AntIcon name={'user'} size={30}/>
-                                    <Text style={{textAlign: 'center'}}> Perfil </Text>
+                                <TouchableOpacity style={[styles.itemList, {borderColor: '#56a6db'}]} onPress={() => setIsVisible(true)}>
+                                    <Icon name={'person-outline'} size={40} color={'#56a6db'}/>
+                                    <Text style={{textAlign: 'center'}}> PERFIL </Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.itemList}
+                                <TouchableOpacity style={[styles.itemList2, {borderColor: '#f5797b'}]}
                                                   onPress={() => navigation.navigate('StudentNotificationList')}>
                                     <View>
                                         {props.item.push_notification_recipients_count > 0 &&
@@ -109,33 +149,24 @@ export function StudentScreen({route, navigation}) {
                                             right: -10,
                                             zIndex: 10
                                         }}>{props.item.push_notification_recipients_count}</Badge>}
-                                        <AntIcon name={'inbox'} size={30}/>
+                                        <AntIcon name={'inbox'} color={'#f5797b'} size={40}/>
                                     </View>
-                                    <Text style={{textAlign: 'center'}}> Mensagens </Text>
+                                    <Text style={{textAlign: 'center'}}> MENSAGENS </Text>
                                 </TouchableOpacity>
-                                {/*<TouchableOpacity style={styles.itemList}>*/}
-                                {/*  <AntIcon name={'calendar'} size={30}/>*/}
-                                {/*  <Text style={{textAlign: 'center'}}> Frequência </Text>*/}
-                                {/*</TouchableOpacity>*/}
-                            </View>
-                            <View style={{
-                                display: "flex",
-                                padding: 5,
-                                flexDirection: "row",
-                                justifyContent: "space-between"
-                            }}>
-                                {/*<TouchableOpacity style={styles.itemList}>*/}
-                                {/*  <AntIcon name={'table'} size={30}/>*/}
-                                {/*  <Text style={{textAlign: 'center'}}> Horário </Text>*/}
-                                {/*</TouchableOpacity>*/}
-                                <TouchableOpacity style={styles.itemList}
+                                <TouchableOpacity style={[styles.itemList, {borderColor: '#8a67b7'}]}
                                                   onPress={() => navigation.navigate('FormListScreen',
                                                       {item: props?.item},
                                                   )}>
-                                    <AntIcon name={'form'} size={30}/>
-                                    <Text style={{textAlign: 'center'}}> Formulários </Text>
+                                    <AntIcon name={'form'} color={'#8a67b7'} size={40}/>
+                                    <Text style={{textAlign: 'center'}}> FICHAS </Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.itemList}
+                            </View>
+                            <View style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-between"
+                            }}>
+                                <TouchableOpacity style={[styles.itemList2, {borderColor: '#e1588c'}]}
                                                   onPress={() => navigation.navigate('AuthPersonListScreen',
                                                       {item: props?.item},
                                                   )}>
@@ -149,62 +180,58 @@ export function StudentScreen({route, navigation}) {
                                             backgroundColor: 'blue'
                                         }}>{props.item.student.student_auth_person_count}</Badge>}
 
-                                        <Icon name={'ios-people-outline'} size={30}/>
+                                        <Icon name={'ios-people-outline'} color={'#e1588c'} size={40}/>
                                     </View>
 
-                                    <Text style={{textAlign: 'center'}}> Resposáveis retirada </Text>
+                                    <Text style={{textAlign: 'center'}}> RESPONSÁVEIS </Text>
                                 </TouchableOpacity>
-                            </View>
-                            <View style={{
-                                display: "flex",
-                                padding: 5,
-                                flexDirection: "row",
-                                justifyContent: "space-between"
-                            }}>
-                                {/*<TouchableOpacity style={styles.itemList}>*/}
-                                {/*  <AntIcon name={'table'} size={30}/>*/}
-                                {/*  <Text style={{textAlign: 'center'}}> Horário </Text>*/}
-                                {/*</TouchableOpacity>*/}
-                                <TouchableOpacity style={styles.itemList}
+                                <TouchableOpacity style={[styles.itemList, {borderColor: '#17bb99'}]}
                                                   onPress={() => navigation.navigate('DocumentSendScreen',
                                                       {item: props?.item},
                                                   )}>
-                                    <Icon name={'documents-outline'} size={30}/>
-                                    <Text style={{textAlign: 'center'}}> Documentos </Text>
+                                    <Icon name={'documents-outline'} color={'#17bb99'} size={40}/>
+                                    <Text style={{textAlign: 'center'}}> DOCUMENTOS </Text>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={styles.itemList}
+                                <TouchableOpacity style={[styles.itemList2, {borderColor: '#4f81a2'}]}
                                                   onPress={() => navigation.navigate('ReportScreen',
                                                       {item: props?.item},
                                                   )}>
-                                    <Icon name={'ios-receipt-outline'} size={30}/>
-                                    <Text style={{textAlign: 'center'}}> Boletim </Text>
+                                    <Icon name={'ios-receipt-outline'} color={'#4f81a2'} size={40}/>
+                                    <Text style={{textAlign: 'center'}}> BOLETIM </Text>
                                 </TouchableOpacity>
-
                             </View>
                             <View style={{
                                 display: "flex",
-                                padding: 5,
                                 flexDirection: "row",
                                 justifyContent: "space-between"
                             }}>
-                                <TouchableOpacity style={styles.itemList}
+                                <TouchableOpacity style={[styles.itemList, {borderColor: '#ff8e08'}]}
                                                   onPress={() =>
                                                       navigation.navigate('ClassScheduleScreen',
                                                           {item: props?.item},
                                                       )
                                                   }>
-                                    <AntIcon name={'table'} size={30}/>
-                                    <Text style={{textAlign: 'center'}}> Horário </Text>
+                                    <AntIcon name={'table'} color={'#ff8e08'} size={40}/>
+                                    <Text style={{textAlign: 'center'}}> HORÁRIO </Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.itemList}
+                                <TouchableOpacity style={[styles.itemList2, {borderColor: '#4d908e'}]}
                                                   onPress={() =>
                                                       navigation.navigate('HomeworkListScreen',
                                                           {item: props?.item},
                                                       )
                                                   }>
-                                    <AntIcon name={'table'} size={30}/>
-                                    <Text style={{textAlign: 'center'}}> Tarefas </Text>
+                                    <MCIcon name={'file-document-edit-outline'} color={'#4d908e'} size={40}/>
+                                    <Text style={{textAlign: 'center'}}> TAREFAS </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.itemList, {borderColor: '#e63946'}]}
+                                                  onPress={() =>
+                                                      navigation.navigate('AttendanceListScreen',
+                                                          {item: props?.item},
+                                                      )
+                                                  }>
+                                    <MCIcon name={'account-check-outline'} color={'#e63946'} size={40}/>
+                                    <Text style={{textAlign: 'center'}}> FREQUÊNCIA </Text>
                                 </TouchableOpacity>
                             </View>
                         </ScrollView>
@@ -231,11 +258,28 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: "#eaebef",
         margin: 5,
+        borderTopRightRadius: 5,
+        borderBottomLeftRadius: 5,
         borderRadius: 15,
         height: 120,
         padding: 10,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: 'white'
+    },
+    itemList2:{
+        flex: 1,
+        borderWidth: 2,
+        borderColor: "#eaebef",
+        margin: 5,
+        borderTopLeftRadius: 5,
+        borderBottomRightRadius: 5,
+        borderRadius: 15,
+        height: 120,
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white'
     },
     bg: {
         position: "absolute",
@@ -271,15 +315,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     name: {
-        fontSize: 20,
+        fontSize: 17,
         fontWeight: "bold",
-        color: "white",
-        textAlign: 'center'
+color: Colors.primary
     },
     class: {
-        fontSize: 18,
-        color: "white",
-        textAlign: 'center'
+        fontSize: 15,
     },
     img: {
         width: "100%",

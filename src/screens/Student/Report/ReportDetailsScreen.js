@@ -48,10 +48,10 @@ export function ReportDetailsScreen({route, navigation}) {
                 (
                     <View style={styles.container}>
                         <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.theme}
+                        <GeneralStatusBarColor backgroundColor={Colors.primary}
                                                barStyle="light-content"/>
                         {/*<StatusBar*/}
-                        {/*  backgroundColor={Colors.theme}*/}
+                        {/*  backgroundColor={Colors.primary}*/}
                         {/*  barStyle="light-content"*/}
                         {/*/>*/}
                         <View style={{backgroundColor: Colors.opt1}}>

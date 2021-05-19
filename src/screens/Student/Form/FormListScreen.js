@@ -74,16 +74,16 @@ export function FormListScreen({ route, navigation }) {
         (
           <View style={styles.container}>
             <Toast ref={refNotification} />
-            <GeneralStatusBarColor backgroundColor={Colors.theme}
+            <GeneralStatusBarColor backgroundColor={Colors.primary}
                                    barStyle="light-content"/>
             {/*<StatusBar*/}
-            {/*  backgroundColor={Colors.theme}*/}
+            {/*  backgroundColor={Colors.primary}*/}
             {/*  barStyle="light-content"*/}
             {/*/>*/}
             <View style={{ backgroundColor: Colors.opt1 }}>
 
             </View>
-            <View style={{ flexDirection: "row", backgroundColor: Colors.theme, padding: 10,  }}>
+            <View style={{ flexDirection: "row", backgroundColor: Colors.primary, padding: 10,  }}>
               <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
                 <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"} />
               </TouchableOpacity>

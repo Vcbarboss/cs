@@ -25,32 +25,89 @@ const screenHeight = Math.round(Dimensions.get("window").height);
 
 // const colors = ["#3a86ff", "#02bef1", "#0091ad", "#4d908e", "#a2e983", "#ffae1b", "#ff6b6b", "#E63946", "#f72585", "#7209B7"]
 
-const media = ['#80ED99', '#6FD3B3', '#5DBACC', '#4CA0E6', '#3A86FF', '#FFCB47', '#FFB139', '#FF962B', '#FF7C1C', '#FF610E','#FF4700',]
+const media = ['#80ED99', '#6FD3B3', '#5DBACC', '#4CA0E6', '#3A86FF', '#FFCB47', '#FFB139', '#FF962B', '#FF7C1C', '#FF610E', '#FF4700',]
 
-const colors = {}
+const drop = ["Bimestre 1", "Bimestre 2", "Bimestre 3", "Bimestre 4", "Geral"]
 
-export function ReportScreen({route, navigation}) {
+const graph = [
+    {
+        month: new Date(2015, 0, 1),
+        apples: 3840,
+        bananas: 1920,
+        cherries: 960,
+        dates: 400,
+        oranges: 400,
+    },
+    {
+        month: new Date(2015, 1, 1),
+        apples: 1600,
+        bananas: 1440,
+        cherries: 960,
+        dates: 400,
+    },
+    {
+        month: new Date(2015, 2, 1),
+        apples: 640,
+        bananas: 960,
+        cherries: 3640,
+        dates: 400,
+    },
+    {
+        month: new Date(2015, 3, 1),
+        apples: 3320,
+        bananas: 480,
+        cherries: 640,
+        dates: 400,
+    },
+]
+
+const colors = ['#7b4173', '#a55194', '#ce6dbd', '#de9ed6']
+const keys = ['apples', 'bananas', 'cherries', 'dates']
+
+const dados = [
+    {
+        title: "Matematica",
+        presenca: 20,
+        falta: 10,
+        total: 58,
+    },
+    {
+        title: "Portugues",
+        presenca: 7,
+        falta: 13,
+        total: 58,
+    },
+    {
+        title: "Ingles",
+        presenca: 10,
+        falta: 2,
+        total: 48,
+    },
+    {
+        title: "Biologia",
+        presenca: 30,
+        falta: 5,
+        total: 48,
+    },
+]
+
+export function AttendanceListScreen({route, navigation}) {
 
     const [loading, setLoading] = useState(false);
     const api = useApi({navigation});
     const refNotification = useRef();
     const props = route.params;
     const data = useRef()
-    const [isVisible, setIsVisible] = useState(false);
-    const sections = useRef([])
+    const attendance = useRef([])
     const [currentData, setCurrentData] = useState()
-    const [selected, setSelected] = useState("Bimestre 1");
 
     const getData = async () => {
         setLoading(true);
         try {
-            const res = await api.get(`app/student-grade/${props.item.enrollment_id}/list`);
-            sections.current = []
+            const res = await api.get(`app/attendance/${props.item.enrollment_id}/list`);
+
             data.current = res.object;
             console.log(res)
-            for (let i = 0; i < res.object.length; i++) {
-                sections.current.push(res.object[i].stage_description)
-            }
             onChange(0)
             setLoading(false);
         } catch (e) {
@@ -72,7 +129,7 @@ export function ReportScreen({route, navigation}) {
 
     useEffect(() => {
         getData()
-    },[]);
+    }, []);
 
     return (
 
@@ -100,8 +157,13 @@ export function ReportScreen({route, navigation}) {
                             </TouchableOpacity>
                             <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                                <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle,}}>Boletim Escolar</Text>
+                                <Text style={{color: "white", fontSize: Texts.title, textAlign: 'center'}}>CONSTRUINDO O
+                                    SABER</Text>
+                                <Text style={{
+                                    color: "#8b98ae",
+                                    fontSize: Texts.subtitle,
+                                    textAlign: 'center'
+                                }}>Frequências</Text>
 
                             </View>
                             {/*<TouchableOpacity style={{marginTop: 10, alignItems: "flex-end"}}*/}
@@ -110,24 +172,8 @@ export function ReportScreen({route, navigation}) {
                             {/*</TouchableOpacity>*/}
                         </View>
 
-                        <View style={styles.drop }>
-                            <Picker
-
-                                selectedValue={selected}
-                                dropdownIconColor={Colors.theme}
-                                onValueChange={(itemValue, itemIndex) => {
-                                    setSelected(itemValue)
-                                    onChange(itemValue)
-                                }                                }>
-                                {sections.current.map((item, index) =>
-                                    <Picker.Item label={item} value={index} key={index}/>
-                                )}
-                            </Picker>
-                        </View>
-
-
                         <ScrollView>
-                            {currentData?.school_subject_list.map((item, index) =>
+                            {data.current?.map((item, index) =>
                                 <TouchableOpacity
                                     key={index}
                                     style={styles.card}
@@ -139,28 +185,30 @@ export function ReportScreen({route, navigation}) {
                                 >
                                     <View style={{padding: 20, flex: 1}}>
                                         <Text style={{fontSize: Texts.subtitle, fontWeight: 'bold'}}>
-                                            {item.school_subject_description}
+                                            {item.description}
                                         </Text>
-                                        <View style={{justifyContent: 'flex-end',}}>
-                                            <Text style={{fontSize: Texts.normal, color: Colors.mediumGrey}}>
-                                                Faltas: {item.attendance}</Text>
-                                        </View>
-                                    </View>
 
-                                    <View style={{
-                                        flex: 0.3,
-                                        backgroundColor: item.grade_general ? Colors.notas[parseInt(item.grade_general)]?.color : '#1c2838',
-                                        borderTopRightRadius: 15,
-                                        borderBottomRightRadius: 15,
-                                        justifyContent: 'center',
-                                        alignItems: 'center'
-                                    }}>
-                                        <Text style={{
-                                            color: 'white',
-                                            fontWeight: 'bold',
-                                            fontSize: 30
-                                        }}>{item.grade_general ? item.grade_general : '-'}</Text>
-                                        <Text style={{color: 'white'}}>{item.grade_status ? item.grade_status : "Parcial"}</Text>
+
+                                        <View style={{display: 'flex', flexDirection: 'row', height: 40, }}>
+                                            <View style={{backgroundColor: Colors.tertiary, flex: 0.8}}>
+                                                <Text>10</Text>
+                                            </View>
+                                            <View style={{backgroundColor: Colors.red, flex: 0.2}}>
+                                                <Text>5</Text>
+                                            </View>
+                                        </View>
+
+                                        <View style={{
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            justifyContent: "space-between"
+                                        }}>
+                                            <Text style={{fontSize: Texts.normal, color: Colors.mediumGrey}}>
+                                                Presenças: {item.total_attendance_present}</Text>
+                                            <Text style={{fontSize: Texts.normal, color: Colors.mediumGrey}}>
+                                                Faltas: {item.total_attendance_absent}</Text>
+                                            <Text> </Text>
+                                        </View>
                                     </View>
 
                                 </TouchableOpacity>
@@ -181,7 +229,7 @@ const styles = StyleSheet.create({
         display: "flex",
         // backgroundColor: 'white',
     },
-    drop:{
+    drop: {
         backgroundColor: 'white',
         borderWidth: 1,
         borderColor: 'grey',
