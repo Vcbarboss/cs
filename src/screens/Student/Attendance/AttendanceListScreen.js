@@ -102,7 +102,7 @@ export function AttendanceListScreen({route, navigation}) {
     const [currentData, setCurrentData] = useState()
 
     const getData = async () => {
-        setLoading(true);
+        // setLoading(true);
         try {
             const res = await api.get(`app/attendance/${props.item.enrollment_id}/list`);
 
@@ -157,7 +157,12 @@ export function AttendanceListScreen({route, navigation}) {
                             </TouchableOpacity>
                             <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                                <Text style={{color: "white", fontSize: Texts.title, textAlign: 'center'}}>CONSTRUINDO O
+                                <Text style={{
+                                    color: "white",
+                                    fontSize: Texts.title,
+                                    textAlign: 'center',
+                                    fontWeight: 'bold'
+                                }}>CONSTRUINDO O
                                     SABER</Text>
                                 <Text style={{
                                     color: "#8b98ae",
@@ -177,10 +182,9 @@ export function AttendanceListScreen({route, navigation}) {
                                 <TouchableOpacity
                                     key={index}
                                     style={styles.card}
-                                    onPress={() => navigation.navigate('ReportDetailsScreen', {
+                                    onPress={() => navigation.navigate('AttendanceDetailsScreen', {
                                         record: item,
-                                        selected: currentData.stage_description,
-                                        attendance: currentData.attendance
+                                        percent: ((item.total_attendance_present / (item.total_attendance_present + item.total_attendance_absent)) * 100).toFixed(1)
                                     })}
                                 >
                                     <View style={{padding: 20, flex: 1}}>
@@ -189,12 +193,53 @@ export function AttendanceListScreen({route, navigation}) {
                                         </Text>
 
 
-                                        <View style={{display: 'flex', flexDirection: 'row', height: 40, }}>
-                                            <View style={{backgroundColor: Colors.tertiary, flex: 0.8}}>
-                                                <Text>10</Text>
+                                        <View style={{
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            height: 15,
+                                            marginVertical: 10
+                                        }}>
+                                            <View style={{
+                                                backgroundColor: Colors.tertiary,
+                                                flex: (item.total_attendance_present/(item.total_attendance_present + item.total_attendance_absent)) > 0 ?
+                                                    item.total_attendance_present/(item.total_attendance_present + item.total_attendance_absent) : 1,
+                                                borderTopLeftRadius: 50,
+                                                borderBottomLeftRadius: 50,
+                                                borderTopRightRadius: item.total_attendance_absent === 0 ? 50 : 0,
+                                                borderBottomRightRadius: item.total_attendance_absent === 0 ? 50 : 0,
+                                                justifyContent: 'center',
+                                                alignItems: 'center'
+                                            }}>
+                                                {item.total_attendance_absent > 0 && item.total_attendance_present === 0 &&
+                                                <Text></Text>
+                                                }
+                                                {item.total_attendance_absent === 0 && item.total_attendance_present === 0 &&
+                                                <Text style={{color: 'white', fontSize: 10}}>
+                                                    100%
+                                                </Text>
+                                                }
+                                                {item.total_attendance_present > 0 &&
+                                                    <Text style={{color: 'white', fontSize: 10}}>
+                                                        {((item.total_attendance_present / (item.total_attendance_present + item.total_attendance_absent)) * 100).toFixed(1)}%
+                                                    </Text>
+                                                }
                                             </View>
-                                            <View style={{backgroundColor: Colors.red, flex: 0.2}}>
-                                                <Text>5</Text>
+                                            <View style={{
+                                                backgroundColor: Colors.red,
+                                                flex: (item.total_attendance_absent/(item.total_attendance_present + item.total_attendance_absent)) > 0 ?
+                                                    item.total_attendance_absent/(item.total_attendance_present + item.total_attendance_absent) : 0,
+                                                borderTopRightRadius: 50,
+                                                borderBottomRightRadius: 50,
+                                                borderTopLeftRadius: item.total_attendance_present === 0 ? 50 : 0,
+                                                borderBottomLeftRadius: item.total_attendance_present === 0 ? 50 : 0,
+                                                justifyContent: 'center',
+                                                alignItems: 'center'
+                                            }}>
+                                                {item.total_attendance_absent > 0 &&
+                                                <Text style={{color: 'white', fontSize: 10}}>
+                                                    {((item.total_attendance_absent / (item.total_attendance_present + item.total_attendance_absent)) * 100).toFixed(1)}%
+                                                </Text>
+                                                }
                                             </View>
                                         </View>
 

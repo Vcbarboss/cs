@@ -25,6 +25,8 @@ import Badge from "react-native-paper/src/components/Badge";
 import Loading from "../../components/Loading";
 import GeneralStatusBarColor from "../../components/StatusBarColor";
 import image from "../../assets/imgs/userStudent.png";
+import {useSelector} from "react-redux";
+import {maskViewPhone} from "../../helpers/Functions";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 const screenWidth = Math.round(Dimensions.get("window").width);
@@ -34,12 +36,14 @@ export function StudentScreen({route, navigation}) {
     const [loading, setLoading] = useState(false);
     const api = useApi({navigation});
     const refNotification = useRef();
+    const user = useSelector((state) => state).userReducer;
     const props = route.params;
     const [isVisible, setIsVisible] = useState(false)
 
 
     useFocusEffect(
         React.useCallback(() => {
+            console.log(user)
         }, []),
     );
 
@@ -75,8 +79,10 @@ export function StudentScreen({route, navigation}) {
                                 </TouchableOpacity>
                                 <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
 
-                                    <Text style={{color: "white", fontSize: Texts.title, textAlign: 'center'}}>CONSTRUINDO O SABER</Text>
-                                    <Text style={{color: "#8b98ae", fontSize: Texts.subtitle, textAlign: 'center'}}>Área do aluno </Text>
+                                    <Text style={{color: "white", fontSize: Texts.title, textAlign: 'center', fontWeight: '700'}}>CONSTRUINDO
+                                        O SABER</Text>
+                                    <Text style={{color: "#8b98ae", fontSize: Texts.subtitle, textAlign: 'center'}}>Área
+                                        do aluno </Text>
                                 </View>
 
                             </View>
@@ -93,17 +99,19 @@ export function StudentScreen({route, navigation}) {
                                 borderTopWidth: 35,
                                 borderBottomWidth: 5
                             }}>
-                                <View style={{flexDirection: 'row', borderBottomWidth: 1, borderColor: Colors.lightgray}}>
+                                <View
+                                    style={{flexDirection: 'row', borderBottomWidth: 1, borderColor: Colors.lightgray}}>
                                     <View style={{flex: 0.7, justifyContent: "center", padding: 20}}>
                                         <Text style={styles.name}>{props?.item.student.person.name.toUpperCase()}</Text>
-
-                                        <Text style={styles.class}>{moment().diff(props?.item.student.person.natural_birthday, "years") + " anos"}</Text>
+                                        <Text
+                                            style={styles.class}>{moment().diff(props?.item.student.person.natural_birthday, "years") + " anos"}</Text>
+                                        <Text style={[styles.class, {}]}>{props?.item.class_room.description}</Text>
                                     </View>
                                 </View>
                                 <View style={{padding: 5}}>
-                                    <Text style={[styles.class, {textAlign: 'center'}]}>{props?.item.class_room.description}</Text>
+                                    <Text style={{textAlign: 'center'}}>{maskViewPhone(user.object.person.contact_mobile_phone)}</Text>
+                                    <Text style={{textAlign: 'center'}}>{props?.item.student.person.address_street} - {props?.item.student.person.address_district}</Text>
                                 </View>
-
 
 
                                 {props?.item.student.person.avatar ?
@@ -128,14 +136,16 @@ export function StudentScreen({route, navigation}) {
 
 
                         </View>
-                        <ScrollView style={{backgroundColor: 'white', elevation: 5, padding: 5}} contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
+                        <ScrollView style={{backgroundColor: 'white', elevation: 5, padding: 5}}
+                                    contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
 
                             <View style={{
                                 display: "flex",
                                 flexDirection: "row",
                                 justifyContent: "space-between"
                             }}>
-                                <TouchableOpacity style={[styles.itemList, {borderColor: '#56a6db'}]} onPress={() => setIsVisible(true)}>
+                                <TouchableOpacity style={[styles.itemList, {borderColor: '#56a6db'}]}
+                                                  onPress={() => setIsVisible(true)}>
                                     <Icon name={'person-outline'} size={40} color={'#56a6db'}/>
                                     <Text style={{textAlign: 'center'}}> PERFIL </Text>
                                 </TouchableOpacity>
@@ -267,7 +277,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: 'white'
     },
-    itemList2:{
+    itemList2: {
         flex: 1,
         borderWidth: 2,
         borderColor: "#eaebef",
@@ -317,7 +327,7 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 17,
         fontWeight: "bold",
-color: Colors.primary
+        color: Colors.primary
     },
     class: {
         fontSize: 15,
