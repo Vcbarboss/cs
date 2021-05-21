@@ -109,7 +109,7 @@ export function StudentScreen({route, navigation}) {
                                     </View>
                                 </View>
                                 <View style={{padding: 5}}>
-                                    <Text style={{textAlign: 'center'}}>{maskViewPhone(user.object.person.contact_mobile_phone)}</Text>
+                                    <Text style={{textAlign: 'center'}}>{user.object.person.contact_mobile_phone ? maskViewPhone(user.object.person.contact_mobile_phone) : '-'}</Text>
                                     <Text style={{textAlign: 'center'}}>{props?.item.student.person.address_street} - {props?.item.student.person.address_district}</Text>
                                 </View>
 
@@ -242,6 +242,22 @@ export function StudentScreen({route, navigation}) {
                                                   }>
                                     <MCIcon name={'account-check-outline'} color={'#e63946'} size={40}/>
                                     <Text style={{textAlign: 'center'}}> FREQUÊNCIA </Text>
+                                </TouchableOpacity>
+
+                            </View>
+                            <View style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-between"
+                            }}>
+                                <TouchableOpacity style={[styles.itemList2, {borderColor: '#e63946'}]}
+                                                  onPress={() =>
+                                                      navigation.navigate('KnowledgeScreen',
+                                                          {item: props?.item},
+                                                      )
+                                                  }>
+                                    <MCIcon name={'account-check-outline'} color={'#e63946'} size={40}/>
+                                    <Text style={{textAlign: 'center'}}> CONTEÚDOS </Text>
                                 </TouchableOpacity>
                             </View>
                         </ScrollView>

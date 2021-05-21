@@ -86,7 +86,7 @@ export function AttendanceDetailsScreen({route, navigation}) {
 
     const [loading, setLoading] = useState(false);
 
-    const [aux2, setAux2] = useState()
+    const [objToShow, setObjToShow] = useState()
     const api = useApi({navigation});
     const refNotification = useRef();
     const props = route.params;
@@ -110,19 +110,19 @@ export function AttendanceDetailsScreen({route, navigation}) {
             knowledge.current.push(key)
 
 
-                attendances.current.push(
-                    {
-                        day: key,
-                        data: {
-                            marked: knowledge.current.includes(key),
-                        }
+            attendances.current.push(
+                {
+                    day: key,
+                    data: {
+                        marked: knowledge.current.includes(key),
                     }
-                )
+                }
+            )
         })
 
         Object.entries(props?.record?.attendance).forEach(([key, value]) => {
 
-            if(knowledge.current.includes(key)){
+            if (knowledge.current.includes(key)) {
 
                 attendances.current.push(
                     {
@@ -141,7 +141,7 @@ export function AttendanceDetailsScreen({route, navigation}) {
                         }
                     }
                 )
-            }else{
+            } else {
                 attendances.current.push(
                     {
                         day: key,
@@ -162,9 +162,6 @@ export function AttendanceDetailsScreen({route, navigation}) {
 
         })
 
-        console.log(knowledge.current)
-
-
 
         let aux;
         for (let i = 0; i < attendances.current.length; i++) {
@@ -175,7 +172,7 @@ export function AttendanceDetailsScreen({route, navigation}) {
             aux = {...aux, [day]: data}
             // console.log(aux)
         }
-        setAux2(aux)
+        setObjToShow(aux)
         attendances.current.map((item, index) => {
 
             }
@@ -183,7 +180,17 @@ export function AttendanceDetailsScreen({route, navigation}) {
         // console.log(attendances.current)
     }
 
-    const getKnow = () => {
+    const getKnowledge = (day) => {
+
+        let aux;
+
+        Object.entries(props?.record?.knowledge).forEach(([key, value]) => {
+            if (day === key) {
+                aux = value
+            }
+        })
+
+        setObjToShow({...objToShow, 'knowledge': aux})
 
     }
 
@@ -219,9 +226,6 @@ export function AttendanceDetailsScreen({route, navigation}) {
                         </View>
                         <View style={{flexDirection: "row", backgroundColor: 'white', padding: 10, elevation: 3,}}>
                             <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={Colors.primary}/>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{}} onPress={() => console.log(knowledge.current)}>
                                 <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={Colors.primary}/>
                             </TouchableOpacity>
 
@@ -286,21 +290,49 @@ export function AttendanceDetailsScreen({route, navigation}) {
                         <View style={{borderBottomWidth: 1, borderColor: 'grey'}}/>
                         }
                         <ScrollView style={{marginTop: 15, backgroundColor: 'white'}}
-                                    // contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
+                            // contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
                         >
                             <Calendar
                                 markedDates={
-                                    aux2
+                                    objToShow
                                 }
                                 markingType={'custom'}
-                                onDayPress={(day) => {console.log('selected day', day)}}
+                                onDayPress={(day) => {
+                                    getKnowledge(day.dateString)
+                                }}
                                 theme={{
                                     textMonthFontWeight: 'bold',
                                 }}
                             />
-
-
                         </ScrollView>
+
+                        <View style={{
+                            padding: 20,
+                            paddingVertical: 30,
+                            borderTopWidth: 2,
+                            borderColor: Colors.lightgray
+                        }}>
+                            {objToShow?.knowledge?.knowledge ?
+                                <>
+                                    {/*<Text style={{color: Colors.primary}}>Conteúdo ministrado*/}
+                                    {/*    em <Text style={{fontWeight: 'bold'}}>{objToShow?.knowledge?.date}</Text>:</Text>*/}
+                                    <Text style={{
+                                        color: 'black',
+                                        fontSize: Texts.listTitle,
+                                        textAlign: 'center',
+                                        fontWeight: 'bold',
+                                        marginBottom: 5
+                                    }}>{objToShow?.knowledge?.knowledge}</Text>
+                                    <Text style={{fontSize: Texts.listDescription, textAlign: 'center'}}>{objToShow?.knowledge?.note}</Text>
+                                </>
+                                :
+                                <>
+                                    <Text style={{textAlign: 'center'}}>Selecione um dia marcado para visualizar o conteúdo
+                                        ministrado nesta data.</Text>
+                                </>
+                            }
+
+                        </View>
 
                     </View>
                 )}

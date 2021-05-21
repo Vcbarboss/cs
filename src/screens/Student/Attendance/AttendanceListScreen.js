@@ -102,7 +102,7 @@ export function AttendanceListScreen({route, navigation}) {
     const [currentData, setCurrentData] = useState()
 
     const getData = async () => {
-        // setLoading(true);
+        setLoading(true);
         try {
             const res = await api.get(`app/attendance/${props.item.enrollment_id}/list`);
 

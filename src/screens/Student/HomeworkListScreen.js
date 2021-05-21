@@ -20,7 +20,6 @@ import GeneralStatusBarColor from "../../components/StatusBarColor";
 import {Picker} from '@react-native-picker/picker';
 
 
-
 const screenHeight = Math.round(Dimensions.get("window").height);
 
 export function HomeworkListScreen({route, navigation}) {
@@ -65,7 +64,7 @@ export function HomeworkListScreen({route, navigation}) {
 
     useEffect(() => {
         getData()
-    },[]);
+    }, []);
 
     return (
 
@@ -104,23 +103,17 @@ export function HomeworkListScreen({route, navigation}) {
                         </View>
 
 
-
                         <ScrollView>
                             <TouchableOpacity
                                 style={styles.card}
-                                onPress={() => navigation.navigate('ReportDetailsScreen', {
-
-                                })}
-                            >
+                                onPress={() => navigation.navigate('ReportDetailsScreen', {})}>
                                 <View style={{padding: 20, flex: 1}}>
                                     <Text style={{fontSize: Texts.subtitle, fontWeight: 'bold'}}>
                                         Decorar tabuadas do 0 ao 5
                                     </Text>
                                     <View style={{justifyContent: 'flex-end',}}>
-
                                     </View>
                                 </View>
-
                                 <View style={{
                                     flex: 0.3,
                                     // backgroundColor: '#1c2838',
@@ -129,14 +122,10 @@ export function HomeworkListScreen({route, navigation}) {
                                     justifyContent: 'center',
                                     alignItems: 'center'
                                 }}>
-                                    <Text style={{
-                                        color: 'green'
-                                    }
-                                    }>
+                                    <Text style={{color: 'green'}}>
                                         Concluída
                                     </Text>
-                                     </View>
-
+                                </View>
                             </TouchableOpacity>
                         </ScrollView>
 
@@ -154,7 +143,7 @@ const styles = StyleSheet.create({
         display: "flex",
         // backgroundColor: 'white',
     },
-    drop:{
+    drop: {
         backgroundColor: 'white',
         borderWidth: 1,
         borderColor: 'grey',
