@@ -544,8 +544,8 @@ export function NotificationComponent(props, {navigation}) {
                                                             text={"Enviar"}
                                                             style={{margin: 3, padding: 8, marginVertical: 10}}
                                                             loading={loading}
-                                                            primaryColor={Colors.theme}
-                                                            secondaryColor={Colors.theme}
+                                                            primaryColor={Colors.primary}
+                                                            secondaryColor={Colors.primary}
                                                             color={"white"}
                                                             borderRadius={15}
                                                             onPress={() => {

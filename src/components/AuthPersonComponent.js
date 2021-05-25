@@ -129,8 +129,8 @@ export function AuthPersonComponent(props, { navigation }) {
             text={"Adicionar"}
             style={{ margin: 3, padding: 8 }}
             loading={loading}
-            primaryColor={Colors.theme}
-            secondaryColor={Colors.theme}
+            primaryColor={Colors.primary}
+            secondaryColor={Colors.primary}
             color={Colors.white}
             borderRadius={15}
             onPress={() =>

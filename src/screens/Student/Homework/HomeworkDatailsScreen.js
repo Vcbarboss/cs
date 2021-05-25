@@ -1,7 +1,7 @@
 import React, {useState, useRef} from "react";
 import {
-    Modal,
     StyleSheet,
+    Image,
     View,
     ScrollView,
     TouchableOpacity,
@@ -18,10 +18,18 @@ import ButtonStyle1 from "../../../components/Buttons/ButtonStyle1";
 import {Texts} from "../../../helpers/Texts";
 import GeneralStatusBarColor from "../../../components/StatusBarColor";
 import {Picker} from '@react-native-picker/picker';
+import moment from "moment";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import partial from '../../../assets/icons/incomplete-icon-14.png'
+
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
-export function ReportDetailsScreen({route, navigation}) {
+const status = ['Data de entrega', 'Realizada', 'Parcialmente realizada', 'Não realizada']
+
+const icon = ['', 'check', '', 'close']
+
+export function HomeworkDetailsScreen({route, navigation}) {
 
     const [loading, setLoading] = useState(false);
     const api = useApi({navigation});
@@ -29,10 +37,12 @@ export function ReportDetailsScreen({route, navigation}) {
     const props = route.params;
     const [isVisible, setIsVisible] = useState(false);
 
+
     useFocusEffect(
         React.useCallback(() => {
             if (!isVisible) {
                 // getData()
+                console.log(props)
             }
         }, [isVisible]),
     );
@@ -76,7 +86,7 @@ export function ReportDetailsScreen({route, navigation}) {
                                         fontWeight: 'bold',
                                         fontSize: 30,
                                         color: Colors.primary
-                                    }}>{props.record.school_subject_description}
+                                    }}>{props.data.school_subject_description}
                                     </Text>
 
                                 </View>
@@ -88,40 +98,66 @@ export function ReportDetailsScreen({route, navigation}) {
                                     color: 'black'
                                 }}>{props.item.student.person.name}</Text>
                                 <Text
-                                    style={{fontSize: Texts.normal}}>{props.record.teacher_name ? props.record.teacher_name : '-'}</Text>
+                                    style={{fontSize: Texts.normal}}>{props.data.teacher_name ? props.data.teacher_name : '-'}</Text>
                                 <Text
-                                    style={{color: 'black'}}>{props.selected} {props.record.grade_status ? '- Resultado ' + props.record.grade_status : ''}</Text>
-                                <Text style={{color: 'black', fontWeight: 'bold'}}>Média Anual: <Text
-                                    style={{color: 'black'}}>{props.record.grade_anual ? props.record.grade_anual : '-'}</Text></Text>
+                                    style={{fontSize: Texts.normal}}>Data de entrega: <Text
+                                    style={{fontWeight: 'bold'}}>{props.data.homework_due_date ? moment(props.data.homework_due_date).format('DD/MM/YY') : '-'}</Text></Text>
+
                             </View>
 
                             <View style={{
                                 alignItems: 'flex-end',
                                 justifyContent: 'center'
                             }}>
-                                <View>
-                                    <View style={{
-                                        borderRadius: 50,
-                                        backgroundColor: props.record.grade_general ? Colors.notas[parseInt(props.record.grade_general)].color : '#1c2838',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        height: 80,
-                                        width: 80
-                                    }}>
+                                <View style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}>
+                                    {props.data.status === 0 ?
                                         <Text style={{
-                                            color: 'white',
                                             fontWeight: 'bold',
-                                            fontSize: 35
-                                        }}>
-                                            {props.record.grade_general ? props.record.grade_general : '-'}
-                                        </Text>
+                                            fontSize: Texts.title
+                                        }}>{moment(props.data.homework_due_date).format('DD/MM')}</Text>
+                                        :
+                                        <>
+                                            {props.data.status === 2 ?
+                                                <View style={{
+                                                    borderRadius: 50,
+                                                    backgroundColor: props.color ? props.color : '#1c2838',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    height: 80,
+                                                    width: 80,
 
-                                    </View>
+                                                }}>
+                                                    <Image source={partial} style={{height: 50, width: 50}}/>
+
+                                                </View>
+                                                :
+                                                <View style={{
+                                                    borderRadius: 50,
+                                                    backgroundColor: props.color ? props.color : '#1c2838',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    height: 80,
+                                                    width: 80
+                                                }}>
+                                                    <MaterialCommunityIcons name={icon[props.data.status]} style={{}}
+                                                                            size={45}
+                                                                            color={"white"}/>
+
+                                                </View>
+                                            }
+
+                                        </>
+                                    }
+
                                     <Text style={{
                                         fontSize: Texts.normal,
                                         color: Colors.mediumGrey,
-                                        marginTop: 5
-                                    }}> Faltas: {props.record.attendance}</Text>
+                                        marginTop: 5,
+                                        textAlign: 'center'
+                                    }}>{status[props.data.status]}</Text>
                                 </View>
                             </View>
 
@@ -129,29 +165,29 @@ export function ReportDetailsScreen({route, navigation}) {
                         {Platform.OS === 'ios' &&
                         <View style={{borderBottomWidth: 1, borderColor: 'grey'}}/>
                         }
-                        <ScrollView style={{marginTop: 15, backgroundColor: 'white'}}>
-                            {props.record.grade_list.map((item, index) =>
-                                <View key={index}
-                                      style={[styles.item, {backgroundColor: index % 2 == 0 ? 'white' : '#f3f5f8',}]}>
-                                    <View style={{flex: 1, justifyContent: 'center'}}>
-                                        <Text style={{
-                                            fontWeight: 'bold',
-                                            color: 'black'
-                                        }}>{item.grade_type_description}</Text>
-                                    </View>
-                                    <View>
-                                        <Text
-                                            style={{fontSize: Texts.title}}>{item.grade ? item.grade : '-'}</Text>
 
-                                    </View>
+                        <ScrollView style={{backgroundColor: 'white'}}>
+                            <View style={{padding: 20}}>
+                                <Text style={{
+                                    fontSize: Texts.title,
+                                    fontWeight: 'bold',
+                                    textAlign: 'center',
+                                    marginVertical: 10,
+                                    color: 'black'
+                                }}>{props?.data.homework_description}</Text>
+                                <Text style={{
+                                    fontSize: Texts.subtitle,
+                                    textAlign: 'center',
+                                }}>{props?.data.correction_note}</Text>
+                            </View>
 
-                                </View>
-                            )}
                         </ScrollView>
 
                     </View>
                 )}
+
         </>
+
 
     );
 }

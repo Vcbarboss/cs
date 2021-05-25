@@ -549,7 +549,7 @@ export function ChatScreen({route, navigation}) {
 
     useFocusEffect(
         React.useCallback(() => {
-                Colors.theme = Colors.primary;
+                Colors.primary = Colors.primary;
                 if (props.item.chat_sector_id !== sector && sector !== -1) {
                     props = {
                         item: {

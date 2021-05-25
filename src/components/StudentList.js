@@ -80,7 +80,7 @@ const StudentList = React.forwardRef((props, ref) => {
                     <TouchableOpacity key={index}
                                       style={[styles.itemList, { backgroundColor: item.student.person.natural_gender === "FEMININO" ? Colors.pink : Colors.opt1 }]}
                                       onPress={() => {
-                                        Colors.theme = item.student.person.natural_gender === "FEMININO" ? Colors.pink : Colors.opt1;
+                                        // Colors.primary = item.student.person.natural_gender === "FEMININO" ? Colors.pink : Colors.opt1;
                                         props.navigation.navigate("StudentStack", {
                                           item: item,
                                         });

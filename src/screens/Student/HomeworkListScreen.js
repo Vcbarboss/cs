@@ -38,7 +38,7 @@ export function HomeworkListScreen({route, navigation}) {
     const refNotification = useRef();
     const props = route.params;
     const data = useRef([])
-    const [isVisible, setIsVisible] = useState(true);
+    const [isVisible, setIsVisible] = useState(false);
     const [search, setSearch] = useState()
     const dataShow = useRef([])
     const isFilter = useRef()
@@ -60,8 +60,8 @@ export function HomeworkListScreen({route, navigation}) {
         }
 
         try {
-            console.log(`app/homework/paginate?page=${1}&limit=10&enrollment_id=${props.item.enrollment_id}&order_field=homework_created_at&order_type=DESC&search_list=ALL&search_global=${filter ? filter : ''}`)
-            const res = await api.get(`app/homework/paginate?page=${1}&limit=10&enrollment_id=${props.item.enrollment_id}&order_field=homework_created_at&order_type=DESC&search_list=ALL&search_global=${filter ? filter : ''}`);
+            // console.log(`app/homework/paginate?page=${1}&limit=10&enrollment_id=${props.item.enrollment_id}&order_field=homework_created_at&order_type=DESC&search_list=ALL&search_global=${filter ? filter : ''}`)
+             const res = await api.get(`app/homework/paginate?page=${1}&limit=10&enrollment_id=${props.item.enrollment_id}&order_field=homework_created_at&order_type=DESC&search_list=ALL&search_global=${filter ? filter : ''}`);
             data.current = res.object.data;
             console.log(res)
 
@@ -151,10 +151,11 @@ export function HomeworkListScreen({route, navigation}) {
                             change={(e) => onChange(e)}
                             icon={"search"}
                         />
+
                         <ScrollView
                             onScroll={Animated.event([
                                 {nativeEvent: {contentOffset: {y: scrollY}}},
-                            ])}
+                            ], {useNativeDriver: false})}
                             scrollEventThrottle={16}
                         >
 
@@ -163,7 +164,11 @@ export function HomeworkListScreen({route, navigation}) {
                                 <TouchableOpacity
                                     key={index}
                                     style={[styles.card, {borderLeftWidth: 5, borderColor: color[item.status],}]}
-                                    onPress={() => navigation.navigate('ReportDetailsScreen', {})}>
+                                    onPress={() => navigation.navigate('HomeworkDatailsScreen', {
+                                        data: item,
+                                        color: color[item.status],
+
+                                    })}>
 
 
                                     <View style={{
@@ -235,7 +240,9 @@ export function HomeworkListScreen({route, navigation}) {
                 )}
             <Modal
                 // animationType="slide"
+                style={{backgroundColor: Colors.primary, }}
                 animationIn={'slideInDown'}
+                backdropOpacity={0}
                 animationInTiming={500}
                 animationOutTiming={500}
                 animationOut={'slideOutUp'}

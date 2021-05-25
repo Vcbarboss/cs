@@ -114,7 +114,7 @@ export function ReportScreen({route, navigation}) {
                             <Picker
 
                                 selectedValue={selected}
-                                dropdownIconColor={Colors.theme}
+                                dropdownIconColor={Colors.primary}
                                 onValueChange={(itemValue, itemIndex) => {
                                     setSelected(itemValue)
                                     onChange(itemValue)

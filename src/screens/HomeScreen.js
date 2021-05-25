@@ -76,7 +76,7 @@ export function HomeScreen({ navigation }) {
 
   useFocusEffect(
     React.useCallback(() => {
-      Colors.theme = Colors.primary
+      Colors.primary = Colors.primary
       get()
       badgeChat()
     }, []),

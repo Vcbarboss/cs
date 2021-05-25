@@ -140,7 +140,7 @@ console.log(res)
 
     useFocusEffect(
         React.useCallback(() => {
-            Colors.theme = Colors.primary;
+            Colors.primary = Colors.primary;
             getData()
         }, []),
     );

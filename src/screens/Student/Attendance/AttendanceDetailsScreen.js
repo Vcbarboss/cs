@@ -1,12 +1,12 @@
 import React, {useState, useRef} from "react";
 import {
-    Modal,
     StyleSheet,
     View,
     ScrollView,
     TouchableOpacity,
     Dimensions,
     Text,
+    Modal
 } from "react-native";
 import {Colors} from "../../../helpers/Colors";
 import Toast from "../../../components/Toast";
@@ -94,6 +94,11 @@ export function AttendanceDetailsScreen({route, navigation}) {
     const attendances = useRef([])
     const knowledge = useRef([])
     const tst = useRef([])
+    const dots = useRef([])
+
+    const present = {color: Colors.green, selectedDotColor: Colors.green};
+    const absent = {color: Colors.red, selectedDotColor: Colors.red};
+    const know = {color: Colors.tertiary, selectedDotColor: Colors.tertiary};
 
     const getData = () => {
         attendances.current = []
@@ -110,54 +115,43 @@ export function AttendanceDetailsScreen({route, navigation}) {
             knowledge.current.push(key)
 
 
-            attendances.current.push(
-                {
-                    day: key,
-                    data: {
-                        marked: knowledge.current.includes(key),
-                    }
-                }
-            )
+            // attendances.current.push(
+            //     {
+            //         day: key,
+            //         data: {
+            //             marked: knowledge.current.includes(key),
+            //         }
+            //     }
+            // )
         })
 
         Object.entries(props?.record?.attendance).forEach(([key, value]) => {
 
-            if (knowledge.current.includes(key)) {
+            dots.current = []
 
-                attendances.current.push(
-                    {
-                        day: key,
-                        data: {
-                            marked: knowledge.current.includes(key),
-                            dotColor: 'white',
-                            customStyles: {
-                                container: {
-                                    backgroundColor: value ? Colors.green : Colors.red
-                                },
-                                text: {
-                                    color: 'white'
-                                },
-                            }
-                        }
-                    }
-                )
-            } else {
-                attendances.current.push(
-                    {
-                        day: key,
-                        data: {
-                            customStyles: {
-                                container: {
-                                    backgroundColor: value ? Colors.green : Colors.red
-                                },
-                                text: {
-                                    color: 'white'
-                                },
-                            }
-                        }
-                    }
-                )
+            for (let i = 0; i < value.length; i++) {
+                if (value[i].present) {
+                    dots.current.push(present)
+
+                } else {
+                    dots.current.push(absent)
+
+                }
+
             }
+            if (knowledge.current.includes(key)) {
+                dots.current.push(know)
+            }
+
+
+            attendances.current.push(
+                {
+                    day: key,
+                    data: {
+                        dots: dots.current,
+                    }
+                }
+            )
 
 
         })
@@ -183,6 +177,8 @@ export function AttendanceDetailsScreen({route, navigation}) {
     const getKnowledge = (day) => {
 
         let aux;
+        let aux2;
+        aux2 = []
 
         Object.entries(props?.record?.knowledge).forEach(([key, value]) => {
             if (day === key) {
@@ -190,7 +186,20 @@ export function AttendanceDetailsScreen({route, navigation}) {
             }
         })
 
-        setObjToShow({...objToShow, 'knowledge': aux})
+        Object.entries(props?.record?.attendance).forEach(([key, value]) => {
+            if (day === key) {
+                for (let i = 0; i < value.length; i++) {
+                    aux2.push(value[i])
+                }
+            }
+        })
+        console.log(aux2)
+
+        setObjToShow({
+            ...objToShow,
+            'knowledge': aux,
+            'history': aux2
+        })
 
     }
 
@@ -228,6 +237,9 @@ export function AttendanceDetailsScreen({route, navigation}) {
                             <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
                                 <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={Colors.primary}/>
                             </TouchableOpacity>
+                            {/*<TouchableOpacity style={{}} onPress={() => console.log(objToShow)}>*/}
+                            {/*    <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={Colors.primary}/>*/}
+                            {/*</TouchableOpacity>*/}
 
                         </View>
                         <View style={{
@@ -245,10 +257,7 @@ export function AttendanceDetailsScreen({route, navigation}) {
                                         color: Colors.primary
                                     }}>{props.record.description}
                                     </Text>
-
                                 </View>
-
-
                                 <Text style={{
                                     fontSize: Texts.normal,
                                     fontWeight: 'bold',
@@ -289,53 +298,95 @@ export function AttendanceDetailsScreen({route, navigation}) {
                         {Platform.OS === 'ios' &&
                         <View style={{borderBottomWidth: 1, borderColor: 'grey'}}/>
                         }
-                        <ScrollView style={{marginTop: 15, backgroundColor: 'white'}}
+                        <View style={{marginTop: 15, backgroundColor: 'white'}}
                             // contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
                         >
                             <Calendar
                                 markedDates={
                                     objToShow
                                 }
-                                markingType={'custom'}
+                                markingType={'multi-dot'}
                                 onDayPress={(day) => {
+                                    setIsVisible(true)
                                     getKnowledge(day.dateString)
                                 }}
                                 theme={{
                                     textMonthFontWeight: 'bold',
                                 }}
                             />
-                        </ScrollView>
 
-                        <View style={{
-                            padding: 20,
-                            paddingVertical: 30,
-                            borderTopWidth: 2,
-                            borderColor: Colors.lightgray
-                        }}>
-                            {objToShow?.knowledge?.knowledge ?
-                                <>
-                                    {/*<Text style={{color: Colors.primary}}>Conteúdo ministrado*/}
-                                    {/*    em <Text style={{fontWeight: 'bold'}}>{objToShow?.knowledge?.date}</Text>:</Text>*/}
-                                    <Text style={{
-                                        color: 'black',
-                                        fontSize: Texts.listTitle,
-                                        textAlign: 'center',
-                                        fontWeight: 'bold',
-                                        marginBottom: 5
-                                    }}>{objToShow?.knowledge?.knowledge}</Text>
-                                    <Text style={{fontSize: Texts.listDescription, textAlign: 'center'}}>{objToShow?.knowledge?.note}</Text>
-                                </>
-                                :
-                                <>
-                                    <Text style={{textAlign: 'center'}}>Selecione um dia marcado para visualizar o conteúdo
-                                        ministrado nesta data.</Text>
-                                </>
-                            }
 
+                            <View style={{
+                                justifyContent: 'center',
+                                borderTopWidth: 2,
+                                borderColor: Colors.lightgray,
+                                flexDirection: 'row',
+                            }}>
+                                <View style={{flex: 1, padding: 20}}>
+                                    <Text style={{textAlign: 'center', color: 'grey'}}>Selecione um dia marcado
+                                        com <View style={{
+                                            backgroundColor: Colors.tertiary,
+                                            height: 5,
+                                            width: 5,
+                                            borderRadius: 50,
+                                        }}/> para
+                                        visualizar o conteúdo ministrado nesta data.</Text>
+                                </View>
+                            </View>
                         </View>
 
                     </View>
+
                 )}
+            <Modal
+                transparent={true}
+                visible={isVisible}
+                onCloseRequest={() => setIsVisible(false)}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <TouchableOpacity style={{padding: 20}} onPress={() => setIsVisible(false)}>
+                            <Text>
+                                Fechar
+                            </Text>
+                        </TouchableOpacity>
+                        <View style={{padding: 35, borderBottomWidth: 2, borderColor: Colors.lightgray}}>
+                            <Text style={{
+                                color: 'black',
+                                fontSize: Texts.listTitle,
+                                textAlign: 'center',
+                                fontWeight: 'bold',
+                                marginBottom: 5,
+                            }}>{objToShow?.knowledge?.knowledge}</Text>
+                            <Text style={{
+                                fontSize: Texts.listDescription,
+                                textAlign: 'center'
+                            }}>{objToShow?.knowledge?.note}</Text>
+                        </View>
+                        <View style={{padding: 30}}>
+                            {objToShow?.history?.map((item, index) =>
+
+                                <View key={index}>
+                                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                                        <View style={{
+                                            marginTop: 2,
+                                            height: 8,
+                                            width: 8,
+                                            borderRadius: 100,
+                                            backgroundColor: item.present ? Colors.green : Colors.red,
+                                        }}/>
+                                        <Text> - {item.time_initial}</Text>
+                                    </View>
+
+                                </View>
+                            )}
+
+                        </View>
+                    </View>
+                </View>
+
+
+            </Modal>
         </>
 
     );
@@ -350,7 +401,6 @@ const styles = StyleSheet.create({
     },
     centeredView: {
         flex: 1,
-        backgroundColor: "rgba(60, 60, 60, 0.5)",
         justifyContent: "center",
         alignItems: "center",
     },
@@ -358,7 +408,6 @@ const styles = StyleSheet.create({
         margin: 20,
         backgroundColor: "white",
         borderRadius: 10,
-        padding: 35,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {

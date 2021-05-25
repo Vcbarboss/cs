@@ -46,7 +46,7 @@ export function ProtocolScreen({navigation}) {
 
     useFocusEffect(
         React.useCallback(() => {
-            Colors.theme = Colors.primary;
+            Colors.primary = Colors.primary;
             // get();
         }, []),
     );

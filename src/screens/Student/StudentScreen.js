@@ -117,7 +117,7 @@ export function StudentScreen({route, navigation}) {
                                 {props?.item.student.person.avatar ?
                                     <View style={{
                                         borderWidth: 2,
-                                        borderColor: Colors.theme,
+                                        borderColor: Colors.primary,
                                         backgroundColor: 'white',
                                         borderRadius: 55,
                                         padding: 3,
