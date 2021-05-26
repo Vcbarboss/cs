@@ -107,7 +107,6 @@ export function AttendanceListScreen({route, navigation}) {
             const res = await api.get(`app/attendance/${props.item.enrollment_id}/list`);
 
             data.current = res.object;
-            console.log(res)
             onChange(0)
             setLoading(false);
         } catch (e) {

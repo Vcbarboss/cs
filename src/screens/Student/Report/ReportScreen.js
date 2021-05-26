@@ -47,7 +47,6 @@ export function ReportScreen({route, navigation}) {
             const res = await api.get(`app/student-grade/${props.item.enrollment_id}/list`);
             sections.current = []
             data.current = res.object;
-            console.log(res)
             for (let i = 0; i < res.object.length; i++) {
                 sections.current.push(res.object[i].stage_description)
             }

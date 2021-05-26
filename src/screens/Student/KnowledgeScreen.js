@@ -39,7 +39,6 @@ export function KnowledgeScreen({route, navigation}) {
             const res = await api.get(`app/attendance/${props.item.enrollment_id}/list`);
 
             data.current = res.object;
-            console.log(res)
             formatData()
             setLoading(false);
         } catch (e) {
@@ -89,7 +88,6 @@ export function KnowledgeScreen({route, navigation}) {
 
         let aux;
         setIsVisible(true)
-        console.log(day)
 
         // Object.entries(props?.record?.knowledge).forEach(([key, value]) => {
         //     if (day === key) {

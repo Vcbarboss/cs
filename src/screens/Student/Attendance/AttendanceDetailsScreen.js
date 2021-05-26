@@ -193,7 +193,6 @@ export function AttendanceDetailsScreen({route, navigation}) {
                 }
             }
         })
-        console.log(aux2)
 
         setObjToShow({
             ...objToShow,
@@ -204,10 +203,10 @@ export function AttendanceDetailsScreen({route, navigation}) {
     }
 
 
+
     useFocusEffect(
         React.useCallback(() => {
             if (!isVisible) {
-                console.log(props)
                 getData()
             }
         }, [isVisible]),

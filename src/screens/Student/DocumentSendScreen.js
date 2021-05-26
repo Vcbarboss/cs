@@ -67,7 +67,6 @@ export function DocumentSendScreen({route, navigation}) {
             for (let i = 0; i < res1.object.length; i++) {
                 pendingList.current.push(res1.object[i].document_type_id)
             }
-            console.log(res1)
             setLoading(false)
         } catch (e) {
             console.log(e)

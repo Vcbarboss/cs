@@ -21,6 +21,7 @@ import {Picker} from '@react-native-picker/picker';
 import moment from "moment";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import partial from '../../../assets/icons/incomplete-icon-14.png'
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 
 
 const screenHeight = Math.round(Dimensions.get("window").height);
@@ -42,7 +43,6 @@ export function HomeworkDetailsScreen({route, navigation}) {
         React.useCallback(() => {
             if (!isVisible) {
                 // getData()
-                console.log(props)
             }
         }, [isVisible]),
     );
@@ -67,13 +67,17 @@ export function HomeworkDetailsScreen({route, navigation}) {
                         <View style={{backgroundColor: Colors.opt1}}>
 
                         </View>
-                        <View style={{flexDirection: "row", backgroundColor: 'white', padding: 10, elevation: 3,}}>
+                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
                             <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={Colors.primary}/>
+                                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
                             </TouchableOpacity>
-
+                            <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
+                                <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
+                                <Text style={{color: "white", fontSize: Texts.subtitle,}}>Detalhes</Text>
+                            </View>
                         </View>
                         <View style={{
+                            paddingTop: 20,
                             elevation: 3,
                             backgroundColor: 'white',
                             paddingHorizontal: 30,

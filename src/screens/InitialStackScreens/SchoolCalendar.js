@@ -97,7 +97,6 @@ export function SchoolCalendarScreen({navigation}) {
     const getData = async () => {
         try {
             const res = await api.get(`app/calendar/${year}/list`);
-console.log(res)
             //setItems(res.object.dates)
             loadItems(res.object.dates)
         } catch (e) {

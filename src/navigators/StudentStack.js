@@ -17,6 +17,7 @@ import {AttendanceListScreen} from "../screens/Student/Attendance/AttendanceList
 import {AttendanceDetailsScreen} from "../screens/Student/Attendance/AttendanceDetailsScreen";
 import {KnowledgeScreen} from "../screens/Student/KnowledgeScreen";
 import {HomeworkDetailsScreen} from "../screens/Student/Homework/HomeworkDatailsScreen";
+import {AnimationScreen} from "../screens/Student/AnimationScreen";
 
 const StudentStack = createStackNavigator();
 
@@ -135,6 +136,13 @@ export function StudentStackNavigator({route, navigation}) {
 
                     <StudentStack.Screen name={'HomeworkDatailsScreen'} initialParams={props}
                                          component={HomeworkDetailsScreen} options={{
+                        headerShown: false,
+                        gesturesEnabled: false,
+                        animationEnabled: false,
+                    }}/>
+
+                    <StudentStack.Screen name={'AnimationScreen'} initialParams={props}
+                                         component={AnimationScreen} options={{
                         headerShown: false,
                         gesturesEnabled: false,
                         animationEnabled: false,

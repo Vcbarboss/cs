@@ -48,7 +48,6 @@ export function NotificationComponent(props, {navigation}) {
         try {
             if (props.aluno) {
                 const res = await api.get(`app/notification/${props.id}/${props.enrollment_id}`);
-                console.log(res)
                 setMessage(res.object.push_notification.message)
                 setData(res);
                 if (!props.read) {
@@ -56,7 +55,6 @@ export function NotificationComponent(props, {navigation}) {
                 }
             } else {
                 const res = await api.get(`app/notification/${props.id}`);
-                console.log(res)
                 setMessage(res.object.push_notification.message)
                 setData(res);
                 if (!props.read) {

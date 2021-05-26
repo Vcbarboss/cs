@@ -37,7 +37,6 @@ export function AuthPersonListScreen({route, navigation}) {
         setLoading(true);
         try {
             const res = await api.get(`app/enrollment/${props.item.enrollment_id}/auth-person/list`);
-console.log(res)
             setData(res.object);
             setLoading(false);
         } catch (e) {

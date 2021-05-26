@@ -30,7 +30,6 @@ export function LoadingScreen({navigation}) {
     const configFirebase = async (refreshToken) => {
 
         let user = await getUser();
-        console.log(user)
         messaging()
             .getInitialNotification()
             .then(async (remoteMessage) => {

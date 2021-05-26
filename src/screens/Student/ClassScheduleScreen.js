@@ -79,12 +79,10 @@ export function ClassScheduleScreen({route, navigation}) {
 
     const getData = async () => {
         setLoading(true);
-        console.log(props)
         setSelectedDay(daysWeek[moment().isoWeekday()].acronym)
         try {
             const res = await api.get(`app/class-room-schedule/${props.item.enrollment_id}/list`);
             days.current = res.object;
-            console.log(res)
             setLoading(false);
         } catch (e) {
             let aux;

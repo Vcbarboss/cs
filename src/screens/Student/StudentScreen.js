@@ -43,7 +43,6 @@ export function StudentScreen({route, navigation}) {
 
     useFocusEffect(
         React.useCallback(() => {
-            console.log(user)
         }, []),
     );
 
@@ -73,7 +72,6 @@ export function StudentScreen({route, navigation}) {
                                 backgroundColor: Colors.primary,
                                 borderBottomWidth: 1
                             }}>
-
                                 <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
                                     <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
                                 </TouchableOpacity>
@@ -258,6 +256,15 @@ export function StudentScreen({route, navigation}) {
                                                   }>
                                     <MCIcon name={'account-check-outline'} color={'#e63946'} size={40}/>
                                     <Text style={{textAlign: 'center'}}> CONTEÚDOS </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.itemList, {borderColor: '#e63946'}]}
+                                                  onPress={() =>
+                                                      navigation.navigate('AnimationScreen',
+                                                          {item: props?.item},
+                                                      )
+                                                  }>
+                                    <MCIcon name={'account-check-outline'} color={'#e63946'} size={40}/>
+                                    <Text style={{textAlign: 'center'}}> Animacao </Text>
                                 </TouchableOpacity>
                             </View>
                         </ScrollView>

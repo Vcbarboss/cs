@@ -82,7 +82,6 @@ export function ProtocolScreen({navigation}) {
                                     placeholder={'Protocolo'}
                                     value={'12345'}
                                     change={(e) => {
-                                        console.log(e)
                                     }}
                                     icon={"search"}
                                 />

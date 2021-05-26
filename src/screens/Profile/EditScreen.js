@@ -170,24 +170,19 @@ setIsVisible(false)
                 .then((result) => {
                     switch (result) {
                         case RESULTS.UNAVAILABLE:
-                            console.log('This feature is not available (on this device / in this context)');
                             setIsDenied(true)
                             getImage(mode)
                             break;
                         case RESULTS.DENIED:
-                            console.log('The permission has not been requested / is denied but requestable');
 
                             getImage(mode)
                             break;
                         case RESULTS.LIMITED:
-                            console.log('The permission is limited: some actions are possible');
                             break;
                         case RESULTS.GRANTED:
-                            console.log('The permission is granted');
                             getImage(mode)
                             break;
                         case RESULTS.BLOCKED:
-                            console.log('The permission is denied and not requestable anymore');
                             setIsDenied(true)
                             getImage(mode)
                             break;
@@ -216,7 +211,6 @@ setIsVisible(false)
 
                         // openSettings().catch(() => console.warn('cannot open settings'));
                     } else {
-                        console.log(response)
                         if (response.uri) {
 
                             crop(response.uri)
@@ -234,7 +228,6 @@ setIsVisible(false)
                     includeBase64: false,
                 },
                 (response) => {
-                    console.log(response)
                     if (response.uri) {
                         crop(response.uri)
                     }
