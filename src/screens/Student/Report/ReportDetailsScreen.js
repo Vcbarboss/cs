@@ -40,117 +40,141 @@ export function ReportDetailsScreen({route, navigation}) {
     return (
 
         <>
-            {loading ? (
-                    <Loading/>
 
-                )
-                :
-                (
-                    <View style={styles.container}>
-                        <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                               barStyle="light-content"/>
-                        {/*<StatusBar*/}
-                        {/*  backgroundColor={Colors.primary}*/}
-                        {/*  barStyle="light-content"*/}
-                        {/*/>*/}
-                        <View style={{backgroundColor: Colors.opt1}}>
+            <View style={styles.container}>
+                <Toast ref={refNotification}/>
+                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                                       barStyle="light-content"/>
+                {/*<StatusBar*/}
+                {/*  backgroundColor={Colors.primary}*/}
+                {/*  barStyle="light-content"*/}
+                {/*/>*/}
+                <View style={{backgroundColor: Colors.opt1}}>
 
-                        </View>
-                        <View style={{flexDirection: "row", backgroundColor: 'white', padding: 10, elevation: 3,}}>
-                            <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={Colors.primary}/>
-                            </TouchableOpacity>
+                </View>
+                <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
+                    <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                        <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
+                    </TouchableOpacity>
+                    <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                        </View>
-                        <View style={{
-                            elevation: 3,
-                            backgroundColor: 'white',
-                            paddingHorizontal: 30,
-                            flexDirection: 'row',
-                            paddingBottom: 20
-                        }}>
-                            <View style={{flex: 1}}>
-                                <View style={{flexDirection: 'row'}}>
-                                    <Text style={{
-                                        fontWeight: 'bold',
-                                        fontSize: 30,
-                                        color: Colors.primary
-                                    }}>{props.record.school_subject_description}
-                                    </Text>
+                        <Text style={{
+                            color: "white",
+                            fontSize: Texts.title,
+                            textAlign: 'center',
+                            fontWeight: 'bold'
+                        }}>CONSTRUINDO O
+                            SABER</Text>
+                        <Text style={{
+                            color: "#8b98ae",
+                            fontSize: Texts.subtitle,
+                            textAlign: 'center'
+                        }}>Detalhes</Text>
 
-                                </View>
+                    </View>
+                    <TouchableOpacity style={{width: 26, marginTop: 10, alignItems: "flex-end"}}
+                                      onPress={() => {
+                                      }}>
 
+                    </TouchableOpacity>
+                </View>
+                {loading ? (
+                        <Loading/>
 
-                                <Text style={{
-                                    fontSize: Texts.normal,
-                                    fontWeight: 'bold',
-                                    color: 'black'
-                                }}>{props.item.student.person.name}</Text>
-                                <Text
-                                    style={{fontSize: Texts.normal}}>{props.record.teacher_name ? props.record.teacher_name : '-'}</Text>
-                                <Text
-                                    style={{color: 'black'}}>{props.selected} {props.record.grade_status ? '- Resultado ' + props.record.grade_status : ''}</Text>
-                                <Text style={{color: 'black', fontWeight: 'bold'}}>Média Anual: <Text
-                                    style={{color: 'black'}}>{props.record.grade_anual ? props.record.grade_anual : '-'}</Text></Text>
-                            </View>
-
+                    )
+                    :
+                    (
+                        <>
                             <View style={{
-                                alignItems: 'flex-end',
-                                justifyContent: 'center'
+                                paddingTop: 20,
+                                elevation: 3,
+                                backgroundColor: 'white',
+                                paddingHorizontal: 30,
+                                flexDirection: 'row',
+                                paddingBottom: 20
                             }}>
-                                <View>
-                                    <View style={{
-                                        borderRadius: 50,
-                                        backgroundColor: props.record.grade_general ? Colors.notas[parseInt(props.record.grade_general)].color : '#1c2838',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        height: 80,
-                                        width: 80
-                                    }}>
+                                <View style={{flex: 1}}>
+                                    <View style={{flexDirection: 'row'}}>
                                         <Text style={{
-                                            color: 'white',
                                             fontWeight: 'bold',
-                                            fontSize: 35
-                                        }}>
-                                            {props.record.grade_general ? props.record.grade_general : '-'}
+                                            fontSize: 30,
+                                            color: Colors.primary
+                                        }}>{props.record.school_subject_description}
                                         </Text>
 
                                     </View>
+
+
                                     <Text style={{
                                         fontSize: Texts.normal,
-                                        color: Colors.mediumGrey,
-                                        marginTop: 5
-                                    }}> Faltas: {props.record.attendance}</Text>
+                                        fontWeight: 'bold',
+                                        color: 'black'
+                                    }}>{props.item.student.person.name}</Text>
+                                    <Text
+                                        style={{fontSize: Texts.normal}}>{props.record.teacher_name ? props.record.teacher_name : '-'}</Text>
+                                    <Text
+                                        style={{color: 'black'}}>{props.selected} {props.record.grade_status ? '- Resultado ' + props.record.grade_status : ''}</Text>
+                                    <Text style={{color: 'black', fontWeight: 'bold'}}>Média Anual: <Text
+                                        style={{color: 'black'}}>{props.record.grade_anual ? props.record.grade_anual : '-'}</Text></Text>
                                 </View>
-                            </View>
 
-                        </View>
-                        {Platform.OS === 'ios' &&
-                        <View style={{borderBottomWidth: 1, borderColor: 'grey'}}/>
-                        }
-                        <ScrollView style={{marginTop: 15, backgroundColor: 'white'}}>
-                            {props.record.grade_list.map((item, index) =>
-                                <View key={index}
-                                      style={[styles.item, {backgroundColor: index % 2 == 0 ? 'white' : '#f3f5f8',}]}>
-                                    <View style={{flex: 1, justifyContent: 'center'}}>
-                                        <Text style={{
-                                            fontWeight: 'bold',
-                                            color: 'black'
-                                        }}>{item.grade_type_description}</Text>
-                                    </View>
+                                <View style={{
+                                    alignItems: 'flex-end',
+                                    justifyContent: 'center'
+                                }}>
                                     <View>
-                                        <Text
-                                            style={{fontSize: Texts.title}}>{item.grade ? item.grade : '-'}</Text>
+                                        <View style={{
+                                            borderRadius: 50,
+                                            backgroundColor: props.record.grade_general ? Colors.notas[parseInt(props.record.grade_general)].color : '#1c2838',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            height: 80,
+                                            width: 80
+                                        }}>
+                                            <Text style={{
+                                                color: 'white',
+                                                fontWeight: 'bold',
+                                                fontSize: 35
+                                            }}>
+                                                {props.record.grade_general ? props.record.grade_general : '-'}
+                                            </Text>
+
+                                        </View>
+                                        <Text style={{
+                                            fontSize: Texts.normal,
+                                            color: Colors.mediumGrey,
+                                            marginTop: 5
+                                        }}> Faltas: {props.record.attendance}</Text>
+                                    </View>
+                                </View>
+
+                            </View>
+                            {Platform.OS === 'ios' &&
+                            <View style={{borderBottomWidth: 1, borderColor: 'grey'}}/>
+                            }
+                            <ScrollView style={{marginTop: 15, backgroundColor: 'white'}}>
+                                {props.record.grade_list.map((item, index) =>
+                                    <View key={index}
+                                          style={[styles.item, {backgroundColor: index % 2 == 0 ? 'white' : '#f3f5f8',}]}>
+                                        <View style={{flex: 1, justifyContent: 'center'}}>
+                                            <Text style={{
+                                                fontWeight: 'bold',
+                                                color: 'black'
+                                            }}>{item.grade_type_description}</Text>
+                                        </View>
+                                        <View>
+                                            <Text
+                                                style={{fontSize: Texts.title}}>{item.grade ? item.grade : '-'}</Text>
+
+                                        </View>
 
                                     </View>
+                                )}
+                            </ScrollView>
+                        </>
+                    )}
+            </View>
 
-                                </View>
-                            )}
-                        </ScrollView>
-
-                    </View>
-                )}
         </>
 
     );

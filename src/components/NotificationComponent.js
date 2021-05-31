@@ -180,7 +180,7 @@ export function NotificationComponent(props, {navigation}) {
                             enabled={Platform.OS === "ios"}
                             style={{flex: 1}}
                         >
-                            <GeneralStatusBarColor backgroundColor={Colors.primary}
+                            <GeneralStatusBarColor backgroundColor={Colors.statusBar}
                                                    barStyle="light-content"/>
                             <Toast ref={refNotification}/>
 

@@ -50,145 +50,166 @@ export function HomeworkDetailsScreen({route, navigation}) {
     return (
 
         <>
-            {loading ? (
-                    <Loading/>
 
-                )
-                :
-                (
-                    <View style={styles.container}>
-                        <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                               barStyle="light-content"/>
-                        {/*<StatusBar*/}
-                        {/*  backgroundColor={Colors.primary}*/}
-                        {/*  barStyle="light-content"*/}
-                        {/*/>*/}
-                        <View style={{backgroundColor: Colors.opt1}}>
+            <View style={styles.container}>
+                <Toast ref={refNotification}/>
+                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                                       barStyle="light-content"/>
+                {/*<StatusBar*/}
+                {/*  backgroundColor={Colors.primary}*/}
+                {/*  barStyle="light-content"*/}
+                {/*/>*/}
+                <View style={{backgroundColor: Colors.opt1}}>
 
-                        </View>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
-                            <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
-                                <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle,}}>Detalhes</Text>
-                            </View>
-                        </View>
-                        <View style={{
-                            paddingTop: 20,
-                            elevation: 3,
-                            backgroundColor: 'white',
-                            paddingHorizontal: 30,
-                            flexDirection: 'row',
-                            paddingBottom: 20
-                        }}>
-                            <View style={{flex: 1}}>
-                                <View style={{flexDirection: 'row'}}>
-                                    <Text style={{
-                                        fontWeight: 'bold',
-                                        fontSize: 30,
-                                        color: Colors.primary
-                                    }}>{props.data.school_subject_description}
-                                    </Text>
+                </View>
+                <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
+                    <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                        <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
+                    </TouchableOpacity>
+                    <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                                </View>
+                        <Text style={{
+                            color: "white",
+                            fontSize: Texts.title,
+                            textAlign: 'center',
+                            fontWeight: 'bold'
+                        }}>CONSTRUINDO O
+                            SABER</Text>
+                        <Text style={{
+                            color: "#8b98ae",
+                            fontSize: Texts.subtitle,
+                            textAlign: 'center'
+                        }}>Detalhes</Text>
 
+                    </View>
+                    <TouchableOpacity style={{width: 26, marginTop: 10, alignItems: "flex-end"}}
+                                      onPress={() => {
+                                      }}>
 
-                                <Text style={{
-                                    fontSize: Texts.normal,
-                                    fontWeight: 'bold',
-                                    color: 'black'
-                                }}>{props.item.student.person.name}</Text>
-                                <Text
-                                    style={{fontSize: Texts.normal}}>{props.data.teacher_name ? props.data.teacher_name : '-'}</Text>
-                                <Text
-                                    style={{fontSize: Texts.normal}}>Data de entrega: <Text
-                                    style={{fontWeight: 'bold'}}>{props.data.homework_due_date ? moment(props.data.homework_due_date).format('DD/MM/YY') : '-'}</Text></Text>
+                    </TouchableOpacity>
+                </View>
+                {loading ? (
+                        <Loading/>
 
-                            </View>
-
+                    )
+                    :
+                    (
+                        <>
                             <View style={{
-                                alignItems: 'flex-end',
-                                justifyContent: 'center'
+                                paddingTop: 20,
+                                elevation: 3,
+                                backgroundColor: 'white',
+                                paddingHorizontal: 30,
+                                flexDirection: 'row',
+                                paddingBottom: 20
                             }}>
-                                <View style={{
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                    {props.data.status === 0 ?
+                                <View style={{flex: 1}}>
+                                    <View style={{flexDirection: 'row'}}>
                                         <Text style={{
                                             fontWeight: 'bold',
-                                            fontSize: Texts.title
-                                        }}>{moment(props.data.homework_due_date).format('DD/MM')}</Text>
-                                        :
-                                        <>
-                                            {props.data.status === 2 ?
-                                                <View style={{
-                                                    borderRadius: 50,
-                                                    backgroundColor: props.color ? props.color : '#1c2838',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    height: 80,
-                                                    width: 80,
+                                            fontSize: 30,
+                                            color: Colors.primary
+                                        }}>{props.data.school_subject_description}
+                                        </Text>
 
-                                                }}>
-                                                    <Image source={partial} style={{height: 50, width: 50}}/>
+                                    </View>
 
-                                                </View>
-                                                :
-                                                <View style={{
-                                                    borderRadius: 50,
-                                                    backgroundColor: props.color ? props.color : '#1c2838',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    height: 80,
-                                                    width: 80
-                                                }}>
-                                                    <MaterialCommunityIcons name={icon[props.data.status]} style={{}}
-                                                                            size={45}
-                                                                            color={"white"}/>
-
-                                                </View>
-                                            }
-
-                                        </>
-                                    }
 
                                     <Text style={{
                                         fontSize: Texts.normal,
-                                        color: Colors.mediumGrey,
-                                        marginTop: 5,
-                                        textAlign: 'center'
-                                    }}>{status[props.data.status]}</Text>
+                                        fontWeight: 'bold',
+                                        color: 'black'
+                                    }}>{props.item.student.person.name}</Text>
+                                    <Text
+                                        style={{fontSize: Texts.normal}}>{props.data.teacher_name ? props.data.teacher_name : '-'}</Text>
+                                    <Text
+                                        style={{fontSize: Texts.normal}}>Data de entrega: <Text
+                                        style={{fontWeight: 'bold'}}>{props.data.homework_due_date ? moment(props.data.homework_due_date).format('DD/MM/YY') : '-'}</Text></Text>
+
                                 </View>
+
+                                <View style={{
+                                    alignItems: 'flex-end',
+                                    justifyContent: 'center'
+                                }}>
+                                    <View style={{
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}>
+                                        {props.data.status === 0 ?
+                                            <Text style={{
+                                                fontWeight: 'bold',
+                                                fontSize: Texts.title
+                                            }}>{moment(props.data.homework_due_date).format('DD/MM')}</Text>
+                                            :
+                                            <>
+                                                {props.data.status === 2 ?
+                                                    <View style={{
+                                                        borderRadius: 50,
+                                                        backgroundColor: props.color ? props.color : '#1c2838',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                        height: 80,
+                                                        width: 80,
+
+                                                    }}>
+                                                        <Image source={partial} style={{height: 50, width: 50}}/>
+
+                                                    </View>
+                                                    :
+                                                    <View style={{
+                                                        borderRadius: 50,
+                                                        backgroundColor: props.color ? props.color : '#1c2838',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                        height: 80,
+                                                        width: 80
+                                                    }}>
+                                                        <MaterialCommunityIcons name={icon[props.data.status]}
+                                                                                style={{}}
+                                                                                size={45}
+                                                                                color={"white"}/>
+
+                                                    </View>
+                                                }
+
+                                            </>
+                                        }
+
+                                        <Text style={{
+                                            fontSize: Texts.normal,
+                                            color: Colors.mediumGrey,
+                                            marginTop: 5,
+                                            textAlign: 'center'
+                                        }}>{status[props.data.status]}</Text>
+                                    </View>
+                                </View>
+
                             </View>
+                            {Platform.OS === 'ios' &&
+                            <View style={{borderBottomWidth: 1, borderColor: 'grey'}}/>
+                            }
 
-                        </View>
-                        {Platform.OS === 'ios' &&
-                        <View style={{borderBottomWidth: 1, borderColor: 'grey'}}/>
-                        }
+                            <ScrollView style={{backgroundColor: 'white'}}>
+                                <View style={{padding: 20}}>
+                                    <Text style={{
+                                        fontSize: Texts.title,
+                                        fontWeight: 'bold',
+                                        textAlign: 'center',
+                                        marginVertical: 10,
+                                        color: 'black'
+                                    }}>{props?.data.homework_description}</Text>
+                                    <Text style={{
+                                        fontSize: Texts.subtitle,
+                                        textAlign: 'center',
+                                    }}>{props?.data.correction_note}</Text>
+                                </View>
 
-                        <ScrollView style={{backgroundColor: 'white'}}>
-                            <View style={{padding: 20}}>
-                                <Text style={{
-                                    fontSize: Texts.title,
-                                    fontWeight: 'bold',
-                                    textAlign: 'center',
-                                    marginVertical: 10,
-                                    color: 'black'
-                                }}>{props?.data.homework_description}</Text>
-                                <Text style={{
-                                    fontSize: Texts.subtitle,
-                                    textAlign: 'center',
-                                }}>{props?.data.correction_note}</Text>
-                            </View>
+                            </ScrollView>
+                        </>
+                    )}
+            </View>
 
-                        </ScrollView>
-
-                    </View>
-                )}
 
         </>
 

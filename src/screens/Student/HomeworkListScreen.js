@@ -8,7 +8,7 @@ import {
     TouchableHighlight,
     Dimensions,
     Text, Image,
-    Animated
+    Animated, Keyboard
 } from "react-native";
 import {Colors} from "../../helpers/Colors";
 import Toast from "../../components/Toast";
@@ -133,13 +133,8 @@ export function HomeworkListScreen({route, navigation}) {
         outputRange: ['0%', '25%']
     })
 
-    // let closeAlt = altFilter.interpolate({
-    //     inputRange: [0, 100],
-    //     outputRange: ['0%', '25%']
-    // })
-
     const onFilter = () => {
-
+        Keyboard.dismiss()
         if (!filter) {
             openFilter()
         } else {
@@ -179,7 +174,7 @@ export function HomeworkListScreen({route, navigation}) {
             <View style={styles.container}>
 
                 <Toast ref={refNotification}/>
-                <GeneralStatusBarColor backgroundColor={Colors.primary}
+                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
                                        barStyle="light-content"/>
                 {/*<StatusBar*/}
                 {/*  backgroundColor={Colors.primary}*/}
@@ -190,11 +185,26 @@ export function HomeworkListScreen({route, navigation}) {
                         <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
                     </TouchableOpacity>
                     <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
-                        <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
-                        <Text style={{color: "white", fontSize: Texts.subtitle,}}>Tarefas</Text>
+
+                        <Text style={{
+                            color: "white",
+                            fontSize: Texts.title,
+                            textAlign: 'center',
+                            fontWeight: 'bold'
+                        }}>CONSTRUINDO O
+                            SABER</Text>
+                        <Text style={{
+                            color: "#8b98ae",
+                            fontSize: Texts.subtitle,
+                            textAlign: 'center'
+                        }}>Tarefas</Text>
+
                     </View>
                     <TouchableOpacity style={{marginTop: 10, alignItems: "flex-end"}}
-                                      onPress={() => onFilter()}>
+                                              onPress={() => {
+
+                                                  onFilter()
+                                              }}>
                         <SimpleLineIcons name={'equalizer'} style={{}} size={25} color={'white'}/>
                     </TouchableOpacity>
                 </View>
@@ -243,7 +253,6 @@ export function HomeworkListScreen({route, navigation}) {
                     }
                 </Animated.View>
 
-
                 <FieldSearch
                     placeholder="Busca"
                     value={search}
@@ -264,6 +273,7 @@ export function HomeworkListScreen({route, navigation}) {
                                 {nativeEvent: {contentOffset: {y: scrollY}}},
                             ], {useNativeDriver: false})}
                             scrollEventThrottle={16}
+                            keyboardShouldPersistTaps="handled"
                         >
 
                             <>

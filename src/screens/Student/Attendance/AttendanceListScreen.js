@@ -133,49 +133,50 @@ export function AttendanceListScreen({route, navigation}) {
     return (
 
         <>
-            {loading ? (
-                    <Loading/>
 
-                )
-                :
-                (
-                    <View style={styles.container}>
-                        <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                               barStyle="light-content"/>
-                        {/*<StatusBar*/}
-                        {/*  backgroundColor={Colors.primary}*/}
-                        {/*  barStyle="light-content"*/}
-                        {/*/>*/}
-                        <View style={{backgroundColor: Colors.opt1}}>
+            <View style={styles.container}>
+                <Toast ref={refNotification}/>
+                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                                       barStyle="light-content"/>
+                {/*<StatusBar*/}
+                {/*  backgroundColor={Colors.primary}*/}
+                {/*  barStyle="light-content"*/}
+                {/*/>*/}
+                <View style={{backgroundColor: Colors.opt1}}>
 
-                        </View>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
-                            <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
+                </View>
+                <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
+                    <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                        <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
+                    </TouchableOpacity>
+                    <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                                <Text style={{
-                                    color: "white",
-                                    fontSize: Texts.title,
-                                    textAlign: 'center',
-                                    fontWeight: 'bold'
-                                }}>CONSTRUINDO O
-                                    SABER</Text>
-                                <Text style={{
-                                    color: "#8b98ae",
-                                    fontSize: Texts.subtitle,
-                                    textAlign: 'center'
-                                }}>Frequências</Text>
+                        <Text style={{
+                            color: "white",
+                            fontSize: Texts.title,
+                            textAlign: 'center',
+                            fontWeight: 'bold'
+                        }}>CONSTRUINDO O
+                            SABER</Text>
+                        <Text style={{
+                            color: "#8b98ae",
+                            fontSize: Texts.subtitle,
+                            textAlign: 'center'
+                        }}>Frequências</Text>
 
-                            </View>
-                            {/*<TouchableOpacity style={{marginTop: 10, alignItems: "flex-end"}}*/}
-                            {/*                  onPress={() => console.log(currentData)}>*/}
-                            {/*    <Text>Print</Text>*/}
-                            {/*</TouchableOpacity>*/}
-                        </View>
+                    </View>
+                    <TouchableOpacity style={{width: 26, marginTop: 10, alignItems: "flex-end"}}
+                                      onPress={() => {
+                                      }}>
 
+                    </TouchableOpacity>
+                </View>
+                {loading ? (
+                        <Loading/>
+
+                    )
+                    :
+                    (
                         <ScrollView>
                             {data.current?.map((item, index) =>
                                 <TouchableOpacity
@@ -200,8 +201,8 @@ export function AttendanceListScreen({route, navigation}) {
                                         }}>
                                             <View style={{
                                                 backgroundColor: Colors.tertiary,
-                                                flex: (item.total_attendance_present/(item.total_attendance_present + item.total_attendance_absent)) > 0 ?
-                                                    item.total_attendance_present/(item.total_attendance_present + item.total_attendance_absent) : 1,
+                                                flex: (item.total_attendance_present / (item.total_attendance_present + item.total_attendance_absent)) > 0 ?
+                                                    item.total_attendance_present / (item.total_attendance_present + item.total_attendance_absent) : 1,
                                                 borderTopLeftRadius: 50,
                                                 borderBottomLeftRadius: 50,
                                                 borderTopRightRadius: item.total_attendance_absent === 0 ? 50 : 0,
@@ -218,15 +219,15 @@ export function AttendanceListScreen({route, navigation}) {
                                                 </Text>
                                                 }
                                                 {item.total_attendance_present > 0 &&
-                                                    <Text style={{color: 'white', fontSize: 10}}>
-                                                        {((item.total_attendance_present / (item.total_attendance_present + item.total_attendance_absent)) * 100).toFixed(1)}%
-                                                    </Text>
+                                                <Text style={{color: 'white', fontSize: 10}}>
+                                                    {((item.total_attendance_present / (item.total_attendance_present + item.total_attendance_absent)) * 100).toFixed(1)}%
+                                                </Text>
                                                 }
                                             </View>
                                             <View style={{
                                                 backgroundColor: Colors.red,
-                                                flex: (item.total_attendance_absent/(item.total_attendance_present + item.total_attendance_absent)) > 0 ?
-                                                    item.total_attendance_absent/(item.total_attendance_present + item.total_attendance_absent) : 0,
+                                                flex: (item.total_attendance_absent / (item.total_attendance_present + item.total_attendance_absent)) > 0 ?
+                                                    item.total_attendance_absent / (item.total_attendance_present + item.total_attendance_absent) : 0,
                                                 borderTopRightRadius: 50,
                                                 borderBottomRightRadius: 50,
                                                 borderTopLeftRadius: item.total_attendance_present === 0 ? 50 : 0,
@@ -258,9 +259,9 @@ export function AttendanceListScreen({route, navigation}) {
                                 </TouchableOpacity>
                             )}
                         </ScrollView>
+                    )}
+            </View>
 
-                    </View>
-                )}
         </>
 
     );

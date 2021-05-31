@@ -111,81 +111,85 @@ export function KnowledgeScreen({route, navigation}) {
     return (
 
         <>
-            {loading ? (
-                    <Loading/>
 
-                )
-                :
-                (
-                    <View style={styles.container}>
-                        <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                               barStyle="light-content"/>
-                        {/*<StatusBar*/}
-                        {/*  backgroundColor={Colors.primary}*/}
-                        {/*  barStyle="light-content"*/}
-                        {/*/>*/}
-                        <View style={{backgroundColor: Colors.opt1}}>
+            <View style={styles.container}>
+                <Toast ref={refNotification}/>
+                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                                       barStyle="light-content"/>
+                {/*<StatusBar*/}
+                {/*  backgroundColor={Colors.primary}*/}
+                {/*  barStyle="light-content"*/}
+                {/*/>*/}
+                <View style={{backgroundColor: Colors.opt1}}>
 
-                        </View>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
-                            <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
-
-                                <Text style={{
-                                    color: "white",
-                                    fontSize: Texts.title,
-                                    textAlign: 'center',
-                                    fontWeight: 'bold'
-                                }}>CONSTRUINDO O
-                                    SABER</Text>
-                                <Text style={{
-                                    color: "#8b98ae",
-                                    fontSize: Texts.subtitle,
-                                    textAlign: 'center'
-                                }}>Conteúdos</Text>
-
-                            </View>
-                        </View>
-
-                        <View>
-                            <Calendar
-                                markedDates={
-                                    objToShow
-                                }
-                                markingType={'custom'}
-                                onDayPress={(day) => {
-                                    getKnowledge(day.dateString)
-                                }}
-                                theme={{
-                                    textMonthFontWeight: 'bold',
-                                }}
-                            />
-                        </View>
-                        <ScrollView style={{padding: 20}}>
-                            <Text style={{textAlign: 'center'}}>Selecione um dia marcado para visualizar o conteúdo
-                                ministrado nesta data.</Text>
-                        </ScrollView>
-                    </View>
-                )}
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={isVisible}
-                    onRequestClose={() => {
-                        setIsVisible(false)
-                    }}
-                >
-                    <TouchableOpacity style={styles.centeredView} onPress={() => setIsVisible(false)}>
-                        <TouchableOpacity style={styles.modalView} onPress={() => {}}>
-
-                            <Text>Modal</Text>
-                        </TouchableOpacity>
+                </View>
+                <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
+                    <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                        <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
                     </TouchableOpacity>
+                    <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                </Modal>
+                        <Text style={{
+                            color: "white",
+                            fontSize: Texts.title,
+                            textAlign: 'center',
+                            fontWeight: 'bold'
+                        }}>CONSTRUINDO O
+                            SABER</Text>
+                        <Text style={{
+                            color: "#8b98ae",
+                            fontSize: Texts.subtitle,
+                            textAlign: 'center'
+                        }}>Conteúdos</Text>
+
+                    </View>
+                </View>
+                {loading ? (
+                        <Loading/>
+
+                    )
+                    :
+                    (
+                        <>
+                            <View>
+                                <Calendar
+                                    markedDates={
+                                        objToShow
+                                    }
+                                    markingType={'custom'}
+                                    onDayPress={(day) => {
+                                        getKnowledge(day.dateString)
+                                    }}
+                                    theme={{
+                                        textMonthFontWeight: 'bold',
+                                    }}
+                                />
+                            </View>
+                            <ScrollView style={{padding: 20}}>
+                                <Text style={{textAlign: 'center'}}>Selecione um dia marcado para visualizar o conteúdo
+                                    ministrado nesta data.</Text>
+                            </ScrollView>
+                        </>
+                    )}
+            </View>
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={isVisible}
+                onRequestClose={() => {
+                    setIsVisible(false)
+                }}
+            >
+                <TouchableOpacity style={styles.centeredView} onPress={() => setIsVisible(false)}>
+                    <TouchableOpacity style={styles.modalView} onPress={() => {
+                    }}>
+
+                        <Text>Modal</Text>
+                    </TouchableOpacity>
+                </TouchableOpacity>
+
+            </Modal>
         </>
 
     );

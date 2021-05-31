@@ -81,7 +81,7 @@ export function ChangePasswordScreen({navigation}) {
                     style={{flex: 1}}
                 >
                     <Toast ref={refNotification}/>
-                    <GeneralStatusBarColor backgroundColor={Colors.primary}
+                    <GeneralStatusBarColor backgroundColor={Colors.statusBar}
                                            barStyle="light-content"/>
                     {/*<StatusBar*/}
                     {/*    backgroundColor={Colors.primary}*/}

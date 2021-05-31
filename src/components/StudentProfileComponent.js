@@ -39,7 +39,7 @@ export function StudentProfileComponent(props, { navigation }) {
 
   return (
     <View style={styles.container}>
-      <GeneralStatusBarColor backgroundColor={Colors.primary}
+      <GeneralStatusBarColor backgroundColor={Colors.statusBar}
                              barStyle="light-content"/>
         <View style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView >

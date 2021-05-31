@@ -25,7 +25,7 @@ const screenHeight = Math.round(Dimensions.get("window").height);
 
 // const colors = ["#3a86ff", "#02bef1", "#0091ad", "#4d908e", "#a2e983", "#ffae1b", "#ff6b6b", "#E63946", "#f72585", "#7209B7"]
 
-const media = ['#80ED99', '#6FD3B3', '#5DBACC', '#4CA0E6', '#3A86FF', '#FFCB47', '#FFB139', '#FF962B', '#FF7C1C', '#FF610E','#FF4700',]
+const media = ['#80ED99', '#6FD3B3', '#5DBACC', '#4CA0E6', '#3A86FF', '#FFCB47', '#FFB139', '#FF962B', '#FF7C1C', '#FF610E', '#FF4700',]
 
 const colors = {}
 
@@ -71,103 +71,117 @@ export function ReportScreen({route, navigation}) {
 
     useEffect(() => {
         getData()
-    },[]);
+    }, []);
 
     return (
 
         <>
-            {loading ? (
-                    <Loading/>
 
-                )
-                :
-                (
-                    <View style={styles.container}>
-                        <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                               barStyle="light-content"/>
-                        {/*<StatusBar*/}
-                        {/*  backgroundColor={Colors.primary}*/}
-                        {/*  barStyle="light-content"*/}
-                        {/*/>*/}
-                        <View style={{backgroundColor: Colors.opt1}}>
+            <View style={styles.container}>
+                <Toast ref={refNotification}/>
+                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                                       barStyle="light-content"/>
+                {/*<StatusBar*/}
+                {/*  backgroundColor={Colors.primary}*/}
+                {/*  barStyle="light-content"*/}
+                {/*/>*/}
+                <View style={{backgroundColor: Colors.opt1}}>
 
-                        </View>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
-                            <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
+                </View>
+                <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
+                    <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                        <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
+                    </TouchableOpacity>
+                    <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                                <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle,}}>Boletim Escolar</Text>
-
-                            </View>
-                            {/*<TouchableOpacity style={{marginTop: 10, alignItems: "flex-end"}}*/}
-                            {/*                  onPress={() => console.log(currentData)}>*/}
-                            {/*    <Text>Print</Text>*/}
-                            {/*</TouchableOpacity>*/}
-                        </View>
-
-                        <View style={styles.drop }>
-                            <Picker
-
-                                selectedValue={selected}
-                                dropdownIconColor={Colors.primary}
-                                onValueChange={(itemValue, itemIndex) => {
-                                    setSelected(itemValue)
-                                    onChange(itemValue)
-                                }                                }>
-                                {sections.current.map((item, index) =>
-                                    <Picker.Item label={item} value={index} key={index}/>
-                                )}
-                            </Picker>
-                        </View>
-
-
-                        <ScrollView>
-                            {currentData?.school_subject_list.map((item, index) =>
-                                <TouchableOpacity
-                                    key={index}
-                                    style={styles.card}
-                                    onPress={() => navigation.navigate('ReportDetailsScreen', {
-                                        record: item,
-                                        selected: currentData.stage_description,
-                                        attendance: currentData.attendance
-                                    })}
-                                >
-                                    <View style={{padding: 20, flex: 1}}>
-                                        <Text style={{fontSize: Texts.subtitle, fontWeight: 'bold'}}>
-                                            {item.school_subject_description}
-                                        </Text>
-                                        <View style={{justifyContent: 'flex-end',}}>
-                                            <Text style={{fontSize: Texts.normal, color: Colors.mediumGrey}}>
-                                                Faltas: {item.attendance}</Text>
-                                        </View>
-                                    </View>
-
-                                    <View style={{
-                                        flex: 0.3,
-                                        backgroundColor: item.grade_general ? Colors.notas[parseInt(item.grade_general)]?.color : '#1c2838',
-                                        borderTopRightRadius: 15,
-                                        borderBottomRightRadius: 15,
-                                        justifyContent: 'center',
-                                        alignItems: 'center'
-                                    }}>
-                                        <Text style={{
-                                            color: 'white',
-                                            fontWeight: 'bold',
-                                            fontSize: 30
-                                        }}>{item.grade_general ? item.grade_general : '-'}</Text>
-                                        <Text style={{color: 'white'}}>{item.grade_status ? item.grade_status : "Parcial"}</Text>
-                                    </View>
-
-                                </TouchableOpacity>
-                            )}
-                        </ScrollView>
+                        <Text style={{
+                            color: "white",
+                            fontSize: Texts.title,
+                            textAlign: 'center',
+                            fontWeight: 'bold'
+                        }}>CONSTRUINDO O
+                            SABER</Text>
+                        <Text style={{
+                            color: "#8b98ae",
+                            fontSize: Texts.subtitle,
+                            textAlign: 'center'
+                        }}>Boletim Escolar</Text>
 
                     </View>
-                )}
+                    <TouchableOpacity style={{width: 26, marginTop: 10, alignItems: "flex-end"}}
+                                      onPress={() => {
+                                      }}>
+
+                    </TouchableOpacity>
+                </View>
+                {loading ? (
+                        <Loading/>
+
+                    )
+                    :
+                    (
+                        <>
+                            <View style={styles.drop}>
+                                <Picker
+
+                                    selectedValue={selected}
+                                    dropdownIconColor={Colors.primary}
+                                    onValueChange={(itemValue, itemIndex) => {
+                                        setSelected(itemValue)
+                                        onChange(itemValue)
+                                    }}>
+                                    {sections.current.map((item, index) =>
+                                        <Picker.Item label={item} value={index} key={index}/>
+                                    )}
+                                </Picker>
+                            </View>
+
+
+                            <ScrollView>
+                                {currentData?.school_subject_list.map((item, index) =>
+                                    <TouchableOpacity
+                                        key={index}
+                                        style={styles.card}
+                                        onPress={() => navigation.navigate('ReportDetailsScreen', {
+                                            record: item,
+                                            selected: currentData.stage_description,
+                                            attendance: currentData.attendance
+                                        })}
+                                    >
+                                        <View style={{padding: 20, flex: 1}}>
+                                            <Text style={{fontSize: Texts.subtitle, fontWeight: 'bold'}}>
+                                                {item.school_subject_description}
+                                            </Text>
+                                            <View style={{justifyContent: 'flex-end',}}>
+                                                <Text style={{fontSize: Texts.normal, color: Colors.mediumGrey}}>
+                                                    Faltas: {item.attendance}</Text>
+                                            </View>
+                                        </View>
+
+                                        <View style={{
+                                            flex: 0.3,
+                                            backgroundColor: item.grade_general ? Colors.notas[parseInt(item.grade_general)]?.color : '#1c2838',
+                                            borderTopRightRadius: 15,
+                                            borderBottomRightRadius: 15,
+                                            justifyContent: 'center',
+                                            alignItems: 'center'
+                                        }}>
+                                            <Text style={{
+                                                color: 'white',
+                                                fontWeight: 'bold',
+                                                fontSize: 30
+                                            }}>{item.grade_general ? item.grade_general : '-'}</Text>
+                                            <Text
+                                                style={{color: 'white'}}>{item.grade_status ? item.grade_status : "Parcial"}</Text>
+                                        </View>
+
+                                    </TouchableOpacity>
+                                )}
+                            </ScrollView>
+                        </>
+                    )}
+            </View>
+
         </>
 
     );
@@ -180,7 +194,7 @@ const styles = StyleSheet.create({
         display: "flex",
         // backgroundColor: 'white',
     },
-    drop:{
+    drop: {
         backgroundColor: 'white',
         borderWidth: 1,
         borderColor: 'grey',

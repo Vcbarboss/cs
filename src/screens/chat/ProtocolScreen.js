@@ -53,54 +53,76 @@ export function ProtocolScreen({navigation}) {
 
     return (
         <>
+            <Toast ref={refNotification}/>
+            <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                                   barStyle="light-content"/>
+            <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
+                <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                    <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
+                </TouchableOpacity>
+                <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
+
+                    <Text style={{
+                        color: "white",
+                        fontSize: Texts.title,
+                        textAlign: 'center',
+                        fontWeight: 'bold'
+                    }}>CONSTRUINDO O
+                        SABER</Text>
+                    <Text style={{
+                        color: "#8b98ae",
+                        fontSize: Texts.subtitle,
+                        textAlign: 'center'
+                    }}>Protocolos</Text>
+
+                </View>
+                <TouchableOpacity style={{width: 26, marginTop: 10, alignItems: "flex-end"}}
+                                  onPress={() => {
+                                  }}>
+
+                </TouchableOpacity>
+            </View>
             {loading ? (
                     <Loading/>
 
                 )
                 :
                 (
-                    <>
-                        <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                               barStyle="light-content"/>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
-                            <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
+                    <ScrollView style={{padding: 20, backgroundColor: 'white'}}>
 
-                                <Text style={{color: "white", fontSize: Texts.title}}>Construindo o Saber</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle}}>Protocolos </Text>
-                            </View>
+
+                        <View style={{flex: 1}}>
+                            <Field
+                                label={'Busque pelo número do protocolo'}
+                                placeholder={'Protocolo'}
+                                value={'12345'}
+                                change={(e) => {
+                                }}
+                                icon={"search"}
+                            />
                         </View>
-                        <ScrollView style={{padding: 20, backgroundColor: 'white'}}>
+                        <View>
+                            <Text style={{marginLeft: 5}}>
+                                Protocolo encontrado...
+                            </Text>
+                            <TouchableOpacity style={{
+                                borderWidth: 2,
+                                borderRadius: 15,
+                                borderColor: Colors.primary,
+                                padding: 10,
+                                marginVertical: 10
+                            }}>
+                                <Text style={{color: Colors.primary, fontSize: 17}}>12345</Text>
+                                <Text>Obrigado pela ajuda...</Text>
+                            </TouchableOpacity>
+                        </View>
 
-
-                            <View style={{flex: 1}}>
-                                <Field
-                                    label={'Busque pelo número do protocolo'}
-                                    placeholder={'Protocolo'}
-                                    value={'12345'}
-                                    change={(e) => {
-                                    }}
-                                    icon={"search"}
-                                />
-                            </View>
-                            <View>
-                                <Text style={{marginLeft: 5}}>
-                                    Protocolo encontrado...
-                                </Text>
-                                <TouchableOpacity style={{borderWidth: 2, borderRadius: 15, borderColor: Colors.primary, padding: 10, marginVertical: 10}}>
-                                    <Text style={{color: Colors.primary, fontSize: 17}}>12345</Text>
-                                    <Text>Obrigado pela ajuda...</Text>
-                                </TouchableOpacity>
-                            </View>
-
-                        </ScrollView>
-                    </>
+                    </ScrollView>
                 )
             }
+
         </>
+
     );
 }
 

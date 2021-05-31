@@ -102,44 +102,61 @@ export function ClassScheduleScreen({route, navigation}) {
 
     return (
         <>
-            {loading ? (
-                    <Loading/>
+            <>
+                <Toast ref={refNotification}/>
+                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                                       barStyle="light-content"/>
+                <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
+                    <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                        <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
+                    </TouchableOpacity>
+                    <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                )
-                :
-                (
-                    <>
-                        <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                               barStyle="light-content"/>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
-                            <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
+                        <Text style={{
+                            color: "white",
+                            fontSize: Texts.title,
+                            textAlign: 'center',
+                            fontWeight: 'bold'
+                        }}>CONSTRUINDO O
+                            SABER</Text>
+                        <Text style={{
+                            color: "#8b98ae",
+                            fontSize: Texts.subtitle,
+                            textAlign: 'center'
+                        }}>Horários de aulas</Text>
+
+                    </View>
+                    <TouchableOpacity style={{width: 26, marginTop: 10, alignItems: "flex-end"}}
+                                      onPress={() => {
+                                      }}>
+
+                    </TouchableOpacity>
+                </View>
+                <View style={{flex: 1, backgroundColor: 'white'}}>
+                    <View style={{flexDirection: 'row', padding: 5}}>
+                        {days.current.map((item, index) =>
+                            <TouchableOpacity
+                                key={index}
+                                style={[styles.days, {backgroundColor: selectedDay === daysWeek[index].acronym ? Colors.primary : 'white'}]}
+                                onPress={() => {
+                                    setSelectedDay(daysWeek[index].acronym)
+                                    setSelected(index)
+                                }}>
+                                <Text
+                                    style={{color: selectedDay === daysWeek[index].acronym ? 'white' : Colors.primary}}>
+                                    {daysWeek[index].acronym}
+                                </Text>
                             </TouchableOpacity>
-                            <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
+                        )}
 
-                                <Text style={{color: "white", fontSize: Texts.title}}>Construindo o Saber</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle}}>Horários de aulas</Text>
-                            </View>
-                        </View>
-                        <View style={{flex: 1, backgroundColor: 'white'}}>
-                            <View style={{flexDirection: 'row', padding: 5}}>
-                                {days.current.map((item, index) =>
-                                    <TouchableOpacity
-                                        key={index}
-                                        style={[styles.days, {backgroundColor: selectedDay === daysWeek[index].acronym ? Colors.primary : 'white'}]}
-                                        onPress={() => {
-                                            setSelectedDay(daysWeek[index].acronym)
-                                            setSelected(index)
-                                        }}>
-                                        <Text
-                                            style={{color: selectedDay === daysWeek[index].acronym ? 'white' : Colors.primary}}>
-                                            {daysWeek[index].acronym}
-                                        </Text>
-                                    </TouchableOpacity>
-                                )}
+                    </View>
 
-                            </View>
+                    {loading ? (
+                            <Loading/>
+
+                        )
+                        :
+                        (
                             <ScrollView style={{marginTop: 10}}>
 
                                 {days.current[selected]?.map((item, index) =>
@@ -198,8 +215,14 @@ export function ClassScheduleScreen({route, navigation}) {
                                 )
                                 }
 
-                                {days.current[selected]?.length < 1  &&
-                                <View style={{marginTop: 150, flex: 1, alignItems: 'center', justifyContent: 'center', padding: 10}}>
+                                {days.current[selected]?.length < 1 &&
+                                <View style={{
+                                    marginTop: 150,
+                                    flex: 1,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: 10
+                                }}>
                                     {/*<Image source={logo} style={styles.logo} />*/}
                                     <Text style={{fontSize: Texts.title, textAlign: 'center'}}>
                                         Não há horários definidos para este dia.
@@ -207,11 +230,11 @@ export function ClassScheduleScreen({route, navigation}) {
                                 </View>
                                 }
                             </ScrollView>
-                        </View>
+                        )}
+                </View>
 
-                    </>
-                )
-            }
+            </>
+
         </>
     );
 

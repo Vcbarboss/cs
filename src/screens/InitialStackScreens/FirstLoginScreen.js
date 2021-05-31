@@ -124,7 +124,7 @@ export function FirstLoginScreen({navigation}) {
                 style={{flex: 1}}
             >
                 <Toast ref={refNotification}/>
-                <GeneralStatusBarColor backgroundColor={Colors.primary}
+                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
                                        barStyle="light-content"/>
                 {/*<StatusBar*/}
                 {/*    backgroundColor={Colors.primary}*/}
@@ -136,11 +136,24 @@ export function FirstLoginScreen({navigation}) {
                     </TouchableOpacity>
                     <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                        <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
-                        <Text style={{color: "white", fontSize: Texts.subtitle,}}>Contato </Text>
+                        <Text style={{
+                            color: "white",
+                            fontSize: Texts.title,
+                            textAlign: 'center',
+                            fontWeight: 'bold'
+                        }}>CONSTRUINDO O
+                            SABER</Text>
+                        <Text style={{
+                            color: "#8b98ae",
+                            fontSize: Texts.subtitle,
+                            textAlign: 'center'
+                        }}>Contato</Text>
+
                     </View>
-                    <TouchableOpacity style={{alignItems: "flex-end", justifyContent: "center"}}>
-                        {/*<AntIcon style={{ marginRight: 10 }} name={"edit"} size={30} color={"white"} />*/}
+                    <TouchableOpacity style={{width: 26, marginTop: 10, alignItems: "flex-end"}}
+                                      onPress={() => {
+                                      }}>
+
                     </TouchableOpacity>
                 </View>
 

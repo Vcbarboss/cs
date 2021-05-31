@@ -221,26 +221,43 @@ export function DocumentSendScreen({route, navigation}) {
 
     return (
         <>
-            {loading ? (
-                    <Loading/>
 
-                )
-                :
-                (
-                    <>
-                        <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                               barStyle="light-content"/>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
-                            <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
+            <>
+                <Toast ref={refNotification}/>
+                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                                       barStyle="light-content"/>
+                <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
+                    <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                        <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
+                    </TouchableOpacity>
+                    <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                                <Text style={{color: "white", fontSize: Texts.title}}>Construindo o Saber</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle}}>Envio de Documento </Text>
-                            </View>
-                        </View>
+                        <Text style={{
+                            color: "white",
+                            fontSize: Texts.title,
+                            textAlign: 'center',
+                            fontWeight: 'bold'
+                        }}>CONSTRUINDO O
+                            SABER</Text>
+                        <Text style={{
+                            color: "#8b98ae",
+                            fontSize: Texts.subtitle,
+                            textAlign: 'center'
+                        }}>Envio de Documento</Text>
+
+                    </View>
+                    <TouchableOpacity style={{width: 26, marginTop: 10, alignItems: "flex-end"}}
+                                      onPress={() => {
+                                      }}>
+
+                    </TouchableOpacity>
+                </View>
+                {loading ? (
+                        <Loading/>
+
+                    )
+                    :
+                    (
                         <ScrollView contentContainerStyle={{flexGrow: 1,}}
                                     style={{padding: 20, backgroundColor: 'white'}}>
                             <View style={{flex: 1}}>
@@ -327,110 +344,110 @@ export function DocumentSendScreen({route, navigation}) {
                             </View>
 
                         </ScrollView>
-                        <Modal
-                            animationType="fade"
-                            transparent={true}
-                            visible={isVisibleInfo}
-                            onRequestClose={() => {
-                                setIsVisibleInfo(false);
-                            }}
-                        >
-                            <TouchableOpacity style={[styles.modal,]} onPress={() => setIsVisibleInfo(false)}>
-                                <View style={[styles.card, {flexDirection: 'column',}]}>
-                                    <View style={{flexDirection: 'row', marginVertical: 15}}>
-                                        <Text style={{fontWeight: 'bold', color: Colors.primary}}>Titulo: </Text>
-                                        <Text>{objToSend?.name}</Text>
-                                    </View>
-                                    {/*{imgExtension.includes(objToSend?.document_extension) &&*/}
-                                    {/*<Image source={{uri: objToSend.uri}} style={styles.img}/>*/}
-                                    {/*}*/}
-                                    <View style={{flexDirection: 'row'}}>
-                                        <TouchableOpacity style={{
-                                            borderWidth: 2,
-                                            borderRadius: 15,
-                                            borderColor: Colors.primary,
-                                            padding: 10,
-                                            margin: 10,
-                                            backgroundColor: Colors.primary
-                                        }} onPress={() => sendDoc()}>
-                                            {sendLoading ?
-                                                <View style={{flex: 1, width: 40}}>
+                    )}
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={isVisibleInfo}
+                    onRequestClose={() => {
+                        setIsVisibleInfo(false);
+                    }}
+                >
+                    <TouchableOpacity style={[styles.modal,]} onPress={() => setIsVisibleInfo(false)}>
+                        <View style={[styles.card, {flexDirection: 'column',}]}>
+                            <View style={{flexDirection: 'row', marginVertical: 15}}>
+                                <Text style={{fontWeight: 'bold', color: Colors.primary}}>Titulo: </Text>
+                                <Text>{objToSend?.name}</Text>
+                            </View>
+                            {/*{imgExtension.includes(objToSend?.document_extension) &&*/}
+                            {/*<Image source={{uri: objToSend.uri}} style={styles.img}/>*/}
+                            {/*}*/}
+                            <View style={{flexDirection: 'row'}}>
+                                <TouchableOpacity style={{
+                                    borderWidth: 2,
+                                    borderRadius: 15,
+                                    borderColor: Colors.primary,
+                                    padding: 10,
+                                    margin: 10,
+                                    backgroundColor: Colors.primary
+                                }} onPress={() => sendDoc()}>
+                                    {sendLoading ?
+                                        <View style={{flex: 1, width: 40}}>
 
-                                                    <ActivityIndicator size="small" color={'white'}/>
-                                                </View>
-                                                :
-                                                <Text style={{color: 'white', textAlign: 'center'}}>Enviar</Text>
-                                            }
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{
-                                            borderWidth: 2,
-                                            borderRadius: 15,
-                                            borderColor: Colors.red,
-                                            padding: 10,
-                                            margin: 10,
-                                            backgroundColor: Colors.red
-                                        }} onPress={() => {
-                                            setIsVisibleInfo(false)
-                                            setIsVisible(false)
-                                        }}>
-                                            <Text style={{color: 'white', textAlign: 'center'}}>Cancelar</Text>
-                                        </TouchableOpacity>
-                                    </View>
-
-                                </View>
-                            </TouchableOpacity>
-                        </Modal>
-                        <Modal
-                            animationType="fade"
-                            transparent={true}
-                            visible={isVisibleDelete}
-                            onRequestClose={() => {
-                                setIsVisibleDelete(false);
-                            }}
-                        >
-                            <TouchableOpacity style={[styles.modal,]} onPress={() => setIsVisibleDelete(false)}>
-                                <View style={[styles.card, {flexDirection: 'column', padding: 20}]}>
-                                    <Text style={{fontWeight: 'bold', color: Colors.primary}}>Deseja cancelar este
-                                        envio?</Text>
-                                    <View style={{flexDirection: 'row', marginVertical: 10}}>
-                                        <View style={{flexDirection: 'row'}}>
-                                            <TouchableOpacity style={{
-                                                borderWidth: 2,
-                                                borderRadius: 15,
-                                                borderColor: Colors.primary,
-                                                padding: 10,
-                                                margin: 10,
-                                                backgroundColor: Colors.primary
-                                            }} onPress={() => delDoc()}>
-                                                {sendLoading ?
-                                                    <View style={{flex: 1, width: 40}}>
-
-                                                        <ActivityIndicator size="small" color={'white'}/>
-                                                    </View>
-                                                    :
-                                                    <Text style={{color: 'white', textAlign: 'center'}}>Sim</Text>
-                                                }
-                                            </TouchableOpacity>
-                                            <TouchableOpacity style={{
-                                                borderWidth: 2,
-                                                borderRadius: 15,
-                                                borderColor: Colors.red,
-                                                padding: 10,
-                                                margin: 10,
-                                                backgroundColor: Colors.red
-                                            }} onPress={() => {
-                                                setIsVisibleDelete(false)
-                                            }}>
-                                                <Text style={{color: 'white', textAlign: 'center'}}>Não</Text>
-                                            </TouchableOpacity>
+                                            <ActivityIndicator size="small" color={'white'}/>
                                         </View>
-                                    </View>
+                                        :
+                                        <Text style={{color: 'white', textAlign: 'center'}}>Enviar</Text>
+                                    }
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{
+                                    borderWidth: 2,
+                                    borderRadius: 15,
+                                    borderColor: Colors.red,
+                                    padding: 10,
+                                    margin: 10,
+                                    backgroundColor: Colors.red
+                                }} onPress={() => {
+                                    setIsVisibleInfo(false)
+                                    setIsVisible(false)
+                                }}>
+                                    <Text style={{color: 'white', textAlign: 'center'}}>Cancelar</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                        </View>
+                    </TouchableOpacity>
+                </Modal>
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={isVisibleDelete}
+                    onRequestClose={() => {
+                        setIsVisibleDelete(false);
+                    }}
+                >
+                    <TouchableOpacity style={[styles.modal,]} onPress={() => setIsVisibleDelete(false)}>
+                        <View style={[styles.card, {flexDirection: 'column', padding: 20}]}>
+                            <Text style={{fontWeight: 'bold', color: Colors.primary}}>Deseja cancelar este
+                                envio?</Text>
+                            <View style={{flexDirection: 'row', marginVertical: 10}}>
+                                <View style={{flexDirection: 'row'}}>
+                                    <TouchableOpacity style={{
+                                        borderWidth: 2,
+                                        borderRadius: 15,
+                                        borderColor: Colors.primary,
+                                        padding: 10,
+                                        margin: 10,
+                                        backgroundColor: Colors.primary
+                                    }} onPress={() => delDoc()}>
+                                        {sendLoading ?
+                                            <View style={{flex: 1, width: 40}}>
+
+                                                <ActivityIndicator size="small" color={'white'}/>
+                                            </View>
+                                            :
+                                            <Text style={{color: 'white', textAlign: 'center'}}>Sim</Text>
+                                        }
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={{
+                                        borderWidth: 2,
+                                        borderRadius: 15,
+                                        borderColor: Colors.red,
+                                        padding: 10,
+                                        margin: 10,
+                                        backgroundColor: Colors.red
+                                    }} onPress={() => {
+                                        setIsVisibleDelete(false)
+                                    }}>
+                                        <Text style={{color: 'white', textAlign: 'center'}}>Não</Text>
+                                    </TouchableOpacity>
                                 </View>
-                            </TouchableOpacity>
-                        </Modal>
-                    </>
-                )
-            }
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                </Modal>
+            </>
+
         </>
     );
 }

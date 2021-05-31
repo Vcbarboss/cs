@@ -203,7 +203,6 @@ export function AttendanceDetailsScreen({route, navigation}) {
     }
 
 
-
     useFocusEffect(
         React.useCallback(() => {
             if (!isVisible) {
@@ -215,128 +214,149 @@ export function AttendanceDetailsScreen({route, navigation}) {
     return (
 
         <>
-            {loading ? (
-                    <Loading/>
 
-                )
-                :
-                (
-                    <View style={styles.container}>
-                        <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                               barStyle="light-content"/>
-                        {/*<StatusBar*/}
-                        {/*  backgroundColor={Colors.primary}*/}
-                        {/*  barStyle="light-content"*/}
-                        {/*/>*/}
-                        <View style={{backgroundColor: Colors.opt1}}>
+            <View style={styles.container}>
+                <Toast ref={refNotification}/>
+                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                                       barStyle="light-content"/>
+                {/*<StatusBar*/}
+                {/*  backgroundColor={Colors.primary}*/}
+                {/*  barStyle="light-content"*/}
+                {/*/>*/}
+                <View style={{backgroundColor: Colors.opt1}}>
 
-                        </View>
-                        <View style={{flexDirection: "row", backgroundColor: 'white', padding: 10, elevation: 3,}}>
-                            <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={Colors.primary}/>
-                            </TouchableOpacity>
-                            {/*<TouchableOpacity style={{}} onPress={() => console.log(objToShow)}>*/}
-                            {/*    <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={Colors.primary}/>*/}
-                            {/*</TouchableOpacity>*/}
+                </View>
+                <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
+                    <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                        <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
+                    </TouchableOpacity>
+                    <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                        </View>
-                        <View style={{
-                            elevation: 3,
-                            backgroundColor: 'white',
-                            paddingHorizontal: 30,
-                            flexDirection: 'row',
-                            paddingBottom: 20
-                        }}>
-                            <View style={{flex: 1}}>
-                                <View style={{flexDirection: 'row'}}>
-                                    <Text style={{
-                                        fontWeight: 'bold',
-                                        fontSize: 30,
-                                        color: Colors.primary
-                                    }}>{props.record.description}
-                                    </Text>
-                                </View>
-                                <Text style={{
-                                    fontSize: Texts.normal,
-                                    fontWeight: 'bold',
-                                    color: 'black'
-                                }}>{props.item.student.person.name}</Text>
-                                <Text
-                                    style={{fontSize: Texts.normal}}>{props.record.teacher_name ? props.record.teacher_name : '-'}</Text>
-                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                    <View style={{height: 12, width: 12, backgroundColor: Colors.green}}/>
-                                    <Text> - Presenças</Text>
-                                </View>
-                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                    <View style={{height: 12, width: 12, backgroundColor: Colors.red}}/>
-                                    <Text> - Faltas</Text>
-                                </View>
-                            </View>
-
-                            <View style={{
-                                alignItems: 'flex-end',
-                                justifyContent: 'center'
-                            }}>
-                                <View>
-                                    <ProgressCircle
-                                        percent={parseFloat(props?.percent)}
-                                        radius={50}
-                                        borderWidth={8}
-                                        color={Colors.green}
-                                        shadowColor="#999"
-                                        bgColor="#fff"
-                                    >
-                                        <Text style={{fontSize: 18}}>{props?.percent}%</Text>
-                                    </ProgressCircle>
-                                    <Text style={{textAlign: 'center'}}>Presenças</Text>
-                                </View>
-                            </View>
-
-                        </View>
-                        {Platform.OS === 'ios' &&
-                        <View style={{borderBottomWidth: 1, borderColor: 'grey'}}/>
-                        }
-                        <View style={{marginTop: 15, backgroundColor: 'white'}}
-                            // contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
-                        >
-                            <Calendar
-                                markedDates={
-                                    objToShow
-                                }
-                                markingType={'multi-dot'}
-                                onDayPress={(day) => {
-                                    setIsVisible(true)
-                                    getKnowledge(day.dateString)
-                                }}
-                                theme={{
-                                    textMonthFontWeight: 'bold',
-                                }}
-                            />
-
-
-                            <View style={{
-                                justifyContent: 'center',
-                                borderTopWidth: 2,
-                                borderColor: Colors.lightgray,
-                                flexDirection: 'row',
-                            }}>
-                                <View style={{flex: 1, padding: 20}}>
-                                    <Text style={{textAlign: 'center', color: 'grey'}}>Selecione um dia marcado
-                                        com <View style={{
-                                            backgroundColor: Colors.tertiary,
-                                            height: 5,
-                                            width: 5,
-                                            borderRadius: 50,
-                                        }}/> para
-                                        visualizar o conteúdo ministrado nesta data.</Text>
-                                </View>
-                            </View>
-                        </View>
+                        <Text style={{
+                            color: "white",
+                            fontSize: Texts.title,
+                            textAlign: 'center',
+                            fontWeight: 'bold'
+                        }}>CONSTRUINDO O
+                            SABER</Text>
+                        <Text style={{
+                            color: "#8b98ae",
+                            fontSize: Texts.subtitle,
+                            textAlign: 'center'
+                        }}>Detalhes</Text>
 
                     </View>
+                    <TouchableOpacity style={{width: 26, marginTop: 10, alignItems: "flex-end"}}
+                                      onPress={() => {
+                                      }}>
 
-                )}
+                    </TouchableOpacity>
+                </View>
+                {loading ? (
+                        <Loading/>
+
+                    )
+                    :
+                    (
+                        <>
+                            <View style={{
+                                paddingTop: 20,
+                                elevation: 3,
+                                backgroundColor: 'white',
+                                paddingHorizontal: 30,
+                                flexDirection: 'row',
+                                paddingBottom: 20
+                            }}>
+                                <View style={{flex: 1}}>
+                                    <View style={{flexDirection: 'row'}}>
+                                        <Text style={{
+                                            fontWeight: 'bold',
+                                            fontSize: 30,
+                                            color: Colors.primary
+                                        }}>{props.record.description}
+                                        </Text>
+                                    </View>
+                                    <Text style={{
+                                        fontSize: Texts.normal,
+                                        fontWeight: 'bold',
+                                        color: 'black'
+                                    }}>{props.item.student.person.name}</Text>
+                                    <Text
+                                        style={{fontSize: Texts.normal}}>{props.record.teacher_name ? props.record.teacher_name : '-'}</Text>
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <View style={{height: 12, width: 12, backgroundColor: Colors.green}}/>
+                                        <Text> - Presenças</Text>
+                                    </View>
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <View style={{height: 12, width: 12, backgroundColor: Colors.red}}/>
+                                        <Text> - Faltas</Text>
+                                    </View>
+                                </View>
+
+                                <View style={{
+                                    alignItems: 'flex-end',
+                                    justifyContent: 'center'
+                                }}>
+                                    <View>
+                                        <ProgressCircle
+                                            percent={parseFloat(props?.percent)}
+                                            radius={50}
+                                            borderWidth={8}
+                                            color={Colors.green}
+                                            shadowColor="#999"
+                                            bgColor="#fff"
+                                        >
+                                            <Text style={{fontSize: 18}}>{props?.percent}%</Text>
+                                        </ProgressCircle>
+                                        <Text style={{textAlign: 'center'}}>Presenças</Text>
+                                    </View>
+                                </View>
+
+                            </View>
+                            {Platform.OS === 'ios' &&
+                            <View style={{borderBottomWidth: 1, borderColor: 'grey'}}/>
+                            }
+                            <View style={{marginTop: 15, backgroundColor: 'white'}}
+                                // contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
+                            >
+                                <Calendar
+                                    markedDates={
+                                        objToShow
+                                    }
+                                    markingType={'multi-dot'}
+                                    onDayPress={(day) => {
+                                        setIsVisible(true)
+                                        getKnowledge(day.dateString)
+                                    }}
+                                    theme={{
+                                        textMonthFontWeight: 'bold',
+                                    }}
+                                />
+
+
+                                <View style={{
+                                    justifyContent: 'center',
+                                    borderTopWidth: 2,
+                                    borderColor: Colors.lightgray,
+                                    flexDirection: 'row',
+                                }}>
+                                    <View style={{flex: 1, padding: 20}}>
+                                        <Text style={{textAlign: 'center', color: 'grey'}}>Selecione um dia marcado
+                                            com <View style={{
+                                                backgroundColor: Colors.tertiary,
+                                                height: 5,
+                                                width: 5,
+                                                borderRadius: 50,
+                                            }}/> para
+                                            visualizar o conteúdo ministrado nesta data.</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </>
+                    )}
+            </View>
+
+
             <Modal
                 transparent={true}
                 visible={isVisible}
@@ -344,10 +364,10 @@ export function AttendanceDetailsScreen({route, navigation}) {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <TouchableOpacity style={{padding: 20}} onPress={() => setIsVisible(false)}>
-                            <Text>
-                                Fechar
-                            </Text>
+                        <TouchableOpacity
+                            style={{borderRadius: 20, padding: 20, backgroundColor: Colors.red, elevation: 5}}
+                            onPress={() => setIsVisible(false)}>
+                            <AntIcon name={"close"} style={{}} size={25} color={"white"}/>
                         </TouchableOpacity>
                         <View style={{padding: 35, borderBottomWidth: 2, borderColor: Colors.lightgray}}>
                             <Text style={{
@@ -366,7 +386,8 @@ export function AttendanceDetailsScreen({route, navigation}) {
                             {objToShow?.history?.map((item, index) =>
 
                                 <View key={index}>
-                                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                                    <View
+                                        style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                                         <View style={{
                                             marginTop: 2,
                                             height: 8,

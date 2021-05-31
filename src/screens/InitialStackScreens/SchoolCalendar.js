@@ -230,17 +230,33 @@ export function SchoolCalendarScreen({navigation}) {
                 (
                     <>
                         <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
+                        <GeneralStatusBarColor backgroundColor={Colors.statusBar}
                                                barStyle="light-content"/>
                         <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
                             <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
                                 <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
                             </TouchableOpacity>
-                            <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
+                            <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                                <Text style={{color: "white", fontSize: Texts.title}}>Construindo o Saber</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle}}>Calendário Escolar</Text>
+                                <Text style={{
+                                    color: "white",
+                                    fontSize: Texts.title,
+                                    textAlign: 'center',
+                                    fontWeight: 'bold'
+                                }}>CONSTRUINDO O
+                                    SABER</Text>
+                                <Text style={{
+                                    color: "#8b98ae",
+                                    fontSize: Texts.subtitle,
+                                    textAlign: 'center'
+                                }}>Calendário Escolar</Text>
+
                             </View>
+                            <TouchableOpacity style={{width: 26, marginTop: 10, alignItems: "flex-end"}}
+                                              onPress={() => {
+                                              }}>
+
+                            </TouchableOpacity>
                         </View>
 
                         <View style={{

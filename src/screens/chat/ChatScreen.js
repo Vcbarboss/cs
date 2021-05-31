@@ -300,7 +300,6 @@ export function ChatScreen({route, navigation}) {
 
     }
 
-
     const getImage = (mode) => {
 
         {
@@ -558,54 +557,55 @@ export function ChatScreen({route, navigation}) {
 
     return (
         <>
-            {loading ? (
-                    <Conecting/>
 
-                )
-                :
-                (
-                    <View style={{flex: 1}}>
-                        <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                               barStyle="light-content"/>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
+            <View style={{flex: 1}}>
+                <Toast ref={refNotification}/>
+                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                                       barStyle="light-content"/>
+                <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
 
-                            <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
+                    <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                        <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
+                    </TouchableOpacity>
+                    <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
 
-                                <Text style={{color: "white", fontSize: Texts.title}}>Construindo o Saber</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle}}>{title.current} </Text>
-                            </View>
-                        </View>
-                        {/*<View style={styles.response}>*/}
-                        {/*    <Text>Res: {JSON.stringify(response?.uri)}</Text>*/}
-                        {/*</View>*/}
-                        {/*{moreVisible &&*/}
-                        {/*<TouchableOpacity*/}
-                        {/*    style={{*/}
-                        {/*        backgroundColor: 'white',*/}
-                        {/*        borderWidth: 2,*/}
-                        {/*        borderColor: '#737373',*/}
-                        {/*        alignItems: 'center',*/}
-                        {/*        padding: 10,*/}
-                        {/*        justifyContent: 'center'*/}
-                        {/*    }}*/}
-                        {/*    onPress={() => {*/}
-                        {/*        get(true)*/}
-                        {/*    }}*/}
-                        {/*>*/}
-                        {/*    {loading ?*/}
-                        {/*        <ActivityIndicator size="small" color={Colors.primary}/>*/}
-                        {/*        :*/}
-                        {/*        <Text style={{fontSize: 17, color: Colors.primary}}>*/}
-                        {/*            Carregar mensagens anteriores...*/}
-                        {/*        </Text>*/}
-                        {/*    }*/}
+                        <Text style={{color: "white", fontSize: Texts.title}}>Construindo o Saber</Text>
+                        <Text style={{color: "white", fontSize: Texts.subtitle}}>{title.current} </Text>
+                    </View>
+                </View>
+                {/*<View style={styles.response}>*/}
+                {/*    <Text>Res: {JSON.stringify(response?.uri)}</Text>*/}
+                {/*</View>*/}
+                {/*{moreVisible &&*/}
+                {/*<TouchableOpacity*/}
+                {/*    style={{*/}
+                {/*        backgroundColor: 'white',*/}
+                {/*        borderWidth: 2,*/}
+                {/*        borderColor: '#737373',*/}
+                {/*        alignItems: 'center',*/}
+                {/*        padding: 10,*/}
+                {/*        justifyContent: 'center'*/}
+                {/*    }}*/}
+                {/*    onPress={() => {*/}
+                {/*        get(true)*/}
+                {/*    }}*/}
+                {/*>*/}
+                {/*    {loading ?*/}
+                {/*        <ActivityIndicator size="small" color={Colors.primary}/>*/}
+                {/*        :*/}
+                {/*        <Text style={{fontSize: 17, color: Colors.primary}}>*/}
+                {/*            Carregar mensagens anteriores...*/}
+                {/*        </Text>*/}
+                {/*    }*/}
 
-                        {/*</TouchableOpacity>*/}
-                        {/*}*/}
+                {/*</TouchableOpacity>*/}
+                {/*}*/}
+                {loading ? (
+                        <Conecting/>
+
+                    )
+                    :
+                    (
 
                         <GiftedChat
                             locale={"pt-br"}
@@ -630,13 +630,15 @@ export function ChatScreen({route, navigation}) {
                                             <ActivityIndicator size="small" color={'white'}/>
                                         </View>
                                         :
-                                        <Send {...props} containerStyle={{position: 'relative', alignItems: "center",
-                                            justifyContent: "center"}} sendButtonProps={{
+                                        <Send {...props} containerStyle={{
+                                            position: 'relative', alignItems: "center",
+                                            justifyContent: "center"
+                                        }} sendButtonProps={{
                                             ...sendButtonProps,
 
                                             onPress: () => customOnPress(text, onSend)
                                         }}>
-                                            <View style={styles.send} >
+                                            <View style={styles.send}>
                                                 <IonIcon name={"md-send"}
                                                          size={screenWidth * 0.048} color={'white'}/>
                                             </View>
@@ -662,117 +664,117 @@ export function ChatScreen({route, navigation}) {
                             // renderCustomView={renderCustomView}
                             user={user.current}
                         />
+                    )
+                }
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={isDenied}
+                    onRequestClose={() => {
+                        setIsDenied(false);
+                    }}
+                >
+                    <TouchableOpacity style={[styles.modal,]} onPress={() => setIsDenied(false)}>
+                        <View style={[styles.card, {flexDirection: 'column'}]}>
+                            <Text>É necessário autorizar o uso da câmera em ajustes.</Text>
+                            <View style={{flexDirection: 'row', margin: 10}}>
+                                <TouchableOpacity
+                                    style={{
+                                        flex: 1,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        borderWidth: 1,
+                                        borderColor: '#1e61f5',
+                                        borderRadius: 10,
+                                        padding: 10,
+                                        marginHorizontal: 5
+                                    }}
+                                    onPress={() => {
+                                        openSettings().then((e) => console.log(e))
+                                            .catch(() => console.warn('cannot open settings'))
+                                        setIsDenied(false)
+                                    }}>
+                                    <Text style={{textAlign: 'center', color: '#1e61f5'}}>
+                                        Ajustes
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderWidth: 1,
+                                    borderColor: '#e73c51',
+                                    borderRadius: 10,
+                                    padding: 10,
+                                    marginHorizontal: 5
+                                }} onPress={() => setIsDenied(false)}>
+                                    <Text style={{textAlign: 'center', color: '#e73c51'}}>
+                                        Cancelar
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
 
-                        <Modal
-                            animationType="fade"
-                            transparent={true}
-                            visible={isDenied}
-                            onRequestClose={() => {
-                                setIsDenied(false);
-                            }}
-                        >
-                            <TouchableOpacity style={[styles.modal,]} onPress={() => setIsDenied(false)}>
-                                <View style={[styles.card, {flexDirection: 'column'}]}>
-                                    <Text>É necessário autorizar o uso da câmera em ajustes.</Text>
-                                    <View style={{flexDirection: 'row', margin: 10}}>
-                                        <TouchableOpacity
-                                            style={{
-                                                flex: 1,
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                borderWidth: 1,
-                                                borderColor: '#1e61f5',
-                                                borderRadius: 10,
-                                                padding: 10,
-                                                marginHorizontal: 5
-                                            }}
-                                            onPress={() => {
-                                                openSettings().then((e) => console.log(e))
-                                                    .catch(() => console.warn('cannot open settings'))
-                                                setIsDenied(false)
-                                            }}>
-                                            <Text style={{textAlign: 'center', color: '#1e61f5'}}>
-                                                Ajustes
-                                            </Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={{
-                                            flex: 1,
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            borderWidth: 1,
-                                            borderColor: '#e73c51',
-                                            borderRadius: 10,
-                                            padding: 10,
-                                            marginHorizontal: 5
-                                        }} onPress={() => setIsDenied(false)}>
-                                            <Text style={{textAlign: 'center', color: '#e73c51'}}>
-                                                Cancelar
-                                            </Text>
-                                        </TouchableOpacity>
-                                    </View>
+                        </View>
+                    </TouchableOpacity>
 
+                </Modal>
+
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={isVisible}
+                    onRequestClose={() => {
+                        setIsVisible(false);
+                    }}
+                >
+                    <TouchableOpacity style={[styles.modal,]} onPress={() => setIsVisible(false)}>
+                        <View style={styles.card}>
+                            <TouchableOpacity style={styles.opt}
+                                              onPress={() => {
+                                                  setIsVisible(false)
+                                                  if (Platform.OS === 'ios') {
+                                                      checkPermission('cam')
+                                                  } else {
+                                                      requestCameraPermission('cam')
+                                                  }
+                                              }}>
+                                <View style={[styles.opt2, {backgroundColor: '#ec407a'}]}>
+                                    <MAIcon name={"photo-camera"} style={{}} size={35}
+                                            color={'white'}/>
                                 </View>
+                                <Text style={{fontSize: 12, color: Colors.primary}}>
+                                    Camera
+                                </Text>
                             </TouchableOpacity>
-
-                        </Modal>
-
-                        <Modal
-                            animationType="fade"
-                            transparent={true}
-                            visible={isVisible}
-                            onRequestClose={() => {
-                                setIsVisible(false);
-                            }}
-                        >
-                            <TouchableOpacity style={[styles.modal,]} onPress={() => setIsVisible(false)}>
-                                <View style={styles.card}>
-                                    <TouchableOpacity style={styles.opt}
-                                                      onPress={() => {
-                                                          setIsVisible(false)
-                                                          if (Platform.OS === 'ios') {
-                                                              checkPermission('cam')
-                                                          } else {
-                                                              requestCameraPermission('cam')
-                                                          }
-                                                      }}>
-                                        <View style={[styles.opt2, {backgroundColor: '#ec407a'}]}>
-                                            <MAIcon name={"photo-camera"} style={{}} size={35}
-                                                    color={'white'}/>
-                                        </View>
-                                        <Text style={{fontSize: 12, color: Colors.primary}}>
-                                            Camera
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={styles.opt}
-                                                      onPress={() => {
-                                                          setIsVisible(false)
-                                                          getImage('image')
-                                                      }}>
-                                        <View style={[styles.opt2, {backgroundColor: '#bf59cf'}]}>
-                                            <IonIcon name={"md-image"} style={{}} size={35} color={'white'}/>
-                                        </View>
-                                        <Text style={{fontSize: 12, color: Colors.primary}}>
-                                            Galeria
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={[styles.opt]}
-                                                      onPress={() => {
-                                                          getDoc()
-                                                      }}>
-                                        <View style={[styles.opt2, {backgroundColor: '#5f66cd'}]}>
-                                            <IonIcon name={"md-document"} style={{}} size={35}
-                                                     color={"white"}/>
-                                        </View>
-                                        <Text style={{fontSize: 12, color: Colors.primary}}>
-                                            Documento
-                                        </Text>
-                                    </TouchableOpacity>
+                            <TouchableOpacity style={styles.opt}
+                                              onPress={() => {
+                                                  setIsVisible(false)
+                                                  getImage('image')
+                                              }}>
+                                <View style={[styles.opt2, {backgroundColor: '#bf59cf'}]}>
+                                    <IonIcon name={"md-image"} style={{}} size={35} color={'white'}/>
                                 </View>
+                                <Text style={{fontSize: 12, color: Colors.primary}}>
+                                    Galeria
+                                </Text>
                             </TouchableOpacity>
-                        </Modal>
-                    </View>
-                )
-            }
+                            <TouchableOpacity style={[styles.opt]}
+                                              onPress={() => {
+                                                  getDoc()
+                                              }}>
+                                <View style={[styles.opt2, {backgroundColor: '#5f66cd'}]}>
+                                    <IonIcon name={"md-document"} style={{}} size={35}
+                                             color={"white"}/>
+                                </View>
+                                <Text style={{fontSize: 12, color: Colors.primary}}>
+                                    Documento
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </TouchableOpacity>
+                </Modal>
+            </View>
+
         </>
     );
 }

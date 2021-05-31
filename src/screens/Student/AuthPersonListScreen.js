@@ -77,174 +77,190 @@ export function AuthPersonListScreen({route, navigation}) {
 
     return (
         <>
-            {loading ? (
-                    <Loading/>
 
-                )
-                :
-                (
-                    <View style={styles.container}>
-                        <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                               barStyle="light-content"/>
-                        {/*<StatusBar*/}
-                        {/*  backgroundColor={Colors.primary}*/}
-                        {/*  barStyle="light-content"*/}
-                        {/*/>*/}
-                        <View style={{backgroundColor: Colors.opt1}}>
+            <View style={styles.container}>
+                <Toast ref={refNotification}/>
+                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                                       barStyle="light-content"/>
+                {/*<StatusBar*/}
+                {/*  backgroundColor={Colors.primary}*/}
+                {/*  barStyle="light-content"*/}
+                {/*/>*/}
+                <View style={{backgroundColor: Colors.opt1}}>
 
-                        </View>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
-                            <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
+                </View>
+                <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
+                    <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                        <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
+                    </TouchableOpacity>
 
-                                <Text style={{color: "white", fontSize: Texts.title,textAlign: 'center'}}>CONSTRUINDO O SABER</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle, textAlign: 'center'}}>Responsáveis de retirada do aluno da escola </Text>
 
-                            </View>
-                            <TouchableOpacity style={{marginTop: 10, alignItems: "flex-end"}}
-                                              onPress={() => setIsVisible(true)}>
+                    <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                            </TouchableOpacity>
-                        </View>
+                        <Text style={{
+                            color: "white",
+                            fontSize: Texts.title,
+                            textAlign: 'center',
+                            fontWeight: 'bold'
+                        }}>CONSTRUINDO O
+                            SABER</Text>
+                        <Text style={{
+                            color: "#8b98ae",
+                            fontSize: Texts.subtitle,
+                            textAlign: 'center'
+                        }}>Responsáveis</Text>
 
-                        {data?.length > 0 ?
-                            <ScrollView style={{backgroundColor: "white", elevation: 5}}>
+                    </View>
+                    <TouchableOpacity style={{width: 26, marginTop: 10, alignItems: "flex-end"}}
+                                      onPress={() => {
+                                      }}>
 
-                                {data?.map((item, index) =>
-                                    <TouchableOpacity key={index} style={styles.item}
-                                                      onPress={() => {
-                                                          setId(item.student_auth_person_id)
-                                                          setDel(true);
-                                                      }}>
+                    </TouchableOpacity>
 
-                                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                            <View style={{
-                                                height: 50,
-                                                borderRadius: 30,
-                                                width: 50,
-                                                backgroundColor: Colors.primary,
-                                                alignItems: 'center',
-                                                justifyContent: 'center'
-                                            }}>
-                                                <AntIcon name={"user"} style={{}} size={30} color={"white"}/>
-                                            </View>
-                                            <View>
-                                                <View style={{flex: 1, marginLeft: 10}}>
-                                                    <Text style={styles.title}>{item.person_name}</Text>
+                </View>
+                {loading ? (
+                        <Loading/>
+
+                    )
+                    :
+                    (
+                        <>
+                            {data?.length > 0 ?
+                                <ScrollView style={{backgroundColor: "white", elevation: 5}}>
+
+                                    {data?.map((item, index) =>
+                                        <TouchableOpacity key={index} style={styles.item}
+                                                          onPress={() => {
+                                                              setId(item.student_auth_person_id)
+                                                              setDel(true);
+                                                          }}>
+
+                                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                                <View style={{
+                                                    height: 50,
+                                                    borderRadius: 30,
+                                                    width: 50,
+                                                    backgroundColor: Colors.primary,
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center'
+                                                }}>
+                                                    <AntIcon name={"user"} style={{}} size={30} color={"white"}/>
                                                 </View>
-                                                <View style={{flex: 1, marginLeft: 10}}>
-                                                    <Text style={styles.subtitle}>{item.person_kinship_ptbr}</Text>
+                                                <View>
+                                                    <View style={{flex: 1, marginLeft: 10}}>
+                                                        <Text style={styles.title}>{item.person_name}</Text>
+                                                    </View>
+                                                    <View style={{flex: 1, marginLeft: 10}}>
+                                                        <Text style={styles.subtitle}>{item.person_kinship_ptbr}</Text>
+                                                    </View>
                                                 </View>
+
                                             </View>
 
-                                        </View>
+
+                                        </TouchableOpacity>,
+                                    )}
 
 
-                                    </TouchableOpacity>,
-                                )}
-
-
-
-
-                            </ScrollView>
-                            :
-                            <View style={{
-                                flex: 1,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                backgroundColor: 'white'
-                            }}>
-                                {/*<Image source={logo} style={styles.logo} />*/}
-                                <Text style={{fontSize: Texts.title, textAlign: 'center'}}>
-                                    {props.item.student.person.name.split(" ")[0]} ainda não possui nenhum responsável
-                                    para retirada
-                                </Text>
-                            </View>
-                        }
-                        <Modal
-                            animationType="slide"
-                            transparent={false}
-                            visible={isVisible}
-                            onRequestClose={() => {
-                                setIsVisible(false);
-                            }}
-                        >
-                            <AuthPersonComponent id={props.item.enrollment_id} close={(e) => setIsVisible(e)}/>
-                        </Modal>
-                        <Modal
-                            animationType="slide"
-                            transparent={true}
-                            visible={del}
-                            onRequestClose={() => {
-                                setDel(false);
-                            }}
-                        >
-                            <View style={styles.centeredView}>
-                                <View style={styles.modalView}>
-
-                                    <Text style={{fontSize: 17, textAlign: "center", marginBottom: 10}}> Deseja remover
-                                        o responsável? </Text>
-                                    <View style={{flexDirection: "row"}}>
-
-                                        <ButtonStyle1
-                                            text={"Não"}
-                                            style={{margin: 3, padding: 8}}
-                                            loading={loading}
-                                            primaryColor={Colors.pendingBorder}
-                                            secondaryColor={Colors.pendingBorder}
-                                            color={Colors.white}
-                                            borderRadius={15}
-                                            onPress={() => {
-                                                setDel(false);
-                                            }}
-                                        />
-                                        <ButtonStyle1
-                                            text={"Sim"}
-                                            style={{margin: 3, padding: 8}}
-                                            loading={loading}
-                                            primaryColor={'#014763'}
-                                            secondaryColor={'#014763'}
-                                            color={Colors.white}
-                                            borderRadius={15}
-                                            onPress={() => {
-                                                handleDelete();
-                                            }}
-                                        />
-                                    </View>
+                                </ScrollView>
+                                :
+                                <View style={{
+                                    flex: 1,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    backgroundColor: 'white'
+                                }}>
+                                    {/*<Image source={logo} style={styles.logo} />*/}
+                                    <Text style={{fontSize: Texts.title, textAlign: 'center'}}>
+                                        {props.item.student.person.name.split(" ")[0]} ainda não possui nenhum
+                                        responsável
+                                        para retirada
+                                    </Text>
                                 </View>
+                            }
+                        </>
+                    )}
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={isVisible}
+                    onRequestClose={() => {
+                        setIsVisible(false);
+                    }}
+                >
+                    <AuthPersonComponent id={props.item.enrollment_id} close={(e) => setIsVisible(e)}/>
+                </Modal>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={del}
+                    onRequestClose={() => {
+                        setDel(false);
+                    }}
+                >
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+
+                            <Text style={{fontSize: 17, textAlign: "center", marginBottom: 10}}> Deseja remover
+                                o responsável? </Text>
+                            <View style={{flexDirection: "row"}}>
+
+                                <ButtonStyle1
+                                    text={"Não"}
+                                    style={{margin: 3, padding: 8}}
+                                    loading={loading}
+                                    primaryColor={Colors.pendingBorder}
+                                    secondaryColor={Colors.pendingBorder}
+                                    color={Colors.white}
+                                    borderRadius={15}
+                                    onPress={() => {
+                                        setDel(false);
+                                    }}
+                                />
+                                <ButtonStyle1
+                                    text={"Sim"}
+                                    style={{margin: 3, padding: 8}}
+                                    loading={loading}
+                                    primaryColor={'#014763'}
+                                    secondaryColor={'#014763'}
+                                    color={Colors.white}
+                                    borderRadius={15}
+                                    onPress={() => {
+                                        handleDelete();
+                                    }}
+                                />
                             </View>
-
-
-                        </Modal>
-                        <View style={{
-                            width: '100%',
-                            elevation: 6,
-                            padding: 10,
-                            flexDirection: 'row-reverse',
-                            position: 'absolute',
-                            bottom: 0,
-                            justifyContent: 'space-between'
-                        }}>
-                            <RoundButton
-                                component={
-                                    <AntIcon
-                                        name={"plus"}
-                                        style={{}}
-                                        size={25}
-                                        color={"white"}/>
-                                }
-                                loading={loading}
-                                primaryColor={Colors.green}
-                                secondaryColor={Colors.green}
-                                color={Colors.white}
-                                onPress={() => setIsVisible(true)}
-                            />
                         </View>
                     </View>
-                )}
+
+
+                </Modal>
+                <View style={{
+                    width: '100%',
+                    elevation: 6,
+                    padding: 10,
+                    flexDirection: 'row-reverse',
+                    position: 'absolute',
+                    bottom: 0,
+                    justifyContent: 'space-between'
+                }}>
+                    <RoundButton
+                        component={
+                            <AntIcon
+                                name={"plus"}
+                                style={{}}
+                                size={25}
+                                color={"white"}/>
+                        }
+                        loading={loading}
+                        primaryColor={Colors.green}
+                        secondaryColor={Colors.green}
+                        color={Colors.white}
+                        onPress={() => setIsVisible(true)}
+                    />
+                </View>
+            </View>
+
         </>
 
     );

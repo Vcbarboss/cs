@@ -1,4 +1,5 @@
 export const Colors = {
+    statusBar: '#003f88',
     primary: "#00296b",
     secondary: "#ffcc29",
     tertiary: '#509ed8',

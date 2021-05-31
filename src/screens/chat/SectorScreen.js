@@ -51,6 +51,36 @@ export function SectorScreen({navigation}) {
 
     return (
         <>
+
+            <Toast ref={refNotification}/>
+            <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                                   barStyle="light-content"/>
+            <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
+                <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                    <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
+                </TouchableOpacity>
+                <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
+
+                    <Text style={{
+                        color: "white",
+                        fontSize: Texts.title,
+                        textAlign: 'center',
+                        fontWeight: 'bold'
+                    }}>CONSTRUINDO O
+                        SABER</Text>
+                    <Text style={{
+                        color: "#8b98ae",
+                        fontSize: Texts.subtitle,
+                        textAlign: 'center'
+                    }}>Setores</Text>
+
+                </View>
+                <TouchableOpacity style={{width: 26, marginTop: 10, alignItems: "flex-end"}}
+                                  onPress={() => {
+                                  }}>
+
+                </TouchableOpacity>
+            </View>
             {loading ? (
                     <Loading/>
 
@@ -58,19 +88,6 @@ export function SectorScreen({navigation}) {
                 :
                 (
                     <>
-                        <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                               barStyle="light-content"/>
-                        <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
-                            <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                <AntIcon name={"arrowleft"} style={{marginTop: 10}} size={25} color={"white"}/>
-                            </TouchableOpacity>
-                            <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
-
-                                <Text style={{color: "white", fontSize: Texts.title}}>Construindo o Saber</Text>
-                                <Text style={{color: "white", fontSize: Texts.subtitle}}>Setores </Text>
-                            </View>
-                        </View>
                         <ScrollView>
                             <View style={{
                                 display: "flex",
@@ -78,37 +95,41 @@ export function SectorScreen({navigation}) {
                             }}>
                                 {data?.length > 0 ?
                                     <>
-                                    {data?.map((item, index) =>
-                                        <View key={index}>
-                                            <TouchableOpacity style={styles.itemList} onPress={() => {
-                                                dispatch({type: 'rebase_sector', data: item.chat_sector_id})
-                                                navigation.navigate("ChatScreen", {
-                                                    item: item,
-                                                });
-                                            }}>
+                                        {data?.map((item, index) =>
+                                            <View key={index}>
+                                                <TouchableOpacity style={styles.itemList} onPress={() => {
+                                                    dispatch({type: 'rebase_sector', data: item.chat_sector_id})
+                                                    navigation.navigate("ChatScreen", {
+                                                        item: item,
+                                                    });
+                                                }}>
 
-                                                {item?.chats[0]?.unread_messages > 0 &&
-                                                <Badge style={{
-                                                    position: "absolute",
-                                                    top: "10%",
-                                                    right: "10%",
-                                                    backgroundColor: "#ff190c",
-                                                    fontWeight: "bold",
-                                                    fontSize: 14,
-                                                }} size={20}>
-                                                    {item?.chats[0]?.unread_messages}
-                                                </Badge>
-                                                }
+                                                    {item?.chats[0]?.unread_messages > 0 &&
+                                                    <Badge style={{
+                                                        position: "absolute",
+                                                        top: "10%",
+                                                        right: "10%",
+                                                        backgroundColor: "#ff190c",
+                                                        fontWeight: "bold",
+                                                        fontSize: 14,
+                                                    }} size={20}>
+                                                        {item?.chats[0]?.unread_messages}
+                                                    </Badge>
+                                                    }
 
 
-                                                <Text style={{fontSize: Texts.title, flex: 1}}>{item.description}</Text>
-                                                <IonIcon style={{}} name={"chatbubble-ellipses-outline"} size={30}/>
-                                            </TouchableOpacity>
-                                        </View>,
-                                    )}
+                                                    <Text style={{
+                                                        fontSize: Texts.title,
+                                                        flex: 1
+                                                    }}>{item.description}</Text>
+                                                    <IonIcon style={{}} name={"chatbubble-ellipses-outline"} size={30}/>
+                                                </TouchableOpacity>
+                                            </View>,
+                                        )}
                                     </>
                                     :
-                                    <View style={{flex:1, alignItems:'center', justifyContent: 'center', padding: 10}}>
+                                    <View
+                                        style={{flex: 1, alignItems: 'center', justifyContent: 'center', padding: 10}}>
                                         <Text style={{fontSize: Texts.title, textAlign: 'center'}}>
                                             Ainda não existe nenhum canal de chat disponível
                                         </Text>

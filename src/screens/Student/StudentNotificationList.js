@@ -1,39 +1,37 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useRef} from "react";
 import {
-    Image,
-    StatusBar,
     StyleSheet,
     View,
     ScrollView,
     TouchableOpacity,
     Dimensions,
     Text,
-    Modal, SafeAreaView, Platform, KeyboardAvoidingView,
+    Modal,
+    Platform,
+    KeyboardAvoidingView,
+    Animated,
+    Keyboard,
 } from "react-native";
 import {Colors} from "../../helpers/Colors";
 import Toast from "../../components/Toast";
 import {useFocusEffect} from "@react-navigation/native";
 import useApi from "../../hooks/Api";
-import Icon from "react-native-vector-icons/Ionicons";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import {Texts} from "../../helpers/Texts";
 import moment from "moment";
 import "moment/locale/pt-br";
 import Loading from "../../components/Loading";
-import {StudentProfileComponent} from "../../components/StudentProfileComponent";
 import {NotificationComponent} from "../../components/NotificationComponent";
-import ButtonStyle1 from "../../components/Buttons/ButtonStyle1";
-import {Checkbox, Switch} from "react-native-paper";
-import FilterNotification from "../../components/FilterNotification";
-import logo from "../../assets/imgs/emptyNotification.png";
 import GeneralStatusBarColor from "../../components/StatusBarColor";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
-const list = [
-    {label: 'Lidas', value: 'Lidas'},
-    {label: 'Não Lidas', value: 'Não Lidas'},
-    {label: 'Todas', value: 'Todas'},
+const filterList = [
+    {label: 'Lidas', value: 'READ'},
+    {label: 'Não lidas', value: 'UNREAD'},
+    {label: 'Todas', value: 'ALL'},
 ];
 
 export function StudentNotificationList({route, navigation}) {
@@ -44,12 +42,13 @@ export function StudentNotificationList({route, navigation}) {
     const [isVisible, setIsVisible] = useState(false);
     const [id, setId] = useState();
     const [read, setRead] = useState()
-    const [filterModal, setFilterModal] = useState(false);
-    const [filter, setFilter] = useState({label: 'Todas', value: 'Todas'});
+    const [isFilter, setIsFilter] = useState(false);
+    const [filter, setFilter] = useState({label: 'Todas', value: 'ALL'});
+    let filterAux = useRef({label: 'Todas', value: 'ALL'}).current
     const notifications = useRef([]);
     const [loadingMore, setLoadingMore] = useState(false);
     const paginate = useRef({page: 0});
-    const isFilter = useRef(false);
+    const altFilter = useRef(new Animated.Value(0)).current;
     const props = route.params;
 
     const getData = async (more) => {
@@ -64,25 +63,10 @@ export function StudentNotificationList({route, navigation}) {
         }
         more ? setLoadingMore(true) : setLoading(true);
         try {
-            const res = await api.get(`app/notification/paginate?page=${paginate.current.page + 1}&limit=10&order_field=created_at&order_type=DESC&enrollment_id=${props.item.enrollment_id}&search_list=ALL`);
+            const res = await api.get(`app/notification/paginate?page=${paginate.current.page + 1}&limit=10&order_field=created_at&order_type=DESC&enrollment_id=${props.item.enrollment_id}&search_list=${filterAux.value}`);
 
-
-            if (filter.label === "Lidas") {
-                for (let i = 0; i < res.object.data.length; i++) {
-                    if (res.object.data[i].read_at) {
-                        notifications.current = notifications.current.concat(res.object.data[i]);
-                    }
-                }
-            } else if (filter.label === "Não lidas") {
-                for (let i = 0; i < res.object.data.length; i++) {
-                    if (!res.object.data[i].read_at) {
-                        notifications.current = notifications.current.concat(res.object.data[i]);
-                    }
-                }
-            } else if (filter.label === 'Todas') {
-                notifications.current = notifications.current.concat(res.object.data);
-            }
-
+            notifications.current = notifications.current.concat(res.object.data);
+            console.log(res.object.data)
 
             paginate.current = {nextPage: res.object.next_page_url, page: res.object.current_page};
             more ? setLoadingMore(false) : setLoading(false);
@@ -109,61 +93,159 @@ export function StudentNotificationList({route, navigation}) {
         }
     };
 
+    let openAlt = altFilter.interpolate({
+        inputRange: [0, 100],
+        outputRange: ['0%', '20%']
+    })
+
+    const onFilter = () => {
+        Keyboard.dismiss()
+        if (!isFilter) {
+            openFilter()
+        } else {
+            closeFilter()
+        }
+
+    }
+
+    const openFilter = () => {
+        setIsFilter(true)
+        altFilter.setValue(0)
+        Animated.spring(altFilter, {
+            toValue: 100,
+            duration: 200,
+            friction: 6,
+            useNativeDriver: false
+        }).start()
+    }
+
+    const closeFilter = () => {
+        setIsFilter(false)
+        Animated.spring(altFilter, {
+            toValue: 0,
+            duration: 200,
+            friction: 6,
+            useNativeDriver: false
+        }).start()
+    }
+
     useFocusEffect(
         React.useCallback(() => {
-            if (!isVisible) {
+
                 getData();
-            }
-        }, [isVisible, filter]),
+
+        }, []),
     );
 
     return (
 
-        <>
-            {loading ? (
-                    <>
-                        <Toast ref={refNotification}/>
-                        <Loading/>
-                    </>
-                )
-                :
-                (
-                    <View style={styles.container}>
-                        <KeyboardAvoidingView
-                            behavior={"padding"}
-                            enabled={Platform.OS === "ios"}
-                            style={{flex: 1}}
-                        >
-                            <Toast ref={refNotification}/>
-                            <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                                   barStyle="light-content"/>
-                            {/*<StatusBar*/}
-                            {/*  backgroundColor={Colors.primary}*/}
-                            {/*  barStyle="light-content"*/}
-                            {/*/>*/}
-                            <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
-                                <TouchableOpacity style={{}} onPress={() => {
-                                    if (props?.notification) {
-                                        navigation.reset({index: 0, routes: [{name: "HomeStack"}]});
-                                    } else {
-                                        navigation.pop()
-                                    }
+        <View style={styles.container}>
+            <KeyboardAvoidingView
+                behavior={"padding"}
+                enabled={Platform.OS === "ios"}
+                style={{flex: 1}}
+            >
+                <Toast ref={refNotification}/>
+                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                                       barStyle="light-content"/>
+                {/*<StatusBar*/}
+                {/*  backgroundColor={Colors.primary}*/}
+                {/*  barStyle="light-content"*/}
+                {/*/>*/}
+                <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
+                    <TouchableOpacity style={{}} onPress={() => {
+                        if (props?.notification) {
+                            navigation.reset({index: 0, routes: [{name: "HomeStack"}]});
+                        } else {
+                            navigation.pop()
+                        }
 
-                                }}>
-                                    <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
-                                </TouchableOpacity>
-                                <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
-                                    <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
-                                    <Text style={{color: "white", fontSize: Texts.subtitle,}}>Notificações </Text>
-                                </View>
-                                <TouchableOpacity style={{alignItems: "center", justifyContent: 'center'}}
-                                                  onPress={() => setFilterModal(true)}>
-                                    <Icon name={"filter-outline"} style={{}} size={25} color={"white"}/>
-                                    <Text style={{color: 'white', fontWeight: 'bold'}}>{filter.label}</Text>
-                                </TouchableOpacity>
+                    }}>
+                        <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
+                    </TouchableOpacity>
+                    <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
+
+                        <Text style={{
+                            color: "white",
+                            fontSize: Texts.title,
+                            textAlign: 'center',
+                            fontWeight: 'bold'
+                        }}>CONSTRUINDO O
+                            SABER</Text>
+                        <Text style={{
+                            color: "#8b98ae",
+                            fontSize: Texts.subtitle,
+                            textAlign: 'center'
+                        }}>Notificações</Text>
+
+                    </View>
+                    <TouchableOpacity style={{alignItems: "center", justifyContent: 'center'}}
+                                      onPress={() => onFilter()}>
+                        <SimpleLineIcons name={'equalizer'} style={{}} size={25} color={'white'}/>
+                    </TouchableOpacity>
+                </View>
+                <Animated.View
+                    style={{
+                        width: '100%',
+                        height: openAlt,
+                        backgroundColor: 'white',
+                    }}
+                >
+                    {isFilter &&
+                    <>
+
+                        <View style={{
+                            padding: 20,
+                        }}>
+                            <Text
+                                style={{
+                                    fontWeight: 'bold',
+                                    fontSize: Texts.title,
+                                    color: Colors.primary,
+                                    marginBottom: 5
+                                }}>Filtrar
+                                por:</Text>
+                            <View style={{
+                                flexDirection: 'row',
+                                display: "flex",
+                                flexWrap: "wrap",
+                                justifyContent: "center",
+                            }}>
+                                {filterList.map((item, index) =>
+                                    <TouchableOpacity
+                                        style={[styles.filter, {backgroundColor: filter.value === item.value ? Colors.primary : 'white'}]}
+                                        key={index}
+                                        onPress={() => {
+                                            onFilter()
+                                            setFilter(item)
+                                            filterAux = item
+                                            getData()
+                                        }}>
+                                        {filter.value === item.value &&
+                                        <MaterialCommunityIcons name={'check'} style={{marginRight: 5}}
+                                                                size={20} color={'white'}/>
+                                        }
+                                        <Text
+                                            style={{color: filter.value === item.value ? 'white' : Colors.primary}}>{item.label}</Text>
+                                    </TouchableOpacity>
+                                )}
                             </View>
+                        </View>
+                    </>
+                    }
+                </Animated.View>
+                {loading ? (
+                        <>
+                            <Toast ref={refNotification}/>
+                            <Loading/>
+                        </>
+                    )
+                    :
+                    (
+                        <>
                             {notifications.current.length > 0 ?
-                                <ScrollView style={{}} onMomentumScrollEnd={(e) => handleScroll(e.nativeEvent)}>
+                                <ScrollView style={{}}
+                                            onMomentumScrollEnd={(e) => handleScroll(e.nativeEvent)}>
                                     {notifications.current?.map((item, index) =>
 
                                         <TouchableOpacity
@@ -224,55 +306,50 @@ export function StudentNotificationList({route, navigation}) {
 
                                 </ScrollView>
                                 :
-                                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', padding: 10}}>
+                                <View style={{
+                                    flex: 1,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: 10
+                                }}>
                                     {/*<Image source={logo} style={styles.logo} />*/}
                                     <Text style={{fontSize: Texts.title, textAlign: 'center'}}>
-                                        {props.item.student.person.name.split(" ")[0]} ainda não possui nenhuma
+                                        {props.item.student.person.name.split(" ")[0]} ainda não possui
+                                        nenhuma
                                         notificação
                                     </Text>
                                 </View>
                             }
-                            <Modal
-                                animationType="slide"
-                                transparent={false}
-                                visible={isVisible}
-                                onRequestClose={() => {
-                                    setIsVisible(false);
-                                }}
-                            >
-                                <NotificationComponent aluno={true} enrollment_id={props.item.enrollment_id} id={id}
-                                                       read={read} toast={(e) => refNotification.current.showToast(e)}
-                                                       close={(e) => {
-                                                           getData();
-                                                           setIsVisible(e);
-                                                       }}/>
+                        </>
+                    )}
+                {loadingMore &&
+                <View style={{
+                    position: 'absolute', bottom: 0,
+                    left: 0,
+                    right: 0,
+                    textAlign: 'center'
+                }}>
+                    <Loading/>
+                </View>
+                }
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={isVisible}
+                    onRequestClose={() => {
+                        setIsVisible(false);
+                    }}
+                >
+                    <NotificationComponent aluno={true} enrollment_id={props.item.enrollment_id} id={id}
+                                           read={read} toast={(e) => refNotification.current.showToast(e)}
+                                           close={(e) => {
+                                               getData();
+                                               setIsVisible(e);
+                                           }}/>
 
-                            </Modal>
-                            <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={filterModal}
-                                onRequestClose={() => {
-                                    setFilterModal(false);
-                                }}
-                            >
-                                <View style={styles.centeredView}>
-                                    <View style={styles.modalView}>
-
-                                        <FilterNotification title={'Filtre suas notificações'} list={list}
-                                                            selected={filter.label} close={(e) => setFilterModal(e)}
-                                                            select={(item) => {
-                                                                isFilter.current = true;
-                                                                setFilter(item);
-                                                            }}/>
-                                    </View>
-                                </View>
-                            </Modal>
-                        </KeyboardAvoidingView>
-                    </View>
-
-                )}
-        </>
+                </Modal>
+            </KeyboardAvoidingView>
+        </View>
 
     );
 }
@@ -323,5 +400,23 @@ const styles = StyleSheet.create({
     read: {
         color: Colors.read,
         fontWeight: "normal",
-    }
+    },
+    filter: {
+        height: 43,
+        margin: 5,
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderColor: Colors.primary,
+        padding: 10,
+        borderRadius: 10,
+        elevation: 2,
+        shadowColor: "#000000",
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+            height: 1,
+            width: 1
+        }
+    },
 });

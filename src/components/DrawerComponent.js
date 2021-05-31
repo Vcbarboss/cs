@@ -47,7 +47,7 @@ export function DrawerComponent(props,) {
                 <GeneralStatusBarColor backgroundColor={'white'}
                                        barStyle="light-content"/>
                 :
-                <GeneralStatusBarColor backgroundColor={Colors.primary}
+                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
                                        barStyle="light-content"/>
             }
 

@@ -58,7 +58,7 @@ export function StudentScreen({route, navigation}) {
                 (
                     <View style={styles.container}>
                         <Toast ref={refNotification}/>
-                        <GeneralStatusBarColor backgroundColor={Colors.primary}
+                        <GeneralStatusBarColor backgroundColor={Colors.statusBar}
                                                barStyle="light-content"/>
                         {/*<StatusBar*/}
                         {/*    backgroundColor={Colors.primary}*/}

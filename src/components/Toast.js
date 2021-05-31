@@ -20,6 +20,13 @@ const Toast = React.forwardRef((props,ref) => {
  hide()
   };
 
+  const test = () => {
+      type.current = 'warning';
+      title.current = 'Teste';
+      message.current = 'Testando';
+      setVisible(true)
+  }
+
   const hideToast = () => {
     type.current = undefined;
     title.current = undefined;
@@ -34,9 +41,6 @@ const Toast = React.forwardRef((props,ref) => {
     }, 2000)
 
   }
-
-  useEffect(() => {
-  },[]);
 
   if(ref) ref.current = {showToast};
 

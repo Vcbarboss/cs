@@ -155,7 +155,7 @@ export function EditScreen({navigation}) {
                     })
                 })
                 .catch(err => console.log(err));
-setIsVisible(false)
+            setIsVisible(false)
             setLoading(false)
         });
 
@@ -244,46 +244,57 @@ setIsVisible(false)
 
     return (
         <>
-            {loading ? (
-                    <Loading/>
 
-                )
-                :
-                (
-                    <View style={styles.container}>
-                        <KeyboardAvoidingView
-                            behavior={"padding"}
-                            enabled={Platform.OS === "ios"}
-                            style={{flex: 1}}
-                        >
-                            <Toast ref={refNotification}/>
-                            <GeneralStatusBarColor backgroundColor={Colors.primary}
-                                                   barStyle="light-content"/>
-                            {/*<StatusBar*/}
-                            {/*  backgroundColor={Colors.primary}*/}
-                            {/*  barStyle="light-content"*/}
-                            {/*/>*/}
-                            <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
-                                <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
-                                    <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
-                                </TouchableOpacity>
-                                <View style={{flex: 1, justifyContent: "center", paddingLeft: 10}}>
+            <View style={styles.container}>
+                <KeyboardAvoidingView
+                    behavior={"padding"}
+                    enabled={Platform.OS === "ios"}
+                    style={{flex: 1}}
+                >
+                    <Toast ref={refNotification}/>
+                    <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                                           barStyle="light-content"/>
+                    {/*<StatusBar*/}
+                    {/*  backgroundColor={Colors.primary}*/}
+                    {/*  barStyle="light-content"*/}
+                    {/*/>*/}
+                    <View style={{flexDirection: "row", backgroundColor: Colors.primary, padding: 10}}>
+                        <TouchableOpacity style={{}} onPress={() => navigation.pop()}>
+                            <AntIcon name={"arrowleft"} style={{marginTop: 10,}} size={25} color={"white"}/>
+                        </TouchableOpacity>
+                        <View style={{flex: 1, justifyContent: 'center', paddingLeft: 10}}>
 
-                                    <Text style={{color: "white", fontSize: Texts.title,}}>Construindo o Saber</Text>
-                                    <Text style={{color: "white", fontSize: Texts.subtitle,}}>Editar perfil </Text>
-                                </View>
-                                {/*<TouchableOpacity style={{*/}
-                                {/*    marginRight: 10,*/}
-                                {/*    marginBottom: 10,*/}
-                                {/*    alignItems: "center",*/}
-                                {/*    justifyContent: "center"*/}
-                                {/*}}*/}
-                                {/*                  onPress={() => {*/}
-                                {/*                  }}>*/}
-                                {/*    <IonIcon name={"camera-outline"} style={{marginTop: 10}} size={27} color={'white'}/>*/}
-                                {/*</TouchableOpacity>*/}
-                            </View>
+                            <Text style={{
+                                color: "white",
+                                fontSize: Texts.title,
+                                textAlign: 'center',
+                                fontWeight: 'bold'
+                            }}>CONSTRUINDO O
+                                SABER</Text>
+                            <Text style={{
+                                color: "#8b98ae",
+                                fontSize: Texts.subtitle,
+                                textAlign: 'center'
+                            }}>Editar perfil</Text>
 
+                        </View>
+                        {/*<TouchableOpacity style={{*/}
+                        {/*    marginRight: 10,*/}
+                        {/*    marginBottom: 10,*/}
+                        {/*    alignItems: "center",*/}
+                        {/*    justifyContent: "center"*/}
+                        {/*}}*/}
+                        {/*                  onPress={() => {*/}
+                        {/*                  }}>*/}
+                        {/*    <IonIcon name={"camera-outline"} style={{marginTop: 10}} size={27} color={'white'}/>*/}
+                        {/*</TouchableOpacity>*/}
+                    </View>
+                    {loading ? (
+                            <Loading/>
+
+                        )
+                        :
+                        (
                             <ScrollView style={{paddingHorizontal: 15}}>
                                 <View style={{
                                     paddingHorizontal: 10,
@@ -377,24 +388,24 @@ setIsVisible(false)
 
                                 </View>
                             </ScrollView>
-                            <View style={{display: "flex", paddingHorizontal: 10}}>
-                                <ButtonStyle1
-                                    text={"Confirmar"}
-                                    style={{margin: 3, padding: 8}}
-                                    loading={loadingConfirm}
-                                    primaryColor={Colors.primary}
-                                    secondaryColor={Colors.primary}
-                                    color={'white'}
-                                    borderRadius={15}
-                                    onPress={() => {
-                                        handleEdit();
-                                    }}
-                                />
-                            </View>
-                        </KeyboardAvoidingView>
+                        )}
+                    <View style={{display: "flex", paddingHorizontal: 10}}>
+                        <ButtonStyle1
+                            text={"Confirmar"}
+                            style={{margin: 3, padding: 8}}
+                            loading={loadingConfirm}
+                            primaryColor={Colors.primary}
+                            secondaryColor={Colors.primary}
+                            color={'white'}
+                            borderRadius={15}
+                            onPress={() => {
+                                handleEdit();
+                            }}
+                        />
                     </View>
+                </KeyboardAvoidingView>
+            </View>
 
-                )}
             <Modal
                 animationType="fade"
                 transparent={true}
