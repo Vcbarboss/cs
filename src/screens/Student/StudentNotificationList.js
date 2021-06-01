@@ -132,7 +132,7 @@ export function StudentNotificationList({route, navigation}) {
     useFocusEffect(
         React.useCallback(() => {
 
-                getData();
+            getData();
 
         }, []),
     );
@@ -250,7 +250,13 @@ export function StudentNotificationList({route, navigation}) {
 
                                         <TouchableOpacity
                                             key={index}
-                                            style={[styles.itemList, {}]}
+                                            style={[styles.itemList, {
+                                                borderLeftWidth: item.read_at ? 0 : 5,
+                                                borderLeftColor: '#1698e7',
+                                                borderBottomWidth: 1,
+                                                borderBottomColor: Colors.notification ,
+                                                backgroundColor: item.read_at ? "rgba(0,41,107,0.04)" : 'white',
+                                            }]}
                                             onPress={() => {
                                                 setIsVisible(true)
                                                 setId(item.push_notification_id);
@@ -265,11 +271,15 @@ export function StudentNotificationList({route, navigation}) {
                                                 <View style={{flex: 1}}>
                                                     <View style={{flex: 1, justifyContent: "center"}}>
                                                         <Text
-                                                            style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listTitle}]}>{item.title}</Text>
+                                                            style={[{fontSize: Texts.listTitle, fontWeight: 'bold', color: Colors.primary}]}>{item.title.length < 40 ? item.title : item.title.substring(0,35) + '...'}</Text>
                                                     </View>
                                                     <View style={{flex: 1, justifyContent: "flex-end"}}>
+                                                        {/*<Text*/}
+                                                        {/*    style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listDescription}]}>{moment(item?.created_at.substr(0, 10)).format("L")} {item?.created_at.substr(11, 5)}</Text>*/}
                                                         <Text
-                                                            style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listDescription}]}>{moment(item?.created_at.substr(0, 10)).format("L")} {item?.created_at.substr(11, 5)}</Text>
+                                                            style={{
+                                                                color: Colors.read,
+                                                            }}>{moment(item.created_at).fromNow()}</Text>
                                                     </View>
                                                 </View>
                                                 <View style={{flex: 0.4,}}>
@@ -280,11 +290,11 @@ export function StudentNotificationList({route, navigation}) {
                                                     }}>
                                                         {item.read_at ?
                                                             <Text
-                                                                style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listDescription}]}>Lido</Text>
+                                                                style={[{fontSize: Texts.listDescription, color: Colors.primary}]}>Lida</Text>
                                                             :
                                                             <Text
-                                                                style={[item.read_at ? styles.read : styles.notRead, {fontSize: Texts.listDescription}]}>Não
-                                                                lido</Text>
+                                                                style={[{fontSize: Texts.listDescription, color: Colors.primary}]}>Não
+                                                                lida</Text>
                                                         }
                                                     </View>
                                                     <View style={{
@@ -292,11 +302,11 @@ export function StudentNotificationList({route, navigation}) {
                                                         alignItems: "flex-end",
                                                         justifyContent: "flex-end",
                                                     }}>
-                                                        <Text
-                                                            style={{
-                                                                color: !item.read_at ? Colors.primary : Colors.read,
-                                                                fontWeight: !item.read_at ? "bold" : "normal",
-                                                            }}>{moment(item.created_at).fromNow()}</Text>
+                                                        {/*<Text*/}
+                                                        {/*    style={{*/}
+                                                        {/*        color: !item.read_at ? Colors.primary : Colors.read,*/}
+                                                        {/*        fontWeight: !item.read_at ? "bold" : "normal",*/}
+                                                        {/*    }}>{moment(item.created_at).fromNow()}</Text>*/}
                                                     </View>
                                                 </View>
                                             </View>
@@ -356,10 +366,7 @@ export function StudentNotificationList({route, navigation}) {
 
 const styles = StyleSheet.create({
     itemList: {
-        borderBottomWidth: 1,
-        borderColor: Colors.notification,
-        backgroundColor: "#fcfcfc",
-        padding: 20,
+        padding: 10,
         paddingHorizontal: 10,
     },
     container: {

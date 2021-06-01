@@ -20,6 +20,7 @@ import GeneralStatusBarColor from "../../../components/StatusBarColor";
 import {Picker} from '@react-native-picker/picker';
 import ProgressCircle from 'react-native-progress-circle'
 import {Calendar, CalendarList, Agenda, LocaleConfig} from 'react-native-calendars';
+import moment from "moment";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -194,8 +195,10 @@ export function AttendanceDetailsScreen({route, navigation}) {
             }
         })
 
+        console.log(moment(day).format('dddd, DD MMMM'))
         setObjToShow({
             ...objToShow,
+            date: day,
             'knowledge': aux,
             'history': aux2
         })
@@ -364,11 +367,7 @@ export function AttendanceDetailsScreen({route, navigation}) {
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <TouchableOpacity
-                            style={{borderRadius: 20, padding: 20, backgroundColor: Colors.red, elevation: 5}}
-                            onPress={() => setIsVisible(false)}>
-                            <AntIcon name={"close"} style={{}} size={25} color={"white"}/>
-                        </TouchableOpacity>
+
                         <View style={{padding: 35, borderBottomWidth: 2, borderColor: Colors.lightgray}}>
                             <Text style={{
                                 color: 'black',
@@ -383,9 +382,11 @@ export function AttendanceDetailsScreen({route, navigation}) {
                             }}>{objToShow?.knowledge?.note}</Text>
                         </View>
                         <View style={{padding: 30}}>
+                            <Text>{moment(objToShow.date).format('dddd, DD')} de {moment(objToShow.date).format('MMMM')}</Text>
                             {objToShow?.history?.map((item, index) =>
 
                                 <View key={index}>
+
                                     <View
                                         style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                                         <View style={{
@@ -395,6 +396,12 @@ export function AttendanceDetailsScreen({route, navigation}) {
                                             borderRadius: 100,
                                             backgroundColor: item.present ? Colors.green : Colors.red,
                                         }}/>
+                                        {item.present ?
+                                            <Text> presente</Text>
+                                            :
+                                            <Text> ausente</Text>
+
+                                        }
                                         <Text> - {item.time_initial}</Text>
                                     </View>
 
@@ -402,6 +409,11 @@ export function AttendanceDetailsScreen({route, navigation}) {
                             )}
 
                         </View>
+                        <TouchableOpacity
+                            style={{alignSelf: 'flex-start',borderRadius: 20, padding: 10, position:'absolute',}}
+                            onPress={() => setIsVisible(false)}>
+                            <AntIcon name={"close"} style={{}} size={25} color={Colors.red}/>
+                        </TouchableOpacity>
                     </View>
                 </View>
 
