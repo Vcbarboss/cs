@@ -1,7 +1,7 @@
 import React, {useState, useCallback, useEffect, useRef} from "react";
 import "dayjs/locale/pt-br";
 import Loading from "../../components/Loading";
-import {Alert, Text, TouchableOpacity, View, ScrollView, StyleSheet, Dimensions} from "react-native";
+import {Alert, Text, TouchableOpacity, View, ScrollView, StyleSheet, Dimensions, Image} from "react-native";
 import {Colors} from "../../helpers/Colors";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import {Texts} from "../../helpers/Texts";
@@ -191,8 +191,7 @@ export function ClassScheduleScreen({route, navigation}) {
 
                                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                                 {/*TODO arrumar quando nao vier foto*/}
-                                                <Avatar.Image style={{marginRight: 10}} size={60}
-                                                              source={{uri: item.teacher_avatar}}/>
+                                                <Image style={{height: 60, width: 60, borderRadius: 50,marginRight: 10}} source={{uri: item.teacher_avatar}} />
                                                 <View>
                                                     <Text
                                                         style={{

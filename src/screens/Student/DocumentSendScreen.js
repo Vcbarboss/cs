@@ -36,10 +36,6 @@ import imm from "../../assets/imgs/logo.png";
 const screenHeight = Math.round(Dimensions.get("window").height);
 const screenWidth = Math.round(Dimensions.get("window").width);
 
-const imgExtension = [
-    'png', 'jpg', 'jpeg'
-]
-
 export function DocumentSendScreen({route, navigation}) {
     const [loading, setLoading] = useState(false);
     const [sendLoading, setSendLoading] = useState(false);
@@ -52,7 +48,6 @@ export function DocumentSendScreen({route, navigation}) {
     const pendingList = useRef([])
     const api = useApi();
     const refNotification = useRef();
-    const [uri, setUri] = useState();
     const type_id = useRef()
     const props = route.params;
 
@@ -64,8 +59,13 @@ export function DocumentSendScreen({route, navigation}) {
             const res1 = await api.get(`app/enrollment/${props.item.enrollment_id}/document/list`);
             setData(res1.object)
             setPending(res.object)
+            console.log(res)
+            console.log(res1)
             for (let i = 0; i < res1.object.length; i++) {
-                pendingList.current.push(res1.object[i].document_type_id)
+                if(!res1.object[i].audited){
+                    pendingList.current.push(res1.object[i].document_type_id)
+                }
+
             }
             setLoading(false)
         } catch (e) {

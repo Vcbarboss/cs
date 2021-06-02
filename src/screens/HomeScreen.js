@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     Dimensions,
     Text,
-    RefreshControl
+    RefreshControl, Image
 } from "react-native";
 import {Colors} from "../helpers/Colors";
 import Toast from "../components/Toast";
@@ -33,6 +33,8 @@ const wait = (timeout) => {
         setTimeout(resolve, timeout);
     });
 }
+
+const screenWidth = Math.round(Dimensions.get("window").width);
 
 export function HomeScreen({navigation}) {
 
@@ -159,6 +161,17 @@ export function HomeScreen({navigation}) {
                     {/*    multiline={5}*/}
                     {/*    value={fcm}*/}
                     {/*/>*/}
+                    <View style={{padding: 20, flexDirection: 'row'}}>
+                        <View style={{borderWidth: 5, borderColor: Colors.primary, borderRadius: 70, padding: 5}}>
+                            <Image style={{height: screenWidth * 0.25, width: screenWidth * 0.25, borderRadius: 50}}
+                                   source={{uri: 'https://1.bp.blogspot.com/-AVkl0Zdo0DI/X5tcP4uombI/AAAAAAAAEeE/JdxES_6EpjcbBAKwYG--Gk3-AF36YFNmQCLcBGAsYHQ/w1200-h630-p-k-no-nu/jujutsu-kaisen-sukuna-sorrindo.jpg'}}/>
+                        </View>
+                        <View>
+                            <Text style={{ fontFamily: 'verdana',fontWeight: "bold", color: 'black', fontSize: Texts.title}}>Vinicius Barbosa Martins</Text>
+                            <Text style={{}}>1º série A</Text>
+                        </View>
+
+                    </View>
                 </ScrollView>
             </View>
         </>

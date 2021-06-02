@@ -15,6 +15,9 @@ import moment from "moment";
 import {maskViewPhone} from "../../helpers/Functions";
 import {Avatar} from "react-native-paper";
 import {useSelector} from "react-redux";
+import Icon from "react-native-vector-icons/Ionicons";
+import Badge from "react-native-paper/src/components/Badge";
+import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const HEADER_MAX_HEIGHT = 300;
 const HEADER_MIN_HEIGHT = Platform.OS === 'ios' ? 142 : 155;
@@ -116,6 +119,7 @@ export function AnimationScreen({route, navigation}) {
             />
             <Animated.ScrollView
                 style={styles.fill}
+                contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
                 scrollEventThrottle={1}
                 onScroll={Animated.event(
                     [{nativeEvent: {contentOffset: {y: scrollY}}}],
@@ -140,7 +144,147 @@ export function AnimationScreen({route, navigation}) {
                     y: -HEADER_MAX_HEIGHT,
                 }}
             >
-                {_renderScrollViewContent()}
+                <View style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    paddingTop: Platform.OS !== 'ios' ? HEADER_MAX_HEIGHT : 0,
+                }}>
+                    <TouchableOpacity style={[styles.itemList, {borderColor: '#56a6db'}]}
+                                      onPress={() => setIsVisible(true)}>
+                        <Icon name={'person-outline'} size={40} color={'#56a6db'}/>
+                        <Text style={{textAlign: 'center'}}> PERFIL </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.itemList2, {borderColor: '#f5797b'}]}
+                                      onPress={() => navigation.navigate('StudentNotificationList')}>
+                        <View>
+                            {props.item.push_notification_recipients_count > 0 &&
+                            <Badge size={20} style={{
+                                position: "absolute",
+                                top: -5,
+                                right: -10,
+                                zIndex: 10
+                            }}>{props.item.push_notification_recipients_count}</Badge>}
+                            <AntIcon name={'inbox'} color={'#f5797b'} size={40}/>
+                        </View>
+                        <Text style={{textAlign: 'center'}}> MENSAGENS </Text>
+                    </TouchableOpacity>
+
+                </View>
+                <View style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                }}>
+                    <TouchableOpacity style={[styles.itemList, {borderColor: '#8a67b7'}]}
+                                      onPress={() => navigation.navigate('FormListScreen',
+                                          {item: props?.item},
+                                      )}>
+                        <AntIcon name={'form'} color={'#8a67b7'} size={40}/>
+                        <Text style={{textAlign: 'center'}}> FICHAS </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.itemList2, {borderColor: '#e1588c'}]}
+                                      onPress={() => navigation.navigate('AuthPersonListScreen',
+                                          {item: props?.item},
+                                      )}>
+                        <View>
+                            {props.item.student.student_auth_person_count > 0 &&
+                            <Badge size={20} style={{
+                                position: "absolute",
+                                top: -5,
+                                right: -10,
+                                zIndex: 10,
+                                backgroundColor: 'blue'
+                            }}>{props.item.student.student_auth_person_count}</Badge>}
+
+                            <Icon name={'ios-people-outline'} color={'#e1588c'} size={40}/>
+                        </View>
+
+                        <Text style={{textAlign: 'center'}}> RESPONSÁVEIS </Text>
+                    </TouchableOpacity>
+
+                </View>
+                <View style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                }}>
+                    <TouchableOpacity style={[styles.itemList, {borderColor: '#17bb99'}]}
+                                      onPress={() => navigation.navigate('DocumentSendScreen',
+                                          {item: props?.item},
+                                      )}>
+                        <Icon name={'documents-outline'} color={'#17bb99'} size={40}/>
+                        <Text style={{textAlign: 'center'}}> DOCUMENTOS </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={[styles.itemList2, {borderColor: '#4f81a2'}]}
+                                      onPress={() => navigation.navigate('ReportScreen',
+                                          {item: props?.item},
+                                      )}>
+                        <Icon name={'ios-receipt-outline'} color={'#4f81a2'} size={40}/>
+                        <Text style={{textAlign: 'center'}}> BOLETIM </Text>
+                    </TouchableOpacity>
+
+
+                </View>
+                <View style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                }}>
+                    <TouchableOpacity style={[styles.itemList, {borderColor: '#ff8e08'}]}
+                                      onPress={() =>
+                                          navigation.navigate('ClassScheduleScreen',
+                                              {item: props?.item},
+                                          )
+                                      }>
+                        <AntIcon name={'table'} color={'#ff8e08'} size={40}/>
+                        <Text style={{textAlign: 'center'}}> HORÁRIO </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.itemList2, {borderColor: '#4d908e'}]}
+                                      onPress={() =>
+                                          navigation.navigate('HomeworkListScreen',
+                                              {item: props?.item},
+                                          )
+                                      }>
+                        <MCIcon name={'file-document-edit-outline'} color={'#4d908e'} size={40}/>
+                        <Text style={{textAlign: 'center'}}> TAREFAS </Text>
+                    </TouchableOpacity>
+
+                </View>
+                <View style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                }}>
+                    <TouchableOpacity style={[styles.itemList, {borderColor: '#e63946'}]}
+                                      onPress={() =>
+                                          navigation.navigate('AttendanceListScreen',
+                                              {item: props?.item},
+                                          )
+                                      }>
+                        <MCIcon name={'account-check-outline'} color={'#e63946'} size={40}/>
+                        <Text style={{textAlign: 'center'}}> FREQUÊNCIA </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.itemList2, {borderColor: '#e63946'}]}
+                                      onPress={() =>
+                                          navigation.navigate('KnowledgeScreen',
+                                              {item: props?.item},
+                                          )
+                                      }>
+                        <MCIcon name={'account-check-outline'} color={'#e63946'} size={40}/>
+                        <Text style={{textAlign: 'center'}}> CONTEÚDOS </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.itemList, {borderColor: '#e63946'}]}
+                                      onPress={() =>
+                                          navigation.navigate('AnimationScreen',
+                                              {item: props?.item},
+                                          )
+                                      }>
+                        <MCIcon name={'account-check-outline'} color={'#e63946'} size={40}/>
+                        <Text style={{textAlign: 'center'}}> Animacao </Text>
+                    </TouchableOpacity>
+                </View>
             </Animated.ScrollView>
             <Animated.View
                 pointerEvents="none"
@@ -149,16 +293,16 @@ export function AnimationScreen({route, navigation}) {
                     {transform: [{translateY: headerTranslate}]},
                 ]}
             >
-                <Animated.Image
-                    style={[
-                        styles.backgroundImage,
-                        {
-                            opacity: imageOpacity,
-                            transform: [{translateY: imageTranslate}],
-                        },
-                    ]}
-                    source={{uri: 'https://1.bp.blogspot.com/-AVkl0Zdo0DI/X5tcP4uombI/AAAAAAAAEeE/JdxES_6EpjcbBAKwYG--Gk3-AF36YFNmQCLcBGAsYHQ/w1200-h630-p-k-no-nu/jujutsu-kaisen-sukuna-sorrindo.jpg'}}
-                />
+                {/*<Animated.Image*/}
+                {/*    style={[*/}
+                {/*        styles.backgroundImage,*/}
+                {/*        {*/}
+                {/*            opacity: imageOpacity,*/}
+                {/*            transform: [{translateY: imageTranslate}],*/}
+                {/*        },*/}
+                {/*    ]}*/}
+                {/*    source={{uri: 'https://1.bp.blogspot.com/-AVkl0Zdo0DI/X5tcP4uombI/AAAAAAAAEeE/JdxES_6EpjcbBAKwYG--Gk3-AF36YFNmQCLcBGAsYHQ/w1200-h630-p-k-no-nu/jujutsu-kaisen-sukuna-sorrindo.jpg'}}*/}
+                {/*/>*/}
                 <Animated.View style={[styles.card, {
                     height: HEADER_MAX_HEIGHT / 1.6,
                     opacity: imageOpacity,
@@ -188,7 +332,7 @@ export function AnimationScreen({route, navigation}) {
                     styles.bar,
                     {
                         borderBottomWidth: 1,
-                        borderColor: 'red',
+                        borderColor: '#8b98ae',
                         marginVertical: 10,
                         transform: [
                             {scale: titleScale},
@@ -319,5 +463,33 @@ const styles = StyleSheet.create({
     },
     info: {
         alignItems: 'center'
-    }
+    },
+    itemList: {
+        flex: 1,
+        borderWidth: 2,
+        borderColor: "#eaebef",
+        margin: 5,
+        borderTopRightRadius: 5,
+        borderBottomLeftRadius: 5,
+        borderRadius: 15,
+        height: 120,
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white'
+    },
+    itemList2: {
+        flex: 1,
+        borderWidth: 2,
+        borderColor: "#eaebef",
+        margin: 5,
+        borderTopLeftRadius: 5,
+        borderBottomRightRadius: 5,
+        borderRadius: 15,
+        height: 120,
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white'
+    },
 });
