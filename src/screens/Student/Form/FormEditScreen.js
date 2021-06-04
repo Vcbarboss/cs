@@ -27,6 +27,7 @@ import {Texts} from "../../../helpers/Texts";
 import Field from "../../../components/Field";
 import GeneralStatusBarColor from "../../../components/StatusBarColor";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import FieldForm from "../../../components/FieldForm";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -49,6 +50,7 @@ export function FormEditScreen({route, navigation}) {
         try {
             const res = await api.get(`app/enrollment/${props.item.enrollment_id}/form/${props.form_id}`);
             setData(res.object);
+            console.log(res.object);
 
             for (let i = 0; i < res.object.section.length; i++) {
                 for (let f = 0; f < res.object.section[i].fields.length; f++) {
@@ -249,19 +251,19 @@ export function FormEditScreen({route, navigation}) {
                     <ScrollView style={{}}>
 
 
-                        <View style={{padding: 5}}>
+                        <View style={{}}>
                             {/*------------- Início do Form -------------*/}
                             {data?.section.map((item, index) =>
                                 <View style={{}} key={index}>
                                     <View style={{
-                                        borderRadius: 15,
-                                        elevation: 3,
                                         padding: 15,
-                                        marginVertical: 10,
                                         backgroundColor: "white",
                                     }}>
 
-                                        <Text style={{fontWeight: "bold", fontSize: 15}}>{item.description}</Text>
+                                        <View style={{borderBottomWidth: 1, borderBottomColor: Colors.lightgray, paddingBottom: 10, marginBottom: 10}}>
+                                            <Text style={{fontWeight: "bold", fontSize: 19, color: 'black'}}>{item.description}</Text>
+                                        </View>
+
                                         <View style={styles.cardContent}>
                                             {/*------------- Início dos Fields -------------*/}
                                             {item?.fields.map((field, ind) =>
@@ -269,8 +271,8 @@ export function FormEditScreen({route, navigation}) {
                                                     {field.type === "TEXT" ?
                                                         <>
                                                             <View style={styles.item}>
-                                                                <Field2
-                                                                    label={field.label + " " + [field.mandatory ? "*" : ""]}
+                                                                <FieldForm
+                                                                    label={field.label + " " + [field.mandatory ? "" : "(opcional)"]}
                                                                     placeholder={field.label}
                                                                     value={objToShow?.[field.form_section_field_id]}
                                                                     change={(e) => handleChange(("field_" + field.form_section_field_id), e)}
@@ -282,8 +284,8 @@ export function FormEditScreen({route, navigation}) {
                                                             {field.type === "TEXTAREA" ?
                                                                 <>
                                                                     <View style={styles.item}>
-                                                                        <Field2
-                                                                            label={field.label + " " + [field.mandatory ? "*" : ""]}
+                                                                        <FieldForm
+                                                                            label={field.label + " " + [field.mandatory ? "" : "(opcional)"]}
                                                                             multiline={1}
                                                                             value={objToShow?.[field.form_section_field_id]}
                                                                             change={(e) => handleChange("field_" + field.form_section_field_id, e)}
@@ -298,7 +300,7 @@ export function FormEditScreen({route, navigation}) {
                                                                             <View style={styles.item}>
                                                                                 <View style={{flex: 1}}>
                                                                                     <SelectField2
-                                                                                        label={field.label + " " + [field.mandatory ? "*" : ""]}
+                                                                                        label={field.label + " " + [field.mandatory ? "" : "(opcional)"]}
                                                                                         initialValue={objToShow?.[field.form_section_field_id]}
                                                                                         placeholder={field.answered_form !== "" ? field.answered_form : "Selecione..."}
                                                                                         list={field.options}
@@ -307,7 +309,7 @@ export function FormEditScreen({route, navigation}) {
                                                                                 </View>
                                                                                 {field.note_enable &&
                                                                                 <View style={styles.item}>
-                                                                                    <Field2
+                                                                                    <FieldForm
                                                                                         label={field.note_description}
                                                                                         multiline={1}
                                                                                         placeholder={field.answered_note}
@@ -328,7 +330,7 @@ export function FormEditScreen({route, navigation}) {
                                                                                     <View style={styles.item}>
                                                                                         <View style={{flex: 1}}>
                                                                                             <SelectField2
-                                                                                                label={field.label + " " + [field.mandatory ? "*" : ""]}
+                                                                                                label={field.label + " " + [field.mandatory ? "" : "(opcional)"]}
                                                                                                 initialValue={objToShow?.[field.form_section_field_id]}
                                                                                                 placeholder={field.answered_form !== "" ? field.answered_form : "Selecione..."}
                                                                                                 list={field.options}
@@ -338,7 +340,7 @@ export function FormEditScreen({route, navigation}) {
                                                                                         </View>
                                                                                         {field.note_enable &&
                                                                                         <View style={styles.item}>
-                                                                                            <Field2
+                                                                                            <FieldForm
                                                                                                 label={field.note_description}
                                                                                                 multiline={1}
                                                                                                 value={objToShow?.["note_" + field.form_section_field_id]}
@@ -457,8 +459,8 @@ export function FormEditScreen({route, navigation}) {
 
                                                                                                     <View
                                                                                                         style={styles.item}>
-                                                                                                        <Field2
-                                                                                                            label={field.label + " " + [field.mandatory ? "*" : ""]}
+                                                                                                        <FieldForm
+                                                                                                            label={field.label + " " + [field.mandatory ? "" : "(opcional)"]}
                                                                                                             keyboardType={"number-pad"}
                                                                                                             placeholder={"00/00/0000"}
                                                                                                             value={objToShow?.[field.form_section_field_id] ? objToShow?.[field.form_section_field_id] : ""}
@@ -473,8 +475,8 @@ export function FormEditScreen({route, navigation}) {
 
                                                                                                             <View
                                                                                                                 style={styles.item}>
-                                                                                                                <Field2
-                                                                                                                    label={field.label + " " + [field.mandatory ? "*" : ""]}
+                                                                                                                <FieldForm
+                                                                                                                    label={field.label + " " + [field.mandatory ? "" : "(opcional)"]}
                                                                                                                     keyboardType={"number-pad"}
                                                                                                                     placeholder={"00:00"}
                                                                                                                     value={maskHour(objToShow?.[field.form_section_field_id])}
@@ -499,8 +501,8 @@ export function FormEditScreen({route, navigation}) {
                                                                                                                                 }}>
                                                                                                                                 <View
                                                                                                                                     style={styles.item}>
-                                                                                                                                    <Field2
-                                                                                                                                        label={field.label + " " + [field.mandatory ? "*" : ""]}
+                                                                                                                                    <FieldForm
+                                                                                                                                        label={field.label + " " + [field.mandatory ? "" : "(opcional)"]}
                                                                                                                                         keyboardType={"number-pad"}
                                                                                                                                         placeholder={"00/00/0000 00:00"}
                                                                                                                                         value={objToShow?.[field.form_section_field_id] ? maskDateTime(objToShow?.[field.form_section_field_id]) : ""}
@@ -582,11 +584,6 @@ const styles = StyleSheet.create({
     },
     item: {
         flex: 1,
-        backgroundColor: "white",
-        borderWidth: 1,
-        borderColor: "#d9dade",
-        borderRadius: 5,
-        padding: 8,
-        marginVertical: 5,
+        marginBottom: 10
     },
 });

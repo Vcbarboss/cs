@@ -99,7 +99,7 @@ export function HomeScreen({navigation}) {
             <View style={styles.container}>
                 <Toast ref={refNotification}/>
 
-                <GeneralStatusBarColor backgroundColor={Colors.statusBar}
+                <GeneralStatusBarColor backgroundColor={'rgba(0,41,107,0.42)'}
                                        barStyle="light-content"/>
                 {/*<StatusBar*/}
                 {/*  backgroundColor={Colors.primary}*/}
@@ -161,17 +161,7 @@ export function HomeScreen({navigation}) {
                     {/*    multiline={5}*/}
                     {/*    value={fcm}*/}
                     {/*/>*/}
-                    <View style={{padding: 20, flexDirection: 'row'}}>
-                        <View style={{borderWidth: 5, borderColor: Colors.primary, borderRadius: 70, padding: 5}}>
-                            <Image style={{height: screenWidth * 0.25, width: screenWidth * 0.25, borderRadius: 50}}
-                                   source={{uri: 'https://1.bp.blogspot.com/-AVkl0Zdo0DI/X5tcP4uombI/AAAAAAAAEeE/JdxES_6EpjcbBAKwYG--Gk3-AF36YFNmQCLcBGAsYHQ/w1200-h630-p-k-no-nu/jujutsu-kaisen-sukuna-sorrindo.jpg'}}/>
-                        </View>
-                        <View>
-                            <Text style={{ fontFamily: 'verdana',fontWeight: "bold", color: 'black', fontSize: Texts.title}}>Vinicius Barbosa Martins</Text>
-                            <Text style={{}}>1º série A</Text>
-                        </View>
 
-                    </View>
                 </ScrollView>
             </View>
         </>
@@ -181,12 +171,21 @@ export function HomeScreen({navigation}) {
 
 const styles = StyleSheet.create({
     itemList: {
-        flex: 1,
-        margin: 3,
-        height: 150,
-        borderRadius: 10,
-        backgroundColor: "white",
-        elevation: 3,
+        padding: 10,
+        flexDirection: 'row',
+        elevation: 2,
+        backgroundColor: 'white',
+        marginHorizontal: 5,
+        marginVertical: 5,
+        borderColor: "#d9dade",
+        borderRadius: 15,
+        shadowColor: "#000000",
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+            height: 1,
+            width: 1
+        }
     },
     subtitle: {
         color: Colors.secondary,
@@ -203,7 +202,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         display: "flex",
-        backgroundColor: "white",
     },
     logo: {
         width: "100%",

@@ -1,5 +1,5 @@
 export const Colors = {
-    statusBar: '#003f88',
+    statusBar: '#01215b',
     primary: "#00296b",
     secondary: "#ffcc29",
     tertiary: '#509ed8',
@@ -13,7 +13,9 @@ export const Colors = {
     pending: "#fef1f2",
     pink: '#ef7d95',
     green: "#5bc077",
+    grey: '#575757',
     red: "#e83b52",
+    blue: '#1b7edc',
     opt1: "#263e96",
     opt2: "#3fb65f",
     opt3: "#f29993",

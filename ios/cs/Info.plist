@@ -40,7 +40,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Este app precisa de permissão da câmera para alterar a imagem do perfil e enviar imagens no chat.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Este app precisa de permissão para adicionar imagens na galeria.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
