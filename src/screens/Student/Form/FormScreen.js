@@ -108,19 +108,18 @@ export function FormScreen({route, navigation}) {
                     )
                     :
                     (
-                        <ScrollView style={{elevation: 5}}>
-                            <View style={{padding: 5}}>
+                        <ScrollView style={{}}>
+                            <View style={{}}>
                                 {/*------------- Início do Form -------------*/}
                                 {data?.section.map((item, index) =>
                                     <View style={{}} key={index}>
                                         <View style={{
-                                            borderRadius: 15,
-                                            elevation: 3,
                                             padding: 15,
-                                            marginVertical: 10,
                                             backgroundColor: "white",
                                         }}>
-                                            <Text style={{fontWeight: "bold", fontSize: 15}}>{item.description}</Text>
+                                            <View style={{borderBottomWidth: 1, borderBottomColor: Colors.lightgray, paddingBottom: 10, marginBottom: 10}}>
+                                                <Text style={{fontWeight: "bold", fontSize: 19, color: 'black'}}>{item.description}</Text>
+                                            </View>
                                             <View style={styles.cardContent}>
                                                 {/*------------- Início dos Fields -------------*/}
                                                 {item?.fields.map((field, ind) =>

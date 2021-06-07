@@ -297,7 +297,7 @@ export function FormEditScreen({route, navigation}) {
                                                                 <>
                                                                     {field.type === "RADIO" ?
                                                                         <>
-                                                                            <View style={styles.item}>
+                                                                            <View style={[styles.item, {}]}>
                                                                                 <View style={{flex: 1}}>
                                                                                     <SelectField2
                                                                                         label={field.label + " " + [field.mandatory ? "" : "(opcional)"]}
@@ -308,7 +308,7 @@ export function FormEditScreen({route, navigation}) {
                                                                                     />
                                                                                 </View>
                                                                                 {field.note_enable &&
-                                                                                <View style={styles.item}>
+                                                                                <View style={[styles.item, {paddingHorizontal: 10}]}>
                                                                                     <FieldForm
                                                                                         label={field.note_description}
                                                                                         multiline={1}
@@ -339,7 +339,7 @@ export function FormEditScreen({route, navigation}) {
 
                                                                                         </View>
                                                                                         {field.note_enable &&
-                                                                                        <View style={styles.item}>
+                                                                                        <View style={[styles.item, {padding: 10}]}>
                                                                                             <FieldForm
                                                                                                 label={field.note_description}
                                                                                                 multiline={1}
@@ -358,14 +358,13 @@ export function FormEditScreen({route, navigation}) {
                                                                                             <View
                                                                                                 style={styles.item}>
                                                                                                 <Text
-                                                                                                    style={[styles.title, {flex: 1}]}>{field.label}{field.mandatory ? "*" : ""}</Text>
+                                                                                                    style={[styles.title, {flex: 1}]}>{field.label}{field.mandatory ? "" : "(opcional)"}</Text>
                                                                                                 <View
                                                                                                     style={{flex: 1}}>
                                                                                                     {field.options.map((opt, pos) =>
                                                                                                         <View
                                                                                                             key={pos}
                                                                                                             style={{
-                                                                                                                margin: 10,
                                                                                                                 marginTop: 5,
                                                                                                                 marginBottom: 0
                                                                                                             }}>
@@ -566,9 +565,8 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 15,
-        fontWeight: "bold",
         marginVertical: 5,
-        color: Colors.primary,
+        color: '#040816',
     },
     subTitle: {
         fontSize: 17,
