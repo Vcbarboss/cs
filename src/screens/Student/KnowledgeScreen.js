@@ -17,6 +17,7 @@ import Loading from "../../components/Loading";
 import {Texts} from "../../helpers/Texts";
 import GeneralStatusBarColor from "../../components/StatusBarColor";
 import {Calendar} from "react-native-calendars";
+import moment from "moment";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -30,18 +31,20 @@ export function KnowledgeScreen({route, navigation}) {
     const props = route.params;
     const [isVisible, setIsVisible] = useState(false);
     const attendances = useRef([])
-    const knowledge = useRef([])
+    const [knowledge, setKnowledge] = useState([])
     const tst = useRef([])
+    let month = useRef(moment().format('M')).current
 
     const getData = async () => {
-        // setLoading(true);
+        setLoading(true);
         try {
-            const res = await api.get(`app/attendance/${props.item.enrollment_id}/list`);
+            const res = await api.get(`app/enrollment/${props.item.enrollment_id}/knowledge/${month}/list`);
 
             data.current = res.object;
             formatData()
             setLoading(false);
         } catch (e) {
+            console.log(e)
             let aux;
             for (let i = 0; i < Object.keys(e.validator).length; i++) {
                 aux = e.validator[Object.keys(e.validator)[i]][0];
@@ -61,17 +64,17 @@ export function KnowledgeScreen({route, navigation}) {
                 {
                     day: key,
                     data: {
-                        marked: knowledge.current.includes(key),
+                        marked: true,
+                        value: value
                     }
                 }
             )
         })
-
         let aux;
         for (let i = 0; i < attendances.current.length; i++) {
             const day = attendances.current[i].day
             const data = attendances.current[i].data
-            //console.log(day)
+            // console.log(day)
 
             aux = {...aux, [day]: data}
             // console.log(aux)
@@ -81,31 +84,43 @@ export function KnowledgeScreen({route, navigation}) {
 
             }
         )
-        // console.log(attendances.current)
     }
 
     const getKnowledge = (day) => {
 
-        let aux;
-        setIsVisible(true)
 
-        // Object.entries(props?.record?.knowledge).forEach(([key, value]) => {
-        //     if (day === key) {
-        //         aux = value
-        //     }
-        // })
-        //
-        // setObjToShow({...objToShow, 'knowledge': aux})
+        console.log(day)
+        let aux2;
+        aux2 = []
 
+        Object.entries(objToShow).forEach(([key, value]) => {
+            if (key === day) {
+                for (let i = 0; i < value.value.length; i++) {
+                    aux2.push(value.value[i])
+                }
+            }
+
+        })
+
+        console.log(moment(day).format('dddd, DD MMMM'))
+        setKnowledge({
+            ...knowledge,
+            date: day,
+            data: aux2
+        })
+    }
+
+    const getMonth = (e) => {
+        setKnowledge()
+        month = e.month;
+        getData()
     }
 
 
     useFocusEffect(
         React.useCallback(() => {
-            if (!isVisible) {
-                getData()
-            }
-        }, [isVisible]),
+            getData()
+        }, []),
     );
 
     return (
@@ -151,12 +166,15 @@ export function KnowledgeScreen({route, navigation}) {
                     :
                     (
                         <>
-                            <View>
+                            <ScrollView style={{padding: 5}}
+                                        contentContainerStyle={{flexGrow: 1}}>
+
                                 <Calendar
                                     markedDates={
                                         objToShow
                                     }
                                     markingType={'custom'}
+                                    onMonthChange={(month) => getMonth(month)}
                                     onDayPress={(day) => {
                                         getKnowledge(day.dateString)
                                     }}
@@ -164,67 +182,43 @@ export function KnowledgeScreen({route, navigation}) {
                                         textMonthFontWeight: 'bold',
                                     }}
                                 />
-                            </View>
-                            <ScrollView style={{padding: 20}}>
+                                {!knowledge?.data &&
                                 <Text style={{textAlign: 'center'}}>Selecione um dia marcado para visualizar o conteúdo
                                     ministrado nesta data.</Text>
+                                }
+                                {knowledge?.data?.map((item, index) =>
+                                    <View key={index} style={[styles.item, {borderColor: item.school_subject.color}]}>
+                                        <View style={{padding: 5, backgroundColor: item.school_subject.color + '20'}}>
+                                            <Text
+                                                style={[styles.title, {color: item.school_subject.color}]}>{item.school_subject.description}</Text>
+                                        </View>
+                                        <View style={{padding: 10}}>
+                                            <Text style={styles.knowledge}>{item.knowledge}</Text>
+                                            <Text style={styles.note}>{item.note}</Text>
+                                        </View>
+                                    </View>
+                                )}
                             </ScrollView>
                         </>
                     )}
             </View>
-
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={isVisible}
-                onRequestClose={() => {
-                    setIsVisible(false)
-                }}
-            >
-                <TouchableOpacity style={styles.centeredView} onPress={() => setIsVisible(false)}>
-                    <TouchableOpacity style={styles.modalView} onPress={() => {
-                    }}>
-
-                        <Text>Modal</Text>
-                    </TouchableOpacity>
-                </TouchableOpacity>
-
-            </Modal>
         </>
 
     );
 }
 
 const styles = StyleSheet.create({
-
     container: {
         flex: 1,
         display: "flex",
         backgroundColor: 'white',
     },
-    drop: {
-        backgroundColor: 'white',
-        borderWidth: 1,
-        borderColor: 'grey',
-        margin: 10,
+    item: {
         borderRadius: 5,
-        elevation: 2,
-        shadowColor: "#000000",
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        shadowOffset: {
-            height: 1,
-            width: 1
-        }
-    },
-    card: {
-        flexDirection: 'row',
-        elevation: 2,
         backgroundColor: 'white',
-        marginHorizontal: 10,
-        marginVertical: 5,
         borderColor: "#d9dade",
-        borderRadius: 15,
+        margin: 5,
+        elevation: 2,
         shadowColor: "#000000",
         shadowOpacity: 0.8,
         shadowRadius: 2,
@@ -233,25 +227,21 @@ const styles = StyleSheet.create({
             width: 1
         }
     },
-    centeredView: {
-        flex: 1,
-        backgroundColor: "rgba(60, 60, 60, 0.5)",
-        justifyContent: "center",
-        alignItems: "center",
+    title: {
+        fontSize: Texts.listTitle,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        marginBottom: 5,
     },
-    modalView: {
-        margin: 20,
-        backgroundColor: "white",
-        borderRadius: 10,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
+    knowledge: {
+        color: 'black',
+        fontSize: Texts.listTitle,
+        fontWeight: 'bold',
+        marginBottom: 5,
+        textAlign: 'center',
     },
+    note: {
+        fontSize: Texts.listDescription,
+        textAlign: 'center',
+    }
 });

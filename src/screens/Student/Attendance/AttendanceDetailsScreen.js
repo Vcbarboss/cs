@@ -85,7 +85,7 @@ LocaleConfig.defaultLocale = "br";
 
 export function AttendanceDetailsScreen({route, navigation}) {
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const [objToShow, setObjToShow] = useState()
     const api = useApi({navigation});
@@ -102,6 +102,8 @@ export function AttendanceDetailsScreen({route, navigation}) {
     const know = {color: Colors.tertiary, selectedDotColor: Colors.tertiary};
 
     const getData = () => {
+        console.log(props)
+        setLoading(true)
         attendances.current = []
 
         Object.entries(props?.record?.attendance).forEach(([key, value]) => {
@@ -172,6 +174,7 @@ export function AttendanceDetailsScreen({route, navigation}) {
 
             }
         )
+        setLoading(false)
         // console.log(attendances.current)
     }
 
@@ -382,7 +385,7 @@ export function AttendanceDetailsScreen({route, navigation}) {
                             }}>{objToShow?.knowledge?.note}</Text>
                         </View>
                         <View style={{padding: 30}}>
-                            <Text>{moment(objToShow.date).format('dddd, DD')} de {moment(objToShow.date).format('MMMM')}</Text>
+                            <Text>{moment(objToShow?.date).format('dddd, DD')} de {moment(objToShow?.date).format('MMMM')}</Text>
                             {objToShow?.history?.map((item, index) =>
 
                                 <View key={index}>

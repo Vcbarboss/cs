@@ -325,8 +325,8 @@ export function HomeworkListScreen({route, navigation}) {
                                                     fontSize: Texts.listDescription,
                                                     color: Colors.primary
                                                 }}>
-                                                    {item.homework_description.slice(0, 40)}
-                                                    {item.homework_description.length > 40 &&
+                                                    {item.homework_description?.slice(0, 40)}
+                                                    {item.homework_description?.length > 40 &&
                                                     <Text>...</Text>
                                                     }
 
@@ -354,12 +354,12 @@ export function HomeworkListScreen({route, navigation}) {
                 isVisible={isVisible}
                 onBackdropPress={() => setIsVisible(false)}
             >
-                <TouchableOpacity style={styles.headerContainer} onPress={() => setIsVisible(false)}>
+                <View style={styles.headerContainer} onPress={() => setIsVisible(false)}>
                     <Text style={styles.welcome}>Filtro</Text>
                     <Text style={styles.welcome}>Filtro</Text>
                     <Text style={styles.welcome}>Filtro</Text>
                     <Text style={styles.welcome}>Filtro</Text>
-                </TouchableOpacity>
+                </View>
 
 
             </Modal>

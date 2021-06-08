@@ -81,15 +81,12 @@ const StudentList = React.forwardRef((props, ref) => {
                                         <>
                                             <TouchableOpacity key={index} style={[styles.itemList,{
                                                 backgroundColor: 'white',
-                                                borderBottomRightRadius: 5,
-                                                borderBottomLeftRadius: 5,
-                                                borderTopLeftRadius: 3,
-                                                borderTopRightRadius: 20,
                                                 borderTopColor: Colors.tertiary,
-                                                borderBottomColor: Colors.tertiary,
-                                                borderTopWidth: 25,
-                                                borderBottomWidth: 5,
-                                                height: 140
+                                                // borderBottomColor: Colors.tertiary,
+                                                borderTopWidth: 5,
+                                                // borderBottomWidth: 5,
+                                                height: 130,
+                                                borderRadius: 5
                                             }]} onPress={() => {
                                                 // Colors.primary = item.student.person.natural_gender === "FEMININO" ? Colors.pink : Colors.opt1;
                                                 props.navigation.navigate("StudentStack", {
@@ -106,42 +103,43 @@ const StudentList = React.forwardRef((props, ref) => {
                                                             style={styles.class}>{moment().diff(item.student.person.natural_birthday, "years") + " anos"}</Text>}
                                                         <Text style={[styles.class, {}]}>{item.class_room.description}</Text>
                                                     </View>
+                                                    {item.student.person.avatar ?
+                                                        <View style={{
+                                                            borderColor: item.student.person.natural_gender === "FEMININO" ? Colors.pink : Colors.opt1,
+                                                            borderWidth: 2,
+                                                            backgroundColor: 'white',
+                                                            borderRadius: 55,
+                                                            padding: 3,
+                                                            position: 'absolute',
+                                                            right: 10,
+                                                            top: -10
+                                                        }}>
+                                                            <Image style={{
+                                                                height: screenWidth * 0.22,
+                                                                width: screenWidth * 0.22,
+                                                                borderRadius: 50
+                                                            }}
+                                                                   source={{uri: item.student.person.avatar}}/>
+                                                        </View>
+                                                        :
+                                                        <Image
+                                                            source={image}
+                                                            style={{
+                                                                height: screenWidth * 0.22,
+                                                                width: screenWidth * 0.22,
+                                                                borderRadius: 50
+                                                            }}/>
+                                                    }
+                                                    {item.push_notification_recipients_count > 0 &&
+                                                    <Badge size={25} style={{
+                                                        position: "absolute",
+                                                        top: -10,
+                                                        right: 10,
+                                                        zIndex: 10,
+                                                    }}>{item.push_notification_recipients_count}</Badge>}
                                                 </View>
 
-                                                {item.student.person.avatar ?
-                                                    <View style={{
-                                                        borderColor: item.student.person.natural_gender === "FEMININO" ? Colors.pink : Colors.opt1,
-                                                        borderWidth: 2,
-                                                        backgroundColor: 'white',
-                                                        borderRadius: 55,
-                                                        padding: 3,
-                                                        position: 'absolute',
-                                                        right: 10,
-                                                        top: -10
-                                                    }}>
-                                                        <Image style={{
-                                                            height: screenWidth * 0.20,
-                                                            width: screenWidth * 0.20,
-                                                            borderRadius: 50
-                                                        }}
-                                                               source={{uri: item.student.person.avatar}}/>
-                                                    </View>
-                                                    :
-                                                    <Image
-                                                        source={image}
-                                                        style={{
-                                                            height: screenWidth * 0.20,
-                                                            width: screenWidth * 0.20,
-                                                            borderRadius: 50
-                                                        }}/>
-                                                }
-                                                {item.push_notification_recipients_count > 0 &&
-                                                <Badge size={25} style={{
-                                                    position: "absolute",
-                                                    top: -10,
-                                                    right: 10,
-                                                    zIndex: 10,
-                                                }}>{item.push_notification_recipients_count}</Badge>}
+
                                             </TouchableOpacity>
                                             {/*<TouchableOpacity key={index}*/}
                                             {/*                  style={[styles.itemList, {backgroundColor: item.student.person.natural_gender === "FEMININO" ? Colors.pink : Colors.opt1}]}*/}
@@ -237,6 +235,7 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 17,
         fontWeight: "bold",
+        color: Colors.grey
     },
     class: {
         fontSize: 15,

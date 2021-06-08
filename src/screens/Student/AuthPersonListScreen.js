@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         display: "flex",
-        backgroundColor: Colors.opt1,
+        backgroundColor: 'white',
     },
     centeredView: {
         flex: 1,

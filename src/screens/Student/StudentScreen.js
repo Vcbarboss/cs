@@ -254,8 +254,17 @@ export function StudentScreen({route, navigation}) {
                                                           {item: props?.item},
                                                       )
                                                   }>
-                                    <MCIcon name={'account-check-outline'} color={'#e63946'} size={40}/>
+                                    <Icon name={'ios-book-outline'} color={'#e63946'} size={40}/>
                                     <Text style={{textAlign: 'center'}}> CONTEÚDOS </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.itemList, {borderColor: '#e63946'}]}
+                                                  onPress={() =>
+                                                      navigation.navigate('OccurrenceScreen',
+                                                          {item: props?.item},
+                                                      )
+                                                  }>
+                                    <MCIcon name={'account-check-outline'} color={'#e63946'} size={40}/>
+                                    <Text style={{textAlign: 'center'}}> OCORRÊNCIAS </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[styles.itemList, {borderColor: '#e63946'}]}
                                                   onPress={() =>
@@ -324,7 +333,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         display: "flex",
-        backgroundColor: Colors.opt1,
+        backgroundColor: 'white',
     },
     logo: {
         width: "100%",
