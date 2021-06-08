@@ -6,7 +6,7 @@ import {
     StyleSheet,
     Text,
     View,
-    RefreshControl, TouchableOpacity, Dimensions,
+    RefreshControl, TouchableOpacity, Dimensions, Modal,
 } from 'react-native';
 import AntIcon from "react-native-vector-icons/AntDesign";
 import {Texts} from "../../helpers/Texts";
@@ -18,6 +18,7 @@ import {useSelector} from "react-redux";
 import Icon from "react-native-vector-icons/Ionicons";
 import Badge from "react-native-paper/src/components/Badge";
 import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import {StudentProfileComponent} from "../../components/StudentProfileComponent";
 
 const HEADER_MAX_HEIGHT = 300;
 const HEADER_MIN_HEIGHT = Platform.OS === 'ios' ? 142 : 155;
@@ -28,6 +29,7 @@ const screenWidth = Math.round(Dimensions.get("window").width);
 export function AnimationScreen({route, navigation}) {
     const props = route.params;
     const user = useSelector((state) => state).userReducer;
+    const [isVisible, setIsVisible] = useState(false)
 
     const [scrollY, setScrollY] = useState(new Animated.Value(
         Platform.OS === 'ios' ? -HEADER_MAX_HEIGHT : 0,
@@ -257,33 +259,49 @@ export function AnimationScreen({route, navigation}) {
                     flexDirection: "row",
                     justifyContent: "space-between"
                 }}>
-                    <TouchableOpacity style={[styles.itemList, {borderColor: '#e63946'}]}
+                    <TouchableOpacity style={[styles.itemList, {borderColor: '#02BEF1'}]}
                                       onPress={() =>
                                           navigation.navigate('AttendanceListScreen',
                                               {item: props?.item},
                                           )
                                       }>
-                        <MCIcon name={'account-check-outline'} color={'#e63946'} size={40}/>
+                        <MCIcon name={'account-check-outline'} color={'#02BEF1'} size={40}/>
                         <Text style={{textAlign: 'center'}}> FREQUÊNCIA </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.itemList2, {borderColor: '#e63946'}]}
+                    <TouchableOpacity style={[styles.itemList2, {borderColor: '#14213d'}]}
                                       onPress={() =>
                                           navigation.navigate('KnowledgeScreen',
                                               {item: props?.item},
                                           )
                                       }>
-                        <MCIcon name={'account-check-outline'} color={'#e63946'} size={40}/>
+                        <Icon name={'ios-book-outline'} color={'#14213d'} size={40}/>
                         <Text style={{textAlign: 'center'}}> CONTEÚDOS </Text>
                     </TouchableOpacity>
+
+                </View>
+                <View style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                }}>
                     <TouchableOpacity style={[styles.itemList, {borderColor: '#e63946'}]}
                                       onPress={() =>
-                                          navigation.navigate('AnimationScreen',
+                                          navigation.navigate('OccurrenceScreen',
                                               {item: props?.item},
                                           )
                                       }>
-                        <MCIcon name={'account-check-outline'} color={'#e63946'} size={40}/>
-                        <Text style={{textAlign: 'center'}}> Animacao </Text>
+                        <Icon name={'warning-outline'} color={'#e63946'} size={40}/>
+                        <Text style={{textAlign: 'center'}}> OCORRÊNCIAS </Text>
                     </TouchableOpacity>
+                    {/*<TouchableOpacity style={[styles.itemList, {borderColor: '#e63946'}]}*/}
+                    {/*                  onPress={() =>*/}
+                    {/*                      navigation.navigate('AnimationScreen',*/}
+                    {/*                          {item: props?.item},*/}
+                    {/*                      )*/}
+                    {/*                  }>*/}
+                    {/*    <MCIcon name={'account-check-outline'} color={'#e63946'} size={40}/>*/}
+                    {/*    <Text style={{textAlign: 'center'}}> Animacao </Text>*/}
+                    {/*</TouchableOpacity>*/}
                 </View>
             </Animated.ScrollView>
             <Animated.View
@@ -385,6 +403,16 @@ export function AnimationScreen({route, navigation}) {
                     </View>
                 }
             </Animated.View>
+            <Modal
+                animationType="slide"
+                transparent={false}
+                visible={isVisible}
+                onRequestClose={() => {
+                    setIsVisible(false)
+                }}
+            >
+                <StudentProfileComponent data={props.item} close={(e) => setIsVisible(e)}/>
+            </Modal>
         </View>
     );
 

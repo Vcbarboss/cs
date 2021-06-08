@@ -163,57 +163,54 @@ export function HomeScreen({navigation}) {
                     {/*    multiline={5}*/}
                     {/*    value={fcm}*/}
                     {/*/>*/}
-                    <TouchableOpacity style={[styles.itemList,{
-                        backgroundColor: 'white',
-                        borderTopColor: Colors.tertiary,
-                        // borderBottomColor: Colors.tertiary,
-                        borderTopWidth: 5,
-                        // borderBottomWidth: 5,
-                        height: 130,
-                        borderRadius: 5
-                    }]} onPress={() => {
-                        props.navigation.navigate("StudentStack", {
-                            item: item,
-                        });
-                    }}>
-
-                        <View
-                            style={{flexDirection: 'row', }}>
-                            <View style={{flex: 0.7, justifyContent: "center", padding: 10}}>
-                                <Text style={[styles.name, {}]}>Ryomen Sukuna</Text>
-                                <Text
-                                    style={styles.class}>1000+ anos</Text>
-                                <Text style={[styles.class, {}]}>Classe Especial</Text>
-                            </View>
-                            <View style={{
-                                borderColor:  Colors.opt1,
-                                borderWidth: 2,
-                                backgroundColor: 'white',
-                                borderRadius: 55,
-                                padding: 3,
-                                position: 'absolute',
-                                right: 10,
-                                top: -7
-                            }}>
-                                <Badge size={25} style={{
-                                    position: "absolute",
-                                    top: -10,
-                                    right: 10,
-                                    zIndex: 10,
-                                }}>2</Badge>
-                                <Image style={{
-                                    height: screenWidth * 0.22,
-                                    width: screenWidth * 0.22,
-                                    borderRadius: 50
-                                }}
-                                       source={{uri: 'https://1.bp.blogspot.com/-AVkl0Zdo0DI/X5tcP4uombI/AAAAAAAAEeE/JdxES_6EpjcbBAKwYG--Gk3-AF36YFNmQCLcBGAsYHQ/w1200-h630-p-k-no-nu/jujutsu-kaisen-sukuna-sorrindo.jpg'}}/>
-                            </View>
-                        </View>
 
 
-
-
-                    </TouchableOpacity>
+                    {/*<TouchableOpacity style={[styles.itemList,{*/}
+                    {/*    backgroundColor: 'white',*/}
+                    {/*    borderTopColor: Colors.tertiary,*/}
+                    {/*    // borderBottomColor: Colors.tertiary,*/}
+                    {/*    borderTopWidth: 5,*/}
+                    {/*    // borderBottomWidth: 5,*/}
+                    {/*    height: 130,*/}
+                    {/*    borderRadius: 5*/}
+                    {/*}]} onPress={() => {*/}
+                    {/*    props.navigation.navigate("StudentStack", {*/}
+                    {/*        item: item,*/}
+                    {/*    });*/}
+                    {/*}}>*/}
+                    {/*    <View*/}
+                    {/*        style={{flexDirection: 'row', }}>*/}
+                    {/*        <View style={{flex: 0.7, justifyContent: "center", padding: 10}}>*/}
+                    {/*            <Text style={[styles.name, {}]}>Ryomen Sukuna</Text>*/}
+                    {/*            <Text*/}
+                    {/*                style={styles.class}>1000+ anos</Text>*/}
+                    {/*            <Text style={[styles.class, {}]}>Classe Especial</Text>*/}
+                    {/*        </View>*/}
+                    {/*        <View style={{*/}
+                    {/*            borderColor:  Colors.opt1,*/}
+                    {/*            borderWidth: 2,*/}
+                    {/*            backgroundColor: 'white',*/}
+                    {/*            borderRadius: 55,*/}
+                    {/*            padding: 3,*/}
+                    {/*            position: 'absolute',*/}
+                    {/*            right: 10,*/}
+                    {/*            top: -7*/}
+                    {/*        }}>*/}
+                    {/*            <Badge size={25} style={{*/}
+                    {/*                position: "absolute",*/}
+                    {/*                top: -10,*/}
+                    {/*                right: 10,*/}
+                    {/*                zIndex: 10,*/}
+                    {/*            }}>2</Badge>*/}
+                    {/*            <Image style={{*/}
+                    {/*                height: screenWidth * 0.22,*/}
+                    {/*                width: screenWidth * 0.22,*/}
+                    {/*                borderRadius: 50*/}
+                    {/*            }}*/}
+                    {/*                   source={{uri: 'https://1.bp.blogspot.com/-AVkl0Zdo0DI/X5tcP4uombI/AAAAAAAAEeE/JdxES_6EpjcbBAKwYG--Gk3-AF36YFNmQCLcBGAsYHQ/w1200-h630-p-k-no-nu/jujutsu-kaisen-sukuna-sorrindo.jpg'}}/>*/}
+                    {/*        </View>*/}
+                    {/*    </View>*/}
+                    {/*</TouchableOpacity>*/}
 
                 </ScrollView>
             </View>
