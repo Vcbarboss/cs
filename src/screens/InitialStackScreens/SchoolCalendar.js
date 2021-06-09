@@ -100,7 +100,6 @@ export function SchoolCalendarScreen({navigation}) {
             //setItems(res.object.dates)
             loadItems(res.object.dates)
         } catch (e) {
-            console.log(e)
             let aux;
             for (let i = 0; i < Object.keys(e.validator).length; i++) {
                 aux = e.validator[Object.keys(e.validator)[i]][0];

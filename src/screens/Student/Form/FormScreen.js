@@ -117,8 +117,17 @@ export function FormScreen({route, navigation}) {
                                             padding: 15,
                                             backgroundColor: "white",
                                         }}>
-                                            <View style={{borderBottomWidth: 1, borderBottomColor: Colors.lightgray, paddingBottom: 10, marginBottom: 10}}>
-                                                <Text style={{fontWeight: "bold", fontSize: 19, color: 'black'}}>{item.description}</Text>
+                                            <View style={{
+                                                borderBottomWidth: 1,
+                                                borderBottomColor: Colors.lightgray,
+                                                paddingBottom: 10,
+                                                marginBottom: 10
+                                            }}>
+                                                <Text style={{
+                                                    fontWeight: "bold",
+                                                    fontSize: 19,
+                                                    color: 'black'
+                                                }}>{item.description}</Text>
                                             </View>
                                             <View style={styles.cardContent}>
                                                 {/*------------- Início dos Fields -------------*/}
@@ -126,9 +135,10 @@ export function FormScreen({route, navigation}) {
                                                     <View key={ind}>
                                                         {field.type === "TEXT" ?
                                                             <>
+                                                                <Text
+                                                                    style={[styles.title, {flex: 1}]}>{field.label}</Text>
                                                                 <View style={styles.item}>
-                                                                    <Text
-                                                                        style={[styles.title, {flex: 1}]}>{field.label}</Text>
+
                                                                     {field.answered_form ?
                                                                         <Text style={[styles.subTitle, {flex: 1}]}>
                                                                             {field.answered_form}
@@ -146,9 +156,10 @@ export function FormScreen({route, navigation}) {
                                                             <>
                                                                 {field.type === "SELECT" ?
                                                                     <>
+                                                                        <Text
+                                                                            style={[styles.title, {flex: 1}]}>{field.label}</Text>
                                                                         <View style={styles.item}>
-                                                                            <Text
-                                                                                style={[styles.title, {flex: 1}]}>{field.label}</Text>
+
                                                                             <View style={{
                                                                                 flex: 1,
                                                                                 justifyContent: "center"
@@ -181,9 +192,10 @@ export function FormScreen({route, navigation}) {
                                                                     <>
                                                                         {field.type === "RADIO" ?
                                                                             <>
+                                                                                <Text
+                                                                                    style={[styles.title, {flex: 1}]}>{field.label}</Text>
                                                                                 <View style={styles.item}>
-                                                                                    <Text
-                                                                                        style={[styles.title, {flex: 1}]}>{field.label}</Text>
+
                                                                                     <View style={{
                                                                                         flex: 1,
                                                                                         justifyContent: "center"
@@ -218,9 +230,10 @@ export function FormScreen({route, navigation}) {
                                                                             <>
                                                                                 {field.type === "DATE" ?
                                                                                     <>
+                                                                                        <Text
+                                                                                            style={[styles.title, {flex: 1}]}>{field.label}</Text>
                                                                                         <View style={styles.item}>
-                                                                                            <Text
-                                                                                                style={[styles.title, {flex: 1}]}>{field.label}</Text>
+
                                                                                             {field.answered_form ?
                                                                                                 <Text
                                                                                                     style={[styles.subTitle, {flex: 1}]}>
@@ -240,10 +253,11 @@ export function FormScreen({route, navigation}) {
                                                                                     <>
                                                                                         {field.type === "HOUR" ?
                                                                                             <>
+                                                                                                <Text
+                                                                                                    style={[styles.title, {flex: 1}]}>{field.label}</Text>
                                                                                                 <View
                                                                                                     style={styles.item}>
-                                                                                                    <Text
-                                                                                                        style={[styles.title, {flex: 1}]}>{field.label}</Text>
+
                                                                                                     {field.answered_form ?
                                                                                                         <Text
                                                                                                             style={[styles.subTitle, {flex: 1}]}>
@@ -264,10 +278,11 @@ export function FormScreen({route, navigation}) {
                                                                                             <>
                                                                                                 {field.type === "DATETIME" ?
                                                                                                     <>
+                                                                                                        <Text
+                                                                                                            style={[styles.title, {flex: 1}]}>{field.label}</Text>
                                                                                                         <View
                                                                                                             style={styles.item}>
-                                                                                                            <Text
-                                                                                                                style={[styles.title, {flex: 1}]}>{field.label}</Text>
+
                                                                                                             {field.answered_form ?
                                                                                                                 <Text
                                                                                                                     style={[styles.subTitle, {flex: 1}]}>
@@ -288,10 +303,11 @@ export function FormScreen({route, navigation}) {
                                                                                                     <>
                                                                                                         {field.type === "CHECKBOX" ?
                                                                                                             <>
+                                                                                                                <Text
+                                                                                                                    style={[styles.title, {flex: 1}]}>{field.label}</Text>
                                                                                                                 <View
                                                                                                                     style={styles.item}>
-                                                                                                                    <Text
-                                                                                                                        style={[styles.title, {flex: 1}]}>{field.label}</Text>
+
                                                                                                                     <View
                                                                                                                         style={{
                                                                                                                             flex: 1,
@@ -325,10 +341,11 @@ export function FormScreen({route, navigation}) {
                                                                                                             <>
                                                                                                                 {field.type === "TEXTAREA" ?
                                                                                                                     <>
+                                                                                                                        <Text
+                                                                                                                            style={[styles.title, {flex: 1}]}>{field.label}</Text>
                                                                                                                         <View
                                                                                                                             style={styles.item}>
-                                                                                                                            <Text
-                                                                                                                                style={[styles.title, {flex: 1}]}>{field.label}</Text>
+
                                                                                                                             {field.answered_form ?
                                                                                                                                 <Text
                                                                                                                                     style={[styles.subTitle, {flex: 1}]}>
@@ -420,10 +437,9 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.backgroundDefault,
     },
     title: {
-        fontSize: 15,
-        fontWeight: "bold",
+        fontSize: 17,
         marginVertical: 5,
-        color: Colors.primary,
+        color: '#040816',
     },
     subTitle: {
         fontSize: 17,

@@ -24,6 +24,7 @@ import {Checkbox, Switch, RadioButton, Divider} from "react-native-paper";
 import ButtonStyle1 from "./Buttons/ButtonStyle1";
 import GeneralStatusBarColor from "./StatusBarColor";
 import AutoHeightWebView from 'react-native-autoheight-webview'
+import FieldForm from "./FieldForm";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 const screenWidth = Math.round(Dimensions.get("window").width);
@@ -64,7 +65,6 @@ export function NotificationComponent(props, {navigation}) {
 
             setLoading(false);
         } catch (e) {
-            console.log(e)
             let aux;
             for (let i = 0; i < Object.keys(e.validator).length; i++) {
                 aux = e.validator[Object.keys(e.validator)[i]][0];
@@ -514,7 +514,7 @@ export function NotificationComponent(props, {navigation}) {
                                                                     </View>
                                                                     :
                                                                     <View>
-                                                                        <Field
+                                                                        <FieldForm
                                                                             placeholder="Sua resposta"
                                                                             label={"Resposta"}
                                                                             multiline={3}

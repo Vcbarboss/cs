@@ -25,6 +25,7 @@ import {maskDate, maskPhone,} from "../../helpers/Functions";
 import useAuth from "../../hooks/Auth";
 import SelectField from "../../components/SelectField";
 import GeneralStatusBarColor from "../../components/StatusBarColor";
+import FieldForm from "../../components/FieldForm";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -186,7 +187,7 @@ export function FirstLoginScreen({navigation}) {
                         </View>
 
                         <View>
-                            <Field
+                            <FieldForm
                                 icon={"call-outline"}
                                 keyboardType={"number-pad"}
                                 placeholder={"Seu telefone celular"}
@@ -195,7 +196,7 @@ export function FirstLoginScreen({navigation}) {
                                 change={(e) => handleChange("contact_mobile_phone", e)}/>
                         </View>
                         <View>
-                            <Field
+                            <FieldForm
                                 icon={"mail-outline"}
                                 placeholder={"Seu Email"}
                                 value={edit?.contact_mail}

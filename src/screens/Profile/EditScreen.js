@@ -34,13 +34,14 @@ import MAIcon from "react-native-vector-icons/MaterialIcons";
 import ImagePicker from 'react-native-image-crop-picker';
 import placeholder from "../../assets/imgs/user-placeholder-300x300.jpg";
 import {openSettings, check, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import FieldForm from "../../components/FieldForm";
+import SelectField2 from "../../components/SelectField2";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
 const optGender = [
-    {label: "Selecione seu gênero...", value: null},
-    {label: "Masculino", value: "MASCULINO"},
-    {label: "Feminino", value: "FEMININO"},
+    {answer: "Masculino", value: "MASCULINO"},
+    {answer: "Feminino", value: "FEMININO"},
 ];
 
 export function EditScreen({navigation}) {
@@ -297,7 +298,6 @@ export function EditScreen({navigation}) {
                         (
                             <ScrollView style={{paddingHorizontal: 15}}>
                                 <View style={{
-                                    paddingHorizontal: 10,
                                     display: "flex",
                                     justifyContent: "space-between",
                                 }}>
@@ -333,7 +333,7 @@ export function EditScreen({navigation}) {
 
                                     </View>
                                     <View>
-                                        <Field
+                                        <FieldForm
                                             icon={"calendar-outline"}
                                             keyboardType={"number-pad"}
                                             placeholder={"Sua data de nascimento"}
@@ -342,14 +342,14 @@ export function EditScreen({navigation}) {
                                             change={(e) => handleChange("natural_birthday", e)}/>
                                     </View>
                                     <View>
-                                        <SelectField icon={"male-female"} label={"Gênero"}
+                                        <SelectField2 icon={"male-female"} label={"Gênero"}
                                                      initialValue={edit?.natural_gender ? edit?.natural_gender : data?.natural_gender}
                                                      placeholder={edit?.natural_gender ? edit?.natural_gender : data?.natural_gender}
                                                      list={optGender}
-                                                     change={(e) => handleChange("natural_gender", e)}/>
+                                                     change={(e, i) => handleChange("natural_gender", e.value)}/>
                                     </View>
                                     <View>
-                                        <Field
+                                        <FieldForm
                                             icon={"home-outline"}
                                             keyboardType={"number-pad"}
                                             placeholder={"Seu telefone residencial"}
@@ -358,7 +358,7 @@ export function EditScreen({navigation}) {
                                             change={(e) => handleChange("contact_home_phone", e)}/>
                                     </View>
                                     <View>
-                                        <Field
+                                        <FieldForm
                                             icon={"call-outline"}
                                             keyboardType={"number-pad"}
                                             placeholder={"Seu telefone celular"}
@@ -367,7 +367,7 @@ export function EditScreen({navigation}) {
                                             change={(e) => handleChange("contact_mobile_phone", e)}/>
                                     </View>
                                     <View>
-                                        <Field
+                                        <FieldForm
                                             icon={"mail-outline"}
                                             placeholder={"Seu Email"}
                                             value={edit?.contact_mail ? edit?.contact_mail : data?.contact_mail}
@@ -376,7 +376,7 @@ export function EditScreen({navigation}) {
                                     </View>
 
                                     <View>
-                                        <Field
+                                        <FieldForm
                                             icon={"business"}
                                             keyboardType={"number-pad"}
                                             placeholder={"Seu Telefone de Trabalho"}

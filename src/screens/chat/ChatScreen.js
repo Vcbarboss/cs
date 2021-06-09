@@ -129,7 +129,6 @@ export function ChatScreen({route, navigation}) {
                 }
                 setLoading(false);
             } catch (e) {
-                console.log(e);
                 let aux;
                 for (let i = 0; i < Object.keys(e.validator).length; i++) {
                     aux = e.validator[Object.keys(e.validator)[i]][0];
@@ -182,7 +181,6 @@ export function ChatScreen({route, navigation}) {
             img.current = {}
             setSendLoading(false)
         } catch (e) {
-            console.log(e);
             let aux;
             for (let i = 0; i < Object.keys(e.validator).length; i++) {
                 aux = e.validator[Object.keys(e.validator)[i]][0];

@@ -121,7 +121,6 @@ export function FormEditScreen({route, navigation}) {
             setLoading(false);
         } catch (e) {
             let aux;
-            console.log(e)
             for (let i = 0; i < Object.keys(e.validator).length; i++) {
                 aux = e.validator[Object.keys(e.validator)[i]][0];
                 break;
@@ -135,11 +134,10 @@ export function FormEditScreen({route, navigation}) {
         setSaving(true)
         try {
             const res = await api.post(`app/enrollment/${props.item.enrollment_id}/form/${props.form_id}`, objToSend.current);
-            console.log(res)
+
             navigation.pop(2);
             setSaving(false)
         } catch (e) {
-            console.log(e)
             let aux;
             for (let i = 0; i < Object.keys(e.validator).length; i++) {
                 aux = e.validator[Object.keys(e.validator)[i]][0];

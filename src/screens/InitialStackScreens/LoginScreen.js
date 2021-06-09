@@ -22,6 +22,7 @@ import useAuth from "../../hooks/Auth";
 import {maskCpf} from "../../helpers/Functions";
 import {Env} from "../../Env";
 import GeneralStatusBarColor from "../../components/StatusBarColor";
+import FieldForm from "../../components/FieldForm";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -121,7 +122,7 @@ export function LoginScreen({navigation}) {
                                     Entrar
                                 </Text>
                             </View>
-                            <Field
+                            <FieldForm
                                 placeholder="CPF"
                                 keyboardType={'number-pad'}
                                 label={"CPF"}
@@ -130,7 +131,7 @@ export function LoginScreen({navigation}) {
                                 icon={"person"}
                             />
 
-                            <Field
+                            <FieldForm
                                 placeholder="Sua Senha"
                                 label={"Senha"}
                                 secureTextEntry={true}

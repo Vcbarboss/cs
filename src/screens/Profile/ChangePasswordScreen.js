@@ -21,6 +21,7 @@ import {Env} from "../../Env";
 import ButtonStyle1 from "../../components/Buttons/ButtonStyle1";
 import Field from "../../components/Field";
 import GeneralStatusBarColor from "../../components/StatusBarColor";
+import FieldForm from "../../components/FieldForm";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -105,11 +106,10 @@ export function ChangePasswordScreen({navigation}) {
                         <View style={{
                             padding: 10,
                             display: "flex",
-                            flexWrap: "wrap",
                             justifyContent: "space-between",
                         }}>
 
-                            <Field
+                            <FieldForm
                                 placeholder="Senha Atual"
                                 label={"Senha Atual"}
                                 value={currentPassword}
@@ -118,7 +118,7 @@ export function ChangePasswordScreen({navigation}) {
                                 icon={"key"}
                             />
 
-                            <Field
+                            <FieldForm
                                 placeholder="Nova Senha"
                                 label={"Nova Senha"}
                                 value={newPassword}

@@ -87,7 +87,6 @@ export function HomeworkListScreen({route, navigation}) {
         }
 
         try {
-            console.log(`app/homework/paginate?page=${1}&limit=10&enrollment_id=${props.item.enrollment_id}&order_field=homework_created_at&order_type=DESC&search_list=${statusAux.key}&search_global=${filter ? filter : ''}`)
             const res = await api.get(`app/homework/paginate?page=${1}&limit=10&enrollment_id=${props.item.enrollment_id}&order_field=homework_created_at&order_type=DESC&search_list=${statusAux.key}&search_global=${filter ? filter : ''}`);
             data.current = res.object.data;
 

@@ -7,7 +7,7 @@ import {
     ScrollView,
     TouchableOpacity,
     Dimensions,
-    SafeAreaView, Modal,
+    SafeAreaView, Modal, Animated, Keyboard,
 } from "react-native";
 import {Colors} from "../../../helpers/Colors";
 import Toast from "../../../components/Toast";
@@ -19,6 +19,8 @@ import {Texts} from "../../../helpers/Texts";
 import Icon from "react-native-vector-icons/Ionicons";
 import FilterNotification from "../../../components/FilterNotification";
 import GeneralStatusBarColor from "../../../components/StatusBarColor";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
 
@@ -28,6 +30,12 @@ const list = [
     {label: "Todos", value: "all"},
 ];
 
+const filterList = [
+    {label: 'Preenchidos', value: 'filled'},
+    {label: 'Não preenchidos', value: 'blank'},
+    {label: 'Todos', value: 'all'},
+];
+
 export function FormListScreen({route, navigation}) {
 
     const [loading, setLoading] = useState(false);
@@ -35,7 +43,9 @@ export function FormListScreen({route, navigation}) {
     const refNotification = useRef();
     const props = route.params;
     const [filter, setFilter] = useState({label: "Todos", value: "all"});
-    const [filterModal, setFilterModal] = useState(false);
+    let filterAux = useRef({label: 'Todos', value: 'ALL'}).current;
+    const [isFilter, setIsFilter] = useState(false);
+    const altFilter = useRef(new Animated.Value(0)).current;
     const [data, setData] = useState();
 
     const getData = async () => {
@@ -57,6 +67,42 @@ export function FormListScreen({route, navigation}) {
             setLoading(false);
         }
     };
+
+    let openAlt = altFilter.interpolate({
+        inputRange: [0, 100],
+        outputRange: ['0%', '20%']
+    })
+
+    const onFilter = () => {
+        Keyboard.dismiss()
+        if (!isFilter) {
+            openFilter()
+        } else {
+            closeFilter()
+        }
+
+    }
+
+    const openFilter = () => {
+        setIsFilter(true)
+        altFilter.setValue(0)
+        Animated.spring(altFilter, {
+            toValue: 100,
+            duration: 200,
+            friction: 6,
+            useNativeDriver: false
+        }).start()
+    }
+
+    const closeFilter = () => {
+        setIsFilter(false)
+        Animated.spring(altFilter, {
+            toValue: 0,
+            duration: 200,
+            friction: 6,
+            useNativeDriver: false
+        }).start()
+    }
 
     useFocusEffect(
         React.useCallback(() => {
@@ -98,16 +144,61 @@ export function FormListScreen({route, navigation}) {
                         }}>Fichas</Text>
 
                     </View>
-                    <TouchableOpacity style={{alignItems: "center", justifyContent: "center", maxWidth: 100}}
-                                      onPress={() => setFilterModal(true)}>
-                        <Icon name={"filter-outline"} style={{}} size={25} color={"white"}/>
-                        <Text style={{
-                            color: 'white',
-                            fontWeight: 'bold',
-                            textAlign: 'center'
-                        }}>{filter.label}</Text>
+                    <TouchableOpacity style={{alignItems: "center", justifyContent: 'center'}}
+                                      onPress={() => onFilter()}>
+                        <SimpleLineIcons name={'equalizer'} style={{}} size={25} color={'white'}/>
                     </TouchableOpacity>
                 </View>
+                <Animated.View
+                    style={{
+                        width: '100%',
+                        height: openAlt,
+                        backgroundColor: 'white',
+                    }}
+                >
+                    {isFilter &&
+                    <>
+
+                        <View style={{
+                            padding: 20,
+                        }}>
+                            <Text
+                                style={{
+                                    fontWeight: 'bold',
+                                    fontSize: Texts.title,
+                                    color: Colors.primary,
+                                    marginBottom: 5
+                                }}>Filtrar
+                                por:</Text>
+                            <View style={{
+                                flexDirection: 'row',
+                                display: "flex",
+                                flexWrap: "wrap",
+                                justifyContent: "center",
+                            }}>
+                                {filterList.map((item, index) =>
+                                    <TouchableOpacity
+                                        style={[styles.filter, {backgroundColor: filter.value === item.value ? Colors.primary : 'white'}]}
+                                        key={index}
+                                        onPress={() => {
+                                            onFilter()
+                                            setFilter(item)
+                                            filterAux = item
+                                            getData()
+                                        }}>
+                                        {filter.value === item.value &&
+                                        <MaterialCommunityIcons name={'check'} style={{marginRight: 5}}
+                                                                size={20} color={'white'}/>
+                                        }
+                                        <Text
+                                            style={{color: filter.value === item.value ? 'white' : Colors.primary}}>{item.label}</Text>
+                                    </TouchableOpacity>
+                                )}
+                            </View>
+                        </View>
+                    </>
+                    }
+                </Animated.View>
                 {loading ? (
                         <Loading/>
 
@@ -148,28 +239,6 @@ export function FormListScreen({route, navigation}) {
                             }
                         </>
                     )}
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={filterModal}
-                    onRequestClose={() => {
-                        setFilterModal(false);
-                    }}
-                >
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
-
-                            <FilterNotification
-                                title={"Filtre seus formulários"}
-                                list={list}
-                                selected={filter.label}
-                                close={(e) => setFilterModal(e)}
-                                select={(item) => {
-                                    setFilter(item);
-                                }}/>
-                        </View>
-                    </View>
-                </Modal>
             </View>
 
         </>
@@ -221,5 +290,23 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+    },
+    filter: {
+        height: 43,
+        margin: 5,
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderColor: Colors.primary,
+        padding: 10,
+        borderRadius: 10,
+        elevation: 2,
+        shadowColor: "#000000",
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+            height: 1,
+            width: 1
+        }
     },
 });

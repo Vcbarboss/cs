@@ -19,8 +19,10 @@ import GeneralStatusBarColor from "../../components/StatusBarColor";
 import {Calendar} from "react-native-calendars";
 import moment from "moment";
 import ButtonStyle1 from "../../components/Buttons/ButtonStyle1";
+import Entypo from "react-native-vector-icons/Entypo";
 
 const screenHeight = Math.round(Dimensions.get("window").height);
+const screenWidth = Math.round(Dimensions.get("window").width);
 
 export function OccurrenceScreen({route, navigation}) {
 
@@ -36,11 +38,10 @@ export function OccurrenceScreen({route, navigation}) {
         setLoading(true);
         try {
             const res = await api.get(`app/enrollment/${props.item.enrollment_id}/occurrence/list`);
-            console.log(res)
+
             data.current = res.object;
             setLoading(false);
         } catch (e) {
-            console.log(e)
             let aux;
             for (let i = 0; i < Object.keys(e.validator).length; i++) {
                 aux = e.validator[Object.keys(e.validator)[i]][0];
@@ -100,77 +101,90 @@ export function OccurrenceScreen({route, navigation}) {
                     :
                     (
                         <>
-                            <ScrollView style={{padding: 5}}
-                                        contentContainerStyle={{flexGrow: 1}}>
-                                {data?.current?.map((item, index) =>
-                                    <TouchableOpacity
-                                        key={index}
-                                        style={[styles.item, {
-                                            borderLeftWidth: 5,
-                                            borderColor: item.school_subject.color,
-                                        }]}
-                                        onPress={() => {
-                                            setObjToShow(item)
-                                            setIsVisible(true)
+                            {data?.current?.length > 0 ?
+                                <ScrollView style={{padding: 5}}
+                                            contentContainerStyle={{flexGrow: 1}}>
+                                    {data?.current?.map((item, index) =>
+                                        <TouchableOpacity
+                                            key={index}
+                                            style={[styles.item, {
+                                                borderLeftWidth: 5,
+                                                borderColor: item.school_subject.color,
+                                            }]}
+                                            onPress={() => {
+                                                setObjToShow(item)
+                                                setIsVisible(true)
 
-                                        }}>
-
-
-                                        <View style={{
-                                            padding: 10,
-                                            backgroundColor: '#cacaca40',
-                                            borderRadius: 5,
-                                            width: 60,
-                                            marginVertical: 10,
-                                            justifyContent: 'center'
-                                        }}>
-
-                                            <Text style={{
-                                                textAlign: 'center',
-                                                fontWeight: 'bold',
-                                                color: 'black'
-                                            }}>{moment(item.teacher_class_room_occurrences[0]?.created_at).format('DD')}</Text>
-                                            <Text style={{
-                                                textAlign: 'center',
-                                                fontWeight: 'bold',
-                                                color: 'black'
-                                            }}>{moment(item.teacher_class_room_occurrences[0]?.created_at).format('MMM').toUpperCase()}</Text>
-
-                                        </View>
-                                        <View style={{
-                                            flex: 1,
-                                            justifyContent: 'center',
-                                            marginHorizontal: 5
-                                        }}>
-                                            <Text style={{
-                                                fontSize: 16,
-                                                color: Colors.grey,
-                                                fontWeight: 'bold'
-                                            }}>{item.teacher_class_room_occurrences[0]?.description}</Text>
-                                            <Text style={{
-                                                fontSize: Texts.listDescription,
                                             }}>
-                                                {item.occurrence_note?.slice(0, 40)}
-                                                {item.occurrence_note?.length > 40 &&
-                                                <Text>...</Text>
-                                                }
-                                            </Text>
 
-                                        </View>
-                                        {/*<View style={{*/}
-                                        {/*    padding: 10,*/}
-                                        {/*    backgroundColor: item.school_subject.color + '20',*/}
-                                        {/*    borderRadius: 5,*/}
-                                        {/*    width: 60,*/}
-                                        {/*    marginVertical: 10,*/}
-                                        {/*    justifyContent: 'center',*/}
-                                        {/*    alignItems: 'center'*/}
-                                        {/*}}>*/}
-                                        {/*    <Text style={{fontWeight: 'bold', color:item.school_subject.color,}}>{item.school_subject.description.slice(0, 3).toUpperCase()}</Text>*/}
-                                        {/*</View>*/}
-                                    </TouchableOpacity>
-                                )}
-                            </ScrollView>
+
+                                            <View style={{
+                                                padding: 10,
+                                                backgroundColor: '#cacaca40',
+                                                borderRadius: 5,
+                                                width: 60,
+                                                justifyContent: 'center'
+                                            }}>
+
+                                                <Text style={{
+                                                    textAlign: 'center',
+                                                    fontWeight: 'bold',
+                                                    color: 'black'
+                                                }}>{moment(item.date).format('DD')}</Text>
+                                                <Text style={{
+                                                    textAlign: 'center',
+                                                    fontWeight: 'bold',
+                                                    color: 'black'
+                                                }}>{moment(item.date).format('MMM').toUpperCase()}</Text>
+
+                                            </View>
+                                            <View style={{
+                                                flex: 1,
+                                                justifyContent: 'center',
+                                                marginHorizontal: 5
+                                            }}>
+                                                <Text style={{
+                                                    fontSize: 16,
+                                                    color: item.school_subject?.color,
+                                                    fontWeight: 'bold'
+                                                }}>{item.school_subject?.description}</Text>
+
+                                                <Text style={{
+                                                    fontSize: Texts.listDescription,
+                                                }}>
+                                                    {item.teacher_class_room_occurrences?.length} Ocorrência(s)
+                                                </Text>
+
+
+                                            </View>
+                                            {/*<View style={{*/}
+                                            {/*    padding: 10,*/}
+                                            {/*    backgroundColor: item.school_subject.color + '20',*/}
+                                            {/*    borderRadius: 5,*/}
+                                            {/*    width: 60,*/}
+                                            {/*    marginVertical: 10,*/}
+                                            {/*    justifyContent: 'center',*/}
+                                            {/*    alignItems: 'center'*/}
+                                            {/*}}>*/}
+                                            {/*    <Text style={{fontWeight: 'bold', color:item.school_subject.color,}}>{item.school_subject.description.slice(0, 3).toUpperCase()}</Text>*/}
+                                            {/*</View>*/}
+                                        </TouchableOpacity>
+                                    )}
+                                </ScrollView>
+                                :
+                                <View style={{
+                                    flex: 1,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    backgroundColor: 'white',
+                                    padding: 10
+                                }}>
+                                    {/*<Image source={logo} style={styles.logo} />*/}
+                                    <Text style={{fontSize: Texts.title, textAlign: 'center'}}>
+                                        Nenhuma ocorrência
+                                    </Text>
+                                </View>
+                            }
                             <Modal
                                 animationType="slide"
                                 transparent={true}
@@ -179,12 +193,16 @@ export function OccurrenceScreen({route, navigation}) {
                                     setIsVisible(false);
                                 }}
                             >
-                                <TouchableOpacity style={styles.centeredView}
-                                                  onPressOut={() => setIsVisible(false)}>
+                                <View style={styles.centeredView}>
                                     <View style={styles.modalView}>
 
-                                        <View style={{padding: 20}}>
-                                            <View style={{marginBottom: 10}}>
+                                        <View style={{}}>
+                                            <View style={{
+                                                paddingLeft: 40,
+                                                paddingVertical: 30,
+                                                borderBottomWidth: 2,
+                                                borderColor: Colors.lightgray
+                                            }}>
                                                 <Text style={{
                                                     color: objToShow?.school_subject?.color,
                                                     fontWeight: 'bold',
@@ -193,38 +211,62 @@ export function OccurrenceScreen({route, navigation}) {
                                                     {objToShow?.school_subject?.description}
                                                 </Text>
                                                 <Text style={{}}>
-                                                    {moment(objToShow?.teacher_class_room_occurrences[0]?.created_at).format("DD/MM/YYYY")}
+                                                    {moment(objToShow?.teacher_class_room_occurrences[0]?.created_at).format("DD/MM/YYYY HH:mm")}
                                                 </Text>
+                                                <Text>{objToShow?.teacher?.person?.name}</Text>
                                             </View>
-                                            <View >
-                                                <Text style={{
-                                                    fontSize: 17,
-                                                    textAlign: "center",
-                                                    marginBottom: 10,
-                                                    fontWeight: 'bold'
-                                                }}>
-                                                    {objToShow?.teacher_class_room_occurrences[0]?.description}
-                                                </Text>
 
-                                                <Text style={{
-                                                    fontSize: Texts.listDescription,
-                                                    textAlign: 'center'
-                                                }}>
-                                                    {objToShow?.occurrence_note}
-                                                </Text>
-                                            </View>
+                                            <ScrollView>
+                                                {objToShow?.teacher_class_room_occurrences.map((item, index) =>
+
+                                                    <View style={styles.occurrence}>
+                                                        <Entypo style={{}} name={'dot-single'} size={30}
+                                                                color={Colors.grey}/>
+                                                        <Text style={{
+                                                            fontSize: 17,
+                                                            textAlign: "center",
+                                                            color: Colors.grey
+                                                        }}>
+                                                            {item.description}</Text>
+                                                    </View>
+                                                )}
+                                                <View style={{marginTop: 10}}>
+                                                    {objToShow?.occurrence_note.length > 0 &&
+                                                    <>
+                                                        <Text style={{
+                                                            fontSize: Texts.listDescription,
+                                                            textAlign: 'center',
+                                                            fontWeight: 'bold'
+                                                        }}>
+                                                            Nota do professor:
+                                                        </Text>
+                                                        <Text style={{
+                                                            fontSize: Texts.listDescription,
+                                                            textAlign: 'center'
+                                                        }}>
+                                                            {objToShow?.occurrence_note}
+                                                        </Text>
+                                                    </>
+                                                    }
+                                                </View>
+                                            </ScrollView>
+
+
                                         </View>
-                                        <TouchableOpacity style={{
-                                            backgroundColor: Colors.primary,
-                                            borderBottomLeftRadius: 10,
-                                            borderBottomRightRadius: 10,
-                                            padding: 7
-                                        }} onPress={() => setIsVisible(false)}>
-                                            <Text style={{fontSize: 16, fontWeight: 'bold', textAlign: 'center', color: 'white'}}>Voltar</Text>
+                                        <TouchableOpacity
+                                            style={{
+                                                alignSelf: 'flex-start',
+                                                borderRadius: 20,
+                                                padding: 7,
+                                                position: 'absolute',
+                                            }}
+                                            onPress={() => setIsVisible(false)}>
+                                            <AntIcon name={"arrowleft"} style={{marginTop: 25,}} size={25}
+                                                     color={Colors.primary}/>
                                         </TouchableOpacity>
 
                                     </View>
-                                </TouchableOpacity>
+                                </View>
 
 
                             </Modal>
@@ -244,7 +286,7 @@ const styles = StyleSheet.create({
     },
     item: {
         flexDirection: 'row',
-        height: 100,
+        height: 80,
         padding: 10,
         elevation: 2,
         backgroundColor: 'white',
@@ -281,10 +323,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     modalView: {
-        minWidth: 250,
+        width: screenWidth,
+        height: screenHeight,
         margin: 20,
         backgroundColor: "white",
-        borderRadius: 5,
+        borderRadius: 10,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -294,4 +337,13 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5,
     },
+    occurrence: {
+        flex: 1,
+        alignItems: 'center',
+        padding: 10,
+        flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderColor: "#d9dade",
+        backgroundColor: "#fcfcfc",
+    }
 });

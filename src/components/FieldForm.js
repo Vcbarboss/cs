@@ -24,9 +24,11 @@ export default function FieldForm(props) {
             inputRef.current.focus()
         }}>
             <View style={[]}>
-                <Text style={{left: props.icon? 27: 2, fontSize: 17, color: props.color || '#040816'}}>{props.label&& props.label}</Text>
-                {props.icon&& <Icon style={styles.icon} name={props.icon} size={24} color={props.color || Colors.primary}/>}
+
+                <Text style={{left: props.icon? 2: 2, fontSize: 17, color: props.color || '#040816'}}>{props.label&& props.label}</Text>
+
                 <View style={[styles.inputContainer,{flexDirection: 'row', borderColor: selected ? Colors.blue : "#d9dade",}]}>
+                    {props.icon&& <Icon style={styles.icon} name={props.icon} size={24} color={props.color || Colors.primary}/>}
                     <TextInput
 
                         placeholder={props.placeholder}

@@ -25,7 +25,7 @@ export function KnowledgeScreen({route, navigation}) {
 
     const [loading, setLoading] = useState(false);
     const data = useRef()
-    const [objToShow, setObjToShow] = useState()
+    const [objToShow, setObjToShow] = useState({})
     const api = useApi({navigation});
     const refNotification = useRef();
     const props = route.params;
@@ -35,8 +35,11 @@ export function KnowledgeScreen({route, navigation}) {
     const tst = useRef([])
     let month = useRef(moment().format('M')).current
 
-    const getData = async () => {
-        setLoading(true);
+    const getData = async (first) => {
+        if (first) {
+            setLoading(true);
+        }
+
         try {
             const res = await api.get(`app/enrollment/${props.item.enrollment_id}/knowledge/${month}/list`);
 
@@ -44,7 +47,6 @@ export function KnowledgeScreen({route, navigation}) {
             formatData()
             setLoading(false);
         } catch (e) {
-            console.log(e)
             let aux;
             for (let i = 0; i < Object.keys(e.validator).length; i++) {
                 aux = e.validator[Object.keys(e.validator)[i]][0];
@@ -88,30 +90,30 @@ export function KnowledgeScreen({route, navigation}) {
 
     const getKnowledge = (day) => {
 
+        if (objToShow) {
+            let aux2;
+            aux2 = []
 
-        console.log(day)
-        let aux2;
-        aux2 = []
-
-        Object.entries(objToShow).forEach(([key, value]) => {
-            if (key === day) {
-                for (let i = 0; i < value.value.length; i++) {
-                    aux2.push(value.value[i])
+            Object.entries(objToShow).forEach(([key, value]) => {
+                if (key === day) {
+                    for (let i = 0; i < value.value.length; i++) {
+                        aux2.push(value.value[i])
+                    }
                 }
-            }
 
-        })
+            })
 
-        console.log(moment(day).format('dddd, DD MMMM'))
-        setKnowledge({
-            ...knowledge,
-            date: day,
-            data: aux2
-        })
+            setKnowledge({
+                ...knowledge,
+                date: day,
+                data: aux2
+            })
+        }
+
     }
 
     const getMonth = (e) => {
-        setKnowledge()
+        // setKnowledge()
         month = e.month;
         getData()
     }
@@ -119,7 +121,7 @@ export function KnowledgeScreen({route, navigation}) {
 
     useFocusEffect(
         React.useCallback(() => {
-            getData()
+            getData(true)
         }, []),
     );
 

@@ -42,7 +42,6 @@ export function HomeworkDetailsScreen({route, navigation}) {
     useFocusEffect(
         React.useCallback(() => {
             if (!isVisible) {
-                // getData()
             }
         }, [isVisible]),
     );
@@ -191,18 +190,49 @@ export function HomeworkDetailsScreen({route, navigation}) {
                             }
 
                             <ScrollView style={{backgroundColor: 'white'}}>
-                                <View style={{padding: 20}}>
-                                    <Text style={{
-                                        fontSize: Texts.title,
-                                        fontWeight: 'bold',
-                                        textAlign: 'center',
-                                        marginVertical: 10,
-                                        color: 'black'
-                                    }}>{props?.data.homework_description}</Text>
-                                    <Text style={{
-                                        fontSize: Texts.subtitle,
-                                        textAlign: 'center',
-                                    }}>{props?.data.correction_note}</Text>
+                                <View style={{}}>
+                                    <View style={[styles.item]}>
+                                        <View style={{flex: 0.3}}>
+                                            <Text style={{}}>Status: </Text>
+                                        </View>
+                                        <View style={{flex: 1}}>
+                                            <Text style={{
+                                                fontSize: Texts.subtitle,
+                                                textAlign: 'right',
+                                                fontWeight: 'bold',
+                                                color: Colors.grey
+                                            }}>{status[props.data.status]}</Text>
+                                        </View>
+
+                                    </View>
+                                    <View style={[styles.item, {backgroundColor: 'white'}]}>
+                                        <View style={{flex: 0.3}}>
+                                            <Text style={{}}>Descrição: </Text>
+                                        </View>
+                                        <View style={{flex: 1}}>
+                                            <Text style={{
+                                                fontSize: Texts.subtitle,
+                                                fontWeight: 'bold',
+                                                color: Colors.grey,
+                                                textAlign: 'right',
+                                            }}>{props?.data.homework_description}</Text>
+                                        </View>
+                                    </View>
+                                    {props?.data?.correction_note &&
+                                    <View style={[styles.item]}>
+                                        <View style={{flex: 0.3}}>
+                                            <Text style={{}}>Correção: </Text>
+                                        </View>
+                                        <View style={{flex: 1}}>
+                                            <Text style={{
+                                                fontSize: Texts.subtitle,
+                                                fontWeight: 'bold',
+                                                color: Colors.grey,
+                                                textAlign: 'right',
+                                            }}>{props?.data.correction_note}</Text>
+                                        </View>
+                                    </View>
+                                    }
                                 </View>
 
                             </ScrollView>
@@ -257,7 +287,7 @@ const styles = StyleSheet.create({
         color: Colors.primary
     },
     item: {
-
+        flex: 1,
         flexDirection: 'row',
         padding: 15,
         paddingHorizontal: 30,

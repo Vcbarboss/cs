@@ -188,7 +188,7 @@ export function AttendanceListScreen({route, navigation}) {
                                     })}
                                 >
                                     <View style={{padding: 20, flex: 1}}>
-                                        <Text style={{fontSize: Texts.subtitle, fontWeight: 'bold'}}>
+                                        <Text style={{fontSize: Texts.subtitle, fontWeight: 'bold', color: Colors.grey}}>
                                             {item.description}
                                         </Text>
 

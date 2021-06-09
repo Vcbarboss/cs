@@ -134,7 +134,7 @@ export function StudentScreen({route, navigation}) {
             />
 
             <Animated.ScrollView
-                style={[styles.fill, {margin: 10, backgroundColor: Colors.primary,}]}
+                style={[styles.fill, {margin: 10, marginBottom: 0, backgroundColor: Colors.primary, marginTop: 20}]}
                 contentContainerStyle={{flexGrow: 1, justifyContent: 'center',}}
                 scrollEventThrottle={1}
                 onScroll={Animated.event(
@@ -352,14 +352,17 @@ export function StudentScreen({route, navigation}) {
                 {/*    source={{uri: 'https://1.bp.blogspot.com/-AVkl0Zdo0DI/X5tcP4uombI/AAAAAAAAEeE/JdxES_6EpjcbBAKwYG--Gk3-AF36YFNmQCLcBGAsYHQ/w1200-h630-p-k-no-nu/jujutsu-kaisen-sukuna-sorrindo.jpg'}}*/}
                 {/*/>*/}
                 <Animated.View style={[styles.card, {
-                    height: HEADER_MAX_HEIGHT / 1.6,
+                    height: HEADER_MAX_HEIGHT / 1.5,
                     opacity: imageOpacity,
                     transform: [{translateY: imageTranslate}],
                 }]}>
                     <View
                         style={{flexDirection: 'row', borderBottomWidth: 1, borderColor: Colors.lightgray}}>
-                        <View style={{flex: 0.7, justifyContent: "center", padding: 20}}>
-                            <Text style={styles.name}>{props?.item.student.person.name.toUpperCase()}</Text>
+                        <View style={{flex: 0.7, justifyContent: "center", padding: 17,}}>
+                            <Text style={{
+                                color: Colors.grey,
+                                fontWeight: 'bold'
+                            }}>{props?.item.student.person.name.toUpperCase()}</Text>
                             <Text
                                 style={styles.class}>{moment().diff(props?.item.student.person.natural_birthday, "years") + " anos"}</Text>
                             <Text style={[styles.class, {}]}>{props?.item.class_room.description}</Text>
@@ -404,24 +407,35 @@ export function StudentScreen({route, navigation}) {
                     {
                         position: 'absolute',
                         top: 65,
+                        left: 10,
+                        flex: 1,
+                        maxWidth: screenWidth * 0.8,
+                        flexDirection: 'row',
                         opacity: infoOpacity,
                         // transform: [
                         //     {translateY: infoTranslate,},
                         // ],
                     }]}>
-                    <Text style={[{
-                        fontWeight: 'bold',
-                        color: 'white',
-                        fontSize: 20
-                    }]}>{props?.item.student.person.name.toUpperCase()}</Text>
-                    <Text style={[{fontWeight: 'bold', color: 'white'}]}>{props?.item.class_room.description}</Text>
+                    <View style={{}}>
+                        <Text style={[{
+                            fontWeight: 'bold',
+                            color: 'white',
+                            fontSize: 18
+                        }]}>{props?.item.student.person.name.toUpperCase()} </Text>
+                        <Text style={[{
+                            fontWeight: 'bold',
+                            color: 'white',
+                            textAlign: 'center'
+                        }]}>{props?.item.class_room.description}</Text>
+                    </View>
+
                 </Animated.View>
                 {props?.item.student.person.avatar ?
                     <Animated.View style={[styles.avatar,
                         {
                             position: 'absolute',
                             right: 20,
-                            top: 80,
+                            top: 85,
 
                             transform: [
                                 {scale: avatarScale,},
@@ -429,7 +443,7 @@ export function StudentScreen({route, navigation}) {
                                 {translateX: avatarTranslateX},
                             ],
                         }]}>
-                        <Avatar.Image style={{}} size={screenWidth * 0.25}
+                        <Avatar.Image style={{}} size={screenWidth * 0.22}
                                       source={{uri: props?.item.student.person.avatar}}/>
                     </Animated.View>
                     :

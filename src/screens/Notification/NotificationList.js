@@ -71,7 +71,6 @@ export function NotificationList({navigation}) {
             const res = await api.get(`app/notification/paginate?page=${paginate.current.page + 1}&limit=10&order_field=created_at&order_type=DESC&search_list=${filterAux.value}`);
 
             notifications.current = notifications.current.concat(res.object.data);
-            console.log(res.object.data)
 
             paginate.current = {nextPage: res.object.next_page_url, page: res.object.current_page};
             more ? setLoadingMore(false) : setLoading(false);

@@ -40,7 +40,6 @@ const StudentList = React.forwardRef((props, ref) => {
             setLoading(true);
             try {
                 const res = await api.get("app/enrollment/list");
-                console.log(res.object)
                 setList(res.object);
             } catch (e) {
                 let aux;

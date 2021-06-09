@@ -102,7 +102,6 @@ export function AttendanceDetailsScreen({route, navigation}) {
     const know = {color: Colors.tertiary, selectedDotColor: Colors.tertiary};
 
     const getData = () => {
-        console.log(props)
         setLoading(true)
         attendances.current = []
 
@@ -186,19 +185,21 @@ export function AttendanceDetailsScreen({route, navigation}) {
 
         Object.entries(props?.record?.knowledge).forEach(([key, value]) => {
             if (day === key) {
+                setIsVisible(true)
                 aux = value
             }
         })
 
         Object.entries(props?.record?.attendance).forEach(([key, value]) => {
             if (day === key) {
+                setIsVisible(true)
                 for (let i = 0; i < value.length; i++) {
+
                     aux2.push(value[i])
                 }
             }
         })
 
-        console.log(moment(day).format('dddd, DD MMMM'))
         setObjToShow({
             ...objToShow,
             date: day,
@@ -312,7 +313,12 @@ export function AttendanceDetailsScreen({route, navigation}) {
                                             shadowColor="#999"
                                             bgColor="#fff"
                                         >
-                                            <Text style={{fontSize: 18}}>{props?.percent}%</Text>
+                                            {props?.percent < 0 ?
+                                                <Text style={{fontSize: 18}}>{props?.percent}%</Text>
+                                            :
+                                                <Text style={{fontSize: 18}}>0%</Text>
+                                            }
+
                                         </ProgressCircle>
                                         <Text style={{textAlign: 'center'}}>Presenças</Text>
                                     </View>
@@ -331,7 +337,7 @@ export function AttendanceDetailsScreen({route, navigation}) {
                                     }
                                     markingType={'multi-dot'}
                                     onDayPress={(day) => {
-                                        setIsVisible(true)
+
                                         getKnowledge(day.dateString)
                                     }}
                                     theme={{
@@ -368,9 +374,11 @@ export function AttendanceDetailsScreen({route, navigation}) {
                 visible={isVisible}
                 onCloseRequest={() => setIsVisible(false)}
             >
-                <View style={styles.centeredView}>
+                <TouchableOpacity style={styles.centeredView}
+                                  onPressOut={()=> setIsVisible(false)}
+                >
                     <View style={styles.modalView}>
-
+                        {objToShow?.knowledge &&
                         <View style={{padding: 35, borderBottomWidth: 2, borderColor: Colors.lightgray}}>
                             <Text style={{
                                 color: 'black',
@@ -384,6 +392,9 @@ export function AttendanceDetailsScreen({route, navigation}) {
                                 textAlign: 'center'
                             }}>{objToShow?.knowledge?.note}</Text>
                         </View>
+
+                        }
+
                         <View style={{padding: 30}}>
                             <Text>{moment(objToShow?.date).format('dddd, DD')} de {moment(objToShow?.date).format('MMMM')}</Text>
                             {objToShow?.history?.map((item, index) =>
@@ -405,7 +416,7 @@ export function AttendanceDetailsScreen({route, navigation}) {
                                             <Text> ausente</Text>
 
                                         }
-                                        <Text> - {item.time_initial}</Text>
+                                        <Text> ( {item.time_initial} - {item.time_final} )</Text>
                                     </View>
 
                                 </View>
@@ -413,12 +424,12 @@ export function AttendanceDetailsScreen({route, navigation}) {
 
                         </View>
                         <TouchableOpacity
-                            style={{alignSelf: 'flex-start',borderRadius: 20, padding: 10, position:'absolute',}}
+                            style={{alignSelf: 'flex-start', borderRadius: 20, padding: 7, position: 'absolute',}}
                             onPress={() => setIsVisible(false)}>
                             <AntIcon name={"close"} style={{}} size={25} color={Colors.red}/>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </TouchableOpacity>
 
 
             </Modal>
@@ -442,6 +453,7 @@ const styles = StyleSheet.create({
     modalView: {
         margin: 20,
         backgroundColor: "white",
+        padding: 10,
         borderRadius: 10,
         alignItems: "center",
         shadowColor: "#000",

@@ -123,7 +123,7 @@ export function ReportScreen({route, navigation}) {
                         <>
                             <View style={styles.drop}>
                                 <Picker
-
+                                    mode={"dialog"}
                                     selectedValue={selected}
                                     dropdownIconColor={Colors.primary}
                                     onValueChange={(itemValue, itemIndex) => {
@@ -134,6 +134,7 @@ export function ReportScreen({route, navigation}) {
                                         <Picker.Item label={item} value={index} key={index}/>
                                     )}
                                 </Picker>
+                                <Text style={{width: '100%', height: 60, position: 'absolute', bottom: 0, left: 0}}>{' '}</Text>
                             </View>
 
 

@@ -120,7 +120,7 @@ export function ProfileScreen({navigation}) {
                             SABER</Text>
                         <Text style={{
                             color: "#8b98ae",
-                            fontSize: Texts.subtitle,
+                            fontSize: Texts.subTitle,
                             textAlign: 'center'
                         }}>Perfil</Text>
 
@@ -136,7 +136,7 @@ export function ProfileScreen({navigation}) {
                     )
                     :
                     (
-                        <ScrollView style={{backgroundColor: "#fcfcfc",}}>
+                        <ScrollView style={{backgroundColor: "#fcfcfc", padding: 10}}>
                             <View style={{
                                 alignItems: "center",
                                 margin: 10,
@@ -153,42 +153,41 @@ export function ProfileScreen({navigation}) {
 
 
                             </View>
-                            <View style={styles.item}>
-                                <Text style={styles.title}>Nome: </Text>
-                                <Text style={styles.subtitle}>{data?.name}</Text>
+                            <Text style={styles.title}>Nome: </Text>
+                                <View style={styles.item}>
+                                <Text style={styles.subTitle}>{data?.name}</Text>
                             </View>
+                            <Text style={styles.title}>Idade: </Text>
                             <View style={styles.item}>
-                                <Text style={styles.title}>Idade: </Text>
-                                <Text style={styles.subtitle}>{moment().diff(data?.natural_birthday, "years")} </Text>
+                                <Text style={styles.subTitle}>{moment().diff(data?.natural_birthday, "years")} </Text>
                             </View>
+                            <Text style={styles.title}>Data de Nascimento: </Text>
                             <View style={styles.item}>
-                                <Text style={styles.title}>Data de Nascimento: </Text>
-                                <Text style={styles.subtitle}>{moment(data?.natural_birthday).format("L")} </Text>
+                                <Text style={styles.subTitle}>{moment(data?.natural_birthday).format("L")} </Text>
                             </View>
+                            <Text style={styles.title}>Gênero: </Text>
                             <View style={styles.item}>
-                                <Text style={styles.title}>Gênero: </Text>
-                                <Text style={styles.subtitle}>{data?.natural_gender} </Text>
+                                <Text style={styles.subTitle}>{data?.natural_gender} </Text>
                             </View>
+                            <Text style={styles.title}>Telefone Residencial: </Text>
                             <View style={styles.item}>
-                                <Text style={styles.title}>Telefone Residencial: </Text>
                                 <Text
-                                    style={styles.subtitle}>{data?.contact_home_phone ? maskViewPhone(data?.contact_home_phone) : "Nenhum"} </Text>
+                                    style={styles.subTitle}>{data?.contact_home_phone ? maskViewPhone(data?.contact_home_phone) : "Nenhum"} </Text>
                             </View>
+                            <Text style={styles.title}>Telefone Celular: </Text>
                             <View style={styles.item}>
-                                <Text style={styles.title}>Telefone Celular: </Text>
                                 <Text
-                                    style={styles.subtitle}>{data?.contact_mobile_phone ? maskViewPhone(data?.contact_mobile_phone) : "Nenhum"} </Text>
+                                    style={styles.subTitle}>{data?.contact_mobile_phone ? maskViewPhone(data?.contact_mobile_phone) : "Nenhum"} </Text>
                             </View>
+                            <Text style={styles.title}>Email: </Text>
                             <View style={styles.item}>
-                                <Text style={styles.title}>Email: </Text>
                                 <Text
-                                    style={styles.subtitle}>{data?.contact_mail ? data?.contact_mail : "Nenhum"} </Text>
+                                    style={styles.subTitle}>{data?.contact_mail ? data?.contact_mail : "Nenhum"} </Text>
                             </View>
-
+                            <Text style={styles.title}>Telefone de Trabalho: </Text>
                             <View style={styles.item}>
-                                <Text style={styles.title}>Telefone de Trabalho: </Text>
                                 <Text
-                                    style={styles.subtitle}>{data?.contact_business_phone ? maskViewPhone(data?.contact_business_phone) : "Nenhum"} </Text>
+                                    style={styles.subTitle}>{data?.contact_business_phone ? maskViewPhone(data?.contact_business_phone) : "Nenhum"} </Text>
                             </View>
 
                         </ScrollView>
@@ -201,25 +200,28 @@ export function ProfileScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: Texts.listTitle,
-        fontWeight: "bold",
-        marginVertical: 5,
-        color: Colors.primary,
-    },
-    subtitle: {
-        fontSize: Texts.listDescription,
-        color: Colors.primary,
-    },
     item: {
-        padding: 10,
-        borderBottomWidth: 1,
+        padding: 5,
+        paddingHorizontal: 10,
+        marginVertical: 5,
+        borderWidth: 1,
         borderColor: "#d9dade",
         backgroundColor: "#fcfcfc",
+        // borderColor: '#22c58b',
+        // backgroundColor: '#e9f9f4',
+        borderRadius: 5,
     },
     container: {
         flex: 1,
         display: "flex",
         backgroundColor: "white",
+    },
+    title: {
+        fontSize: 17,
+        marginVertical: 5,
+        color: '#040816',
+    },
+    subTitle: {
+        fontSize: 17,
     },
 });

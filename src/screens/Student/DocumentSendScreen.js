@@ -59,8 +59,6 @@ export function DocumentSendScreen({route, navigation}) {
             const res1 = await api.get(`app/enrollment/${props.item.enrollment_id}/document/list`);
             setData(res1.object)
             setPending(res.object)
-            console.log(res)
-            console.log(res1)
             for (let i = 0; i < res1.object.length; i++) {
                 if(!res1.object[i].audited){
                     pendingList.current.push(res1.object[i].document_type_id)
@@ -69,7 +67,6 @@ export function DocumentSendScreen({route, navigation}) {
             }
             setLoading(false)
         } catch (e) {
-            console.log(e)
             let aux;
             for (let i = 0; i < Object.keys(e.validator).length; i++) {
                 aux = e.validator[Object.keys(e.validator)[i]][0];
@@ -88,7 +85,6 @@ export function DocumentSendScreen({route, navigation}) {
             setSendLoading(false)
             getData()
         } catch (e) {
-            console.log(e)
             let aux;
             for (let i = 0; i < Object.keys(e.validator).length; i++) {
                 aux = e.validator[Object.keys(e.validator)[i]][0];
@@ -111,7 +107,6 @@ export function DocumentSendScreen({route, navigation}) {
             setSendLoading(false)
             getData()
         } catch (e) {
-            console.log(e)
             let aux;
             for (let i = 0; i < Object.keys(e.validator).length; i++) {
                 aux = e.validator[Object.keys(e.validator)[i]][0];
